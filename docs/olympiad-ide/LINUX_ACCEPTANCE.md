@@ -10,7 +10,7 @@ Repository `/Users/isaevarman/Developer/cms`, branch `feature/olympiad-ide-integ
 
 The real CMS DB fault test exposed a judging recovery defect. Fix commit **`349d1e9559023b57b28d3e0dac95ca2b97c4a0dc`** adds SQLAlchemy 1.3 `pool_pre_ping=True` and a real terminated-connection regression. Both changed files were deployed, CMS reinstalled into its own venv, and CMS-owned services restarted. The final installed/source database module hashes match (`5e06cd8057f1b49b56960049aed2afcdf4c62732876bb5d837bad78e15f9aa1c`). Initial core/feedback/load evidence predates that fix; the successful DB retest, restricted-role outages, restore, final browser, failure verdicts and 350-account context retest use the fix. No adapter/frontend redesign or dependency upgrade was made.
 
-[Environment and process ownership](evidence/linux-staging/environment-results.json), [source procedures](../../olympiad_ide/tools/linux_staging/README.md), and the sanitized files under [evidence/linux-staging](evidence/linux-staging/) make the result reviewable. Raw secrets, generated credentials, browser profiles, private configs and database dumps stay outside Git.
+[Environment and process ownership](evidence/linux-staging/environment-results.json), [source procedures](../../olympiad_ide/tools/linux_staging/README.md), and the sanitized files under [evidence/linux-staging](evidence/linux-staging/) make the result reviewable. Raw secrets, generated credentials, browser profiles, private configs and database dumps stay outside Git. Selected committed text logs normalize trailing whitespace only; original outputs remain in `/opt/cms-ide-stage/logs` on the host.
 
 ## Actual host and dependency compatibility
 

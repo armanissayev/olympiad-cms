@@ -31,7 +31,7 @@ The above exception was the direct cause of the following exception:
 E   sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly
 E   	This probably means the server terminated abnormally
 E   	before or while processing the request.
-E   
+E
 E   [SQL: SELECT pg_backend_pid()]
 E   (Background on this error at: http://sqlalche.me/e/13/e3q8)
 =============================== warnings summary ===============================

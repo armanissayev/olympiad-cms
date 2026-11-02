@@ -95,6 +95,34 @@ sudo runuser -u cmsstage -- /opt/cms-ide-stage/cms-venv/bin/python /opt/cms-ide-
 
 This creates a private 4.55 MB credential/variable file and target/plan manifests. Inspect their target UUID, actual installation/contest, hardware, toolchains and request costs. Use the generated UUID as `--confirm-disposable`; first run `cms_load.py --validate-only`, then remove only that flag and add `--allow-custom-runs --allow-official-submissions`. Supply **new report paths**. See [CMS_LOAD](../CMS_LOAD.md) for exact flags, fixture protocol and error semantics. The main plan ramps 1/10/50/100/200/300/350 accounts, caps 12 concurrent HTTP actors and 20 HTTP/s, performs 3 new autosaves/account, 2 new visibility events/account, then 5 serial custom runs and 5 real official submissions. It is a short functional workload; it is not a 350-editor soak or 350-compilation capacity claim.
 
+For the fresh generated fixture, set `STAGE_TARGET_ID` to the UUID printed by `build_load.py`. These commands run on the explicitly authorized staging host and refuse existing report paths:
+
+```sh
+sudo install -d -m 0700 -o stagepguser -g stagepguser /var/lib/cms-ide-stage/metrics
+sudo systemd-run --unit=cms-ide-stage-load-metrics --uid=stagepguser \
+ /opt/cms-ide-stage/cms-venv/bin/python /opt/cms-ide-stage/incoming/metrics.py \
+ --seconds 900 --output /var/lib/cms-ide-stage/metrics/load.json
+sudo runuser -u cmsstage -- /opt/cms-ide-stage/cms-venv/bin/python \
+ /opt/cms-ide-stage/source/olympiad_ide/tools/cms_load.py \
+ --target /var/lib/cms-ide-stage/fixture/load/target.json \
+ --credentials /var/lib/cms-ide-stage/fixture/load/credentials.json \
+ --plan /var/lib/cms-ide-stage/fixture/load/main-plan.json \
+ --confirm-disposable "$STAGE_TARGET_ID" --allow-custom-runs --allow-official-submissions --validate-only \
+ --report /var/lib/cms-ide-stage/fixture/load/validation.json
+sudo runuser -u cmsstage -- /opt/cms-ide-stage/cms-venv/bin/python \
+ /opt/cms-ide-stage/source/olympiad_ide/tools/cms_load.py \
+ --target /var/lib/cms-ide-stage/fixture/load/target.json \
+ --credentials /var/lib/cms-ide-stage/fixture/load/credentials.json \
+ --plan /var/lib/cms-ide-stage/fixture/load/main-plan.json \
+ --confirm-disposable "$STAGE_TARGET_ID" --allow-custom-runs --allow-official-submissions \
+ --report /var/lib/cms-ide-stage/fixture/load/main-report.json
+sudo runuser -u cmsstage -- env CMS_CONFIG=/etc/cms-ide-stage/cms.conf \
+ /opt/cms-ide-stage/cms-venv/bin/python /opt/cms-ide-stage/incoming/final_minutes.py
+```
+
+This is the short measured procedure, including its original short-poll failure. Do not run an unrelated submission workload during the deadline driver. Preserve report exit codes; stop and reconcile unknown official outcomes. After the metrics unit exits, its protected output remains; stop it before any DB fault test.
+
+
 The historical main official fixture has only four feedback GETs at 2 HTTP/s. It deliberately remains unchanged as evidence: all 5 final assertions failed while judging was still pending; later real scores were 100. `reconcile_load.py` is a **historical read-only** checker for that fixture's IDs 5–9; it must not be generalized to a different run by guessing IDs. Preserve original failures; for a new acceptance plan use a documented sufficiently long bounded feedback window and reconcile by original intent. Never retry official POST automatically.
 
 As a separate run, `final_minutes.py` configures an actual 120 second deadline in this disposable contest, runs 10 mixed actors at 5 HTTP/s/concurrency 2 with longer bounded feedback polling, verifies committed receipt access after expiry and rejects a new late intent, then restores the old stop time in `finally`. It is not a 350-participant deadline burst. Do not run any unrelated workload while it counts its 10 receipts.
