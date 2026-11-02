@@ -1,6 +1,6 @@
 # Implementation state
 
-Updated 2 November 2026. Checkout: /Users/isaevarman/Developer/cms. Branch: feature/olympiad-ide-integration. Base: CMSv1.5.1,7c9fec8aa1a25ec93d624aebf815804dd93df9db. Use git log on this branch for the finalized integration/documentation commits; no remote push or PR is implied.
+Updated 2 November 2026. Checkout: /Users/isaevarman/Developer/cms. Branch: feature/olympiad-ide-integration. Base: CMSv1.5.1,7c9fec8aa1a25ec93d624aebf815804dd93df9db. Implementation commit: 7c2bd34d16a6ae9bc263feb660bb60505c31bfab. A following documentation-only commit records this checkpoint. No remote push or PR was created.
 
 ## Status
 
@@ -24,3 +24,9 @@ VERIFICATION.md records the observed full suite, targeted and real-process/brows
 6. Resolve original IDE licence/attribution and dependency/toolchain distribution review. Review full diff and release gates before enabling at a real contest.
 
 The local temporary cluster and fixture databases are test-owned. Sanitized evidence is committed; raw dumps/credentials/keys/browser state stay outside the repository. Test process cleanup and package hashes are recorded in the corresponding evidence documents. Re-running tests should create new disposable fixtures; the smoke harness deliberately rejects populated databases.
+
+## Final local cleanup
+
+All task-owned native/CWS/ResourceService/LogService, standalone preview/API, private runtime and HTTPS fixture processes were stopped. The temporary PostgreSQL cluster at /private/tmp/cms-native-pg.6q0z6u16/data (port55459) was stopped after tests and restores; its disposable data and protected temporary dumps remain available for inspection. Source dependencies/build outputs remain ignored. The feature branch was committed with no source changes left unstaged.
+
+Built wheel/source artifacts and checksums are under /private/tmp/cms-native-release. Final source archives can be rebuilt from this committed tree using the opt-in asset build and packaging recipe. See evidence/PACKAGING.md for exact checks; the original124 source hashes still match.
