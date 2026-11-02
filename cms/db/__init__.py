@@ -83,8 +83,10 @@ __all__ = [
 
 version = 45
 
+# A dead idle connection must not wedge an admitted judging operation.
+# Checkout validation never retries a transaction that failed in flight.
 engine = create_engine(config.database, echo=config.database_debug,
-                       pool_timeout=60, pool_recycle=120)
+                       pool_timeout=60, pool_recycle=120, pool_pre_ping=True)
 
 metadata = MetaData(engine)
 
