@@ -41,3 +41,7 @@ The main progressive run produced 4,561 HTTP requests with zero HTTP errors, but
 4. Review release gates and schedule deployment, retaining CWS fallback and matched installation/identity/key backups. This rehearsal does not authorize a live contest migration or rollout.
 
 All 124 original authoritative IDE source hashes still match. The original key and source were preserved. Historical local fixture processes/cluster remain stopped. Linux test clients and sampler completed; no recurring automation was created. The beta, tunnel and protected artifacts remain for review. Packaging includes the new regression, staging tools and sanitized evidence; dependencies, secrets, dumps and generated configurations remain excluded.
+
+## Public access follow-up — 3 November 2026
+
+The reported localhost outage was a lost SSH tunnel; AWS CMS services remained active. The tunnel was restored. A persistent `cms-staging-ops` tmux session and boot enablement for the existing supervisors are configured. Public HTTPS by IP is prepared, but external HTTP validation currently times out and no AWS IAM role is available to change ingress rules. Public access and certificate issuance remain pending the requested AWS TCP80/443 rule change. See [PUBLIC_HTTPS](PUBLIC_HTTPS.md) for exact state, scripts and remaining validation.
