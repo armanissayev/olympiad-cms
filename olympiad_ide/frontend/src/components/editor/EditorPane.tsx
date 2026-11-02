@@ -64,10 +64,19 @@ export function EditorPane({ groupId }: EditorPaneProps) {
     }
 
     const decorations = instance.createDecorationsCollection()
+    let navigated = 0
     const redrawDebug = () => {
       const current = activeFileRef.current
       if (!current) { decorations.clear(); return }
       const state = useDebugStore.getState()
+      if (state.navigation?.fileId === current && state.navigation.groupId === groupId && state.navigation.nonce !== navigated) {
+        const model = instance.getModel()
+        if (model?.uri.toString() === modelUri(useWorkspaceStore.getState().workspace.id, current)) {
+          navigated = state.navigation.nonce
+          const line = Math.max(1, Math.min(state.navigation.line, model.getLineCount()))
+          instance.setPosition({ lineNumber: line, column: 1 }); instance.revealLineInCenter(line); instance.focus(); debugging.acknowledgeNavigation(navigated)
+        }
+      }
       const points = state.breakpoints[current] ?? []
       const items: editor.IModelDeltaDecoration[] = points.map(line => ({
         range: new monaco.Range(line, 1, line, 1),

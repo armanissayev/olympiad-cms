@@ -22,7 +22,7 @@ beforeEach(async () => {
   await database.telemetryEvents.add({ schemaVersion: 1, sessionId: id, workspaceId: recording.workspaceId, eventId: crypto.randomUUID(), fileId: 'source', sequence: 1, clientTimestamp: at, monotonicOffsetMs: 10, eventType: 'FILE_RENAMED', payload: { name: 'renamed.py' } })
   host = document.createElement('div'); document.body.append(host); root = createRoot(host)
 })
-afterEach(async () => { await act(async () => root.unmount()); host.remove(); vi.unstubAllGlobals(); await database.telemetrySessions.clear(); await database.telemetryEvents.clear(); await database.telemetryCheckpoints.clear() })
+afterEach(async () => { await act(async () => root.unmount()); host.remove(); vi.unstubAllGlobals(); await database.telemetrySessions.clear(); await database.telemetryEvents.clear(); await database.telemetryCheckpoints.clear(); vi.useRealTimers() })
 async function render() { await act(async () => { root.render(<HistoryPanel />); await new Promise(resolve => setTimeout(resolve, 30)) }); await act(async () => { await new Promise(resolve => setTimeout(resolve, 30)) }) }
 async function click(label: string) {
  const button = [...host.querySelectorAll('button')].find(b => b.textContent === label || b.getAttribute('aria-label') === label)
@@ -43,4 +43,28 @@ it('identifies a missing event without displaying a fabricated later state', asy
  expect(host.querySelector('[role="alert"]')?.textContent).toContain('Missing event 1')
  expect(host.textContent).toContain('last verified state at event 0')
  expect(host.querySelector('[aria-label="History source preview"]')?.textContent).toBe('print(1)')
+})
+
+it('plays real recording time at selected speed, pauses and leaves historical/live files unchanged', async () => {
+ await database.telemetryEvents.update([recording.id, 1], { monotonicOffsetMs: 1000 })
+ await database.telemetrySessions.update(recording.id, { lastSequence: 3 })
+ for (const sequence of [2, 3]) await database.telemetryEvents.add({ schemaVersion: 1, sessionId: recording.id, workspaceId: recording.workspaceId, eventId: crypto.randomUUID(), fileId: null, sequence, clientTimestamp: recording.startedAt, monotonicOffsetMs: sequence * 1000, eventType: 'PAGE_VISIBLE', payload: {} })
+ const nodes = structuredClone(useWorkspaceStore.getState().nodes), events = await database.telemetryEvents.toArray()
+ await render()
+ vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval', 'performance'] })
+ const speed = host.querySelector<HTMLSelectElement>('[aria-label="History playback speed"]')!
+ expect([...speed.options].map(option => Number(option.value))).toEqual([0.5, 1, 2, 4, 8])
+ await act(async () => { speed.value = '2'; speed.dispatchEvent(new Event('change', { bubbles: true })) })
+ await click('Play replay')
+ await act(async () => { await vi.advanceTimersByTimeAsync(400) })
+ expect(host.querySelector<HTMLInputElement>('[aria-label="History timeline"]')!.value).toBe('0')
+ await click('Pause replay')
+ await act(async () => { await vi.advanceTimersByTimeAsync(1500) })
+ expect(host.querySelector<HTMLInputElement>('[aria-label="History timeline"]')!.value).toBe('0')
+ await click('Play replay')
+ await act(async () => { await vi.advanceTimersByTimeAsync(550) })
+ expect(host.querySelector<HTMLInputElement>('[aria-label="History timeline"]')!.value).toBe('1')
+ await click('Pause replay')
+ expect(useWorkspaceStore.getState().nodes).toEqual(nodes)
+ expect(await database.telemetryEvents.toArray()).toEqual(events)
 })

@@ -1,5 +1,6 @@
 """Ownership checked DAP transport. No browser-supplied adapter commands/configuration."""
 import asyncio,hashlib,json,os,secrets,time
+import anyio
 from datetime import timedelta
 from uuid import UUID,uuid4
 from fastapi import Depends,Query,WebSocket,WebSocketDisconnect
@@ -184,5 +185,17 @@ def install_debug_routes(app,db_session,identity):
                             row.cancelled=True
                             if row.status=='QUEUED':row.status='STOPPED'
                         db.commit()
-                try:await asyncio.to_thread(cancel_disconnected)
+                # ASGI shutdown/client cancellation must not abandon an in-flight commit.
+                # Shield both AnyIO cancellation scopes and direct asyncio Task.cancel().
+                try:
+                    with anyio.CancelScope(shield=True):
+                        cleanup=asyncio.create_task(asyncio.to_thread(cancel_disconnected));interrupted=False
+                        try:
+                            while True:
+                                try:await asyncio.shield(cleanup);break
+                                except asyncio.CancelledError:
+                                    if cleanup.cancelled():raise
+                                    interrupted=True
+                        finally:
+                            if interrupted:raise asyncio.CancelledError
                 except Exception:pass # Worker independently expires the fixed deadline/lease.

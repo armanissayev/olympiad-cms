@@ -11,7 +11,7 @@ Group=olympiad-api
 WorkingDirectory=/opt/cms/olympiad_ide/backend
 EnvironmentFile=/etc/cms/ide-runtime.env
 Environment=IDE_AUTH_MODE=cms
-ExecStart=/opt/olympiad-runtime/bin/uvicorn app.main:app --host 127.0.0.1 --port 8801 --workers 2 --limit-concurrency 64 --timeout-keep-alive 5
+ExecStart=/opt/olympiad-runtime/bin/uvicorn app.main:app --host 127.0.0.1 --port 8801 --workers 2 --limit-concurrency 64 --ws-max-size 32768 --ws-max-queue 4 --timeout-keep-alive 5
 Restart=on-failure
 RestartSec=5
 TimeoutStopSec=30

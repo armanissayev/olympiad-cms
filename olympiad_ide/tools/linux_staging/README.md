@@ -48,7 +48,7 @@ cd /opt/cms-ide-stage/source/olympiad_ide
 sudo runuser -u ideworkerstage -- env -u WORKER_SANDBOX_APPROVED \
   PATH=/usr/local/bin:/usr/bin:/bin PYTHONPATH=backend:. \
   WORKER_BOX_ID_BASE=400 RUN_LINUX_SANDBOX_TESTS=1 \
-  /opt/cms-ide-stage/runtime-venv/bin/python -m pytest worker/tests -k real_ -vv -p no:cacheprovider \
+  /opt/cms-ide-stage/runtime-venv/bin/python -m pytest worker/tests/test_worker.py -k real_ -vv -p no:cacheprovider \
   > /tmp/cms-mandatory26.log 2>&1
 sudo install -m 0644 /tmp/cms-mandatory26.log /opt/cms-ide-stage/logs/linux-worker-mandatory.log
 ```
@@ -147,3 +147,13 @@ sudo /opt/cms-ide-stage/cms-venv/bin/python /opt/cms-ide-stage/incoming/inspect_
 Public access is SSH only. Participant/native TLS is `https://localhost:28443/ide/`, admin 28444, ranking 28445 through the task tunnel. PostgreSQL uses only `/run/cms-ide-stage-pg` port 15432. `/etc/cms-ide-stage` holds protected config/key/env files; application state is `/var/lib/cms-ide-stage`. Do not copy those trees into Git. The generated certificate expires after 7 days; the disposable contest closes 2 days after creation. Reboot/autostart, off-host recovery, dedicated production worker hosts, production certificates/ingress and production sizing were not certified. Units are started explicitly; no reboot was performed.
 
 Inspect `systemctl status cms-ide-stage-{postgres, log, resource, judge, runtime, worker, ranking, ingress}` and the two ResourceService child groups. To stop this beta, stop only those eight task-owned units and the task SSH tunnel; do not delete databases, private keys or original IDE source. Isolate/mount/loop-file cleanup requires all sandbox users stopped first. No unattended cleanup, instance termination or recurring load run was scheduled.
+
+## 7. Workbench, history and debugger update
+
+The 3 November update adds the CWS entry card, simple STDIN/STDOUT, active-file execution, deterministic read-only replay and isolated DAP. Follow [Phase6 architecture](../../docs/PHASE6_ARCHITECTURE.md) for the additive IDE migration, role grants, dedicated worker and separate approval gate. The original26 Run prerequisites remain in `test_worker.py`; new debug tests must not be confused with those26.
+
+`install_debug_ws.py` adds only the exact UUID DAP WebSocket routes to the existing staging public/private HTTPS server blocks, rejects query tokens, validates nginx as its restricted account and reloads only ingress. Ordinary HTTP debug APIs still pass CMS authentication; the WS requires an owned, short-lived, single-use attachment ticket. The script is one-time and refuses duplicate installation; it preserves a0600configuration backup.
+
+After building assets, create Git source and generated-asset archives named `vnext-source.tar.gz` and `vnext-assets.tar.gz` with an exact `vnext-commit.txt`, then copy them plus `update-workbench.sh` into the task-owned incoming directory. Execute the update from `tmux` as documented in PUBLIC_HTTPS. It preserves CMS ResourceService ownership, keeps separate Python environments, runs all debug prerequisites with both approval flags unset, and only retains an existing reviewed debug approval. It does not perform initial approval or database migration. Root-owned public application installs use umask022; secrets stay in separate0600configuration files.
+
+`repair_package_permissions.py` retains the narrow repair used after the initial umask077application-install failure. It byte-compares installed application Python to owned source and touches only those packages, CMS metadata and CMS launchers. It never changes dependency/configuration/key permissions. Correctly installed releases do not require this repair.

@@ -1,0 +1,19 @@
+............................F........................................... [ 84%]
+.............                                                            [100%]
+=================================== FAILURES ===================================
+____ test_replayed_token_cannot_attach_while_original_socket_is_authorized _____
+tests/test_debug.py:110: in test_replayed_token_cannot_attach_while_original_socket_is_authorized
+    assert api.get(path).json()['status']=='STOPPED'
+E   AssertionError: assert 'QUEUED' == 'STOPPED'
+E     
+E     - STOPPED
+E     + QUEUED
+=============================== warnings summary ===============================
+../../../../../../private/tmp/olympiad-runtime-venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /private/tmp/olympiad-runtime-venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_debug.py::test_replayed_token_cannot_attach_while_original_socket_is_authorized
+1 failed, 84 passed, 1 warning in 22.64s

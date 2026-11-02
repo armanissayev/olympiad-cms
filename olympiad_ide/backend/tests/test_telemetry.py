@@ -244,3 +244,24 @@ def test_existing_telemetry_session_cannot_be_replayed_under_another_workspace(a
     changed['workspaceId'] = other
     assert api.post('/api/v1/telemetry/sessions', json=changed).status_code == 409
     assert api.post('/api/v1/telemetry/sessions', json=creation).json()['id'] == sid
+
+
+def test_breakpoint_observations_allow_pre_session_ids_but_reject_unbounded_payloads(api):
+    sid,wid,fid,nodes,_=setup_session(api)
+    observation=event(sid,wid,fid);observation['eventType']='DEBUG_BREAKPOINT_CHANGED'
+    observation['payload']={'debugId':None,'operation':'added','lines':[2,7]}
+    response=send(api,batch(sid,[observation]));assert response.status_code==200,response.text
+    second=deepcopy(observation);second.update(eventId=str(uuid4()),sequence=2)
+    second['payload']={'debugId':str(uuid4()),'operation':'removed','lines':[]}
+    assert send(api,batch(sid,[second])).status_code==200
+    invalid=[{'debugId':None,'operation':'execute','lines':[1]},
+             {'debugId':None,'operation':'added','lines':[True]},
+             {'debugId':None,'operation':'added','lines':[0]},
+             {'debugId':None,'operation':'added','lines':[1_000_001]},
+             {'debugId':None,'operation':'relocated','lines':list(range(1,102))},
+             {'debugId':None,'operation':'added','lines':[1],'command':'/bin/sh'}]
+    for payload in invalid:
+        rejected=deepcopy(observation);rejected.update(eventId=str(uuid4()),sequence=3,payload=payload)
+        assert send(api,batch(sid,[rejected])).status_code==422
+    with api.app.state.session_factory() as db:
+        assert replay_at(db,db.get(TelemetrySession,sid),2)==nodes

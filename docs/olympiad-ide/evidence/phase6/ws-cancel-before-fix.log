@@ -1,0 +1,44 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.6, pytest-9.1.1, pluggy-1.7.0 -- /private/tmp/olympiad-runtime-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/isaevarman/Developer/cms/olympiad_ide/backend
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 1 item
+
+tests/test_debug.py::test_authenticated_handler_cancellation_waits_for_durable_cleanup FAILED [100%]
+
+=================================== FAILURES ===================================
+______ test_authenticated_handler_cancellation_waits_for_durable_cleanup _______
+tests/test_debug.py:176: in test_authenticated_handler_cancellation_waits_for_durable_cleanup
+    anyio.run(cancelled_handler)
+/private/tmp/olympiad-runtime-venv/lib/python3.12/site-packages/anyio/_core/_eventloop.py:83: in run
+    return async_backend.run(func, args, {}, backend_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/private/tmp/olympiad-runtime-venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py:2548: in run
+    return runner.run(wrapper())
+           ^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.6/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.6/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/base_events.py:687: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+/private/tmp/olympiad-runtime-venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py:2531: in wrapper
+    return await func(*args)
+           ^^^^^^^^^^^^^^^^^
+tests/test_debug.py:174: in cancelled_handler
+    assert committed.is_set(),'ASGI cancellation abandoned authenticated session cleanup'
+E   AssertionError: ASGI cancellation abandoned authenticated session cleanup
+E   assert False
+E    +  where False = is_set()
+E    +    where is_set = <threading.Event at 0x10ea259a0: unset>.is_set
+=============================== warnings summary ===============================
+../../../../../../private/tmp/olympiad-runtime-venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /private/tmp/olympiad-runtime-venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_debug.py::test_authenticated_handler_cancellation_waits_for_durable_cleanup
+========================= 1 failed, 1 warning in 0.97s =========================

@@ -2,6 +2,8 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { WorkspaceDatabase } from '../persistence/database'
 import { WorkspaceAPI } from '../persistence/api'
 import { initialData, seedFileIds, useWorkspaceStore } from '../store/workspaceStore'
+import { telemetry } from '../telemetry/collector'
+import type { TelemetrySession } from '../telemetry/types'
 import { DebugController, useDebugStore } from './controller'
 
 vi.mock('../persistence/controller', () => ({ persistence: { checkpoint: vi.fn(async () => undefined), flush: vi.fn(async () => undefined) } }))
@@ -187,4 +189,60 @@ it('collects actual Arguments and Locals scopes without querying register banks'
   expect(useDebugStore.getState().variables.find(variable => variable.name === 'result')?.scope).toBe('Locals')
   expect(socket.messages.some(message => message.command === 'variables' && message.arguments?.variablesReference === 103)).toBe(false)
   expect(useDebugStore.getState().inspectionBusy).toBe(false)
+})
+
+it('records breakpoint changes before admission without inventing a debug session ID', async () => {
+  const previous = telemetry.session, record = vi.spyOn(telemetry, 'record').mockReturnValue(null)
+  telemetry.session = { id: crypto.randomUUID() } as TelemetrySession
+  try {
+    controller.toggleBreakpoint(seedFileIds.main, 7)
+    controller.toggleBreakpoint(seedFileIds.main, 7)
+    const actions = record.mock.calls.filter(call => call[0] === 'DEBUG_BREAKPOINT_CHANGED')
+    expect(actions).toEqual([
+      ['DEBUG_BREAKPOINT_CHANGED', seedFileIds.main, { debugId: null, operation: 'added', lines: [7] }],
+      ['DEBUG_BREAKPOINT_CHANGED', seedFileIds.main, { debugId: null, operation: 'removed', lines: [] }],
+    ])
+  } finally { telemetry.session = previous; record.mockRestore() }
+})
+it('records natural debugger completion exactly once across exited, terminated and owned terminal responses', async () => {
+  const previous = telemetry.session, record = vi.spyOn(telemetry, 'record').mockReturnValue(null)
+  telemetry.session = { id: crypto.randomUUID() } as TelemetrySession
+  try {
+    await controller.start()
+    const session = useDebugStore.getState().session!
+    socket.emit({ type: 'event', event: 'exited', body: { exitCode: 0 } })
+    socket.emit({ type: 'event', event: 'terminated' })
+    socket.emit({ type: 'transport', session: { ...session, status: 'FINISHED' } })
+    await controller.stop()
+    expect(record.mock.calls.filter(call => call[0] === 'DEBUG_STARTED')).toHaveLength(1)
+    const finished = record.mock.calls.filter(call => call[0] === 'DEBUG_FINISHED')
+    expect(finished).toHaveLength(1)
+    expect(finished[0]?.[2]).toMatchObject({ debugId: session.id, reason: 'exited' })
+  } finally { telemetry.session = previous; record.mockRestore() }
+})
+it('ignores inspection actions attempted while a paused read is busy without invalidating its result', async () => {
+  await controller.start(); socket.holdVariables = true
+  socket.emit({ type: 'event', event: 'stopped', body: { threadId: 1, reason: 'breakpoint' } })
+  await vi.waitFor(() => expect(socket.heldVariables).toBeTruthy())
+  await controller.selectFrame(42); await controller.expandVariable(999)
+  socket.holdVariables = false; socket.respond(socket.heldVariables!, { variables: [{ name: 'result', value: '5', type: 'int', variablesReference: 0 }] })
+  await vi.waitFor(() => expect(useDebugStore.getState().variables[0]?.value).toBe('5'))
+  expect(useDebugStore.getState().inspectionBusy).toBe(false)
+})
+it('navigates a breakpoint to its real live file and clamps stale lines without changing execution location', () => {
+  controller.goToBreakpoint(seedFileIds.solution, 1000000)
+  const workspace = useWorkspaceStore.getState(), file = workspace.nodes[seedFileIds.solution]!
+  expect(workspace.groups[workspace.activeGroupId].activeFileId).toBe(seedFileIds.solution)
+  const lines = file.type === 'file' ? file.content.split(/\r\n|\r|\n/).length : 0
+  expect(useDebugStore.getState().navigation).toMatchObject({ fileId: seedFileIds.solution, line: lines })
+  expect(useDebugStore.getState().location).toBeNull()
+  expect(useDebugStore.getState().navigation?.groupId).toBe(workspace.activeGroupId)
+  const nonce = useDebugStore.getState().navigation!.nonce
+  controller.goToBreakpoint(seedFileIds.solution, 2)
+  expect(useDebugStore.getState().navigation?.nonce).toBeGreaterThan(nonce)
+  const latest = useDebugStore.getState().navigation!.nonce
+  controller.acknowledgeNavigation(nonce); expect(useDebugStore.getState().navigation?.nonce).toBe(latest)
+  controller.acknowledgeNavigation(latest); expect(useDebugStore.getState().navigation).toBeNull()
+  controller.goToBreakpoint('missing-file', 3)
+  expect(useDebugStore.getState().error).toContain('no longer available')
 })

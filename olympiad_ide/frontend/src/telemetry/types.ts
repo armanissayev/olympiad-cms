@@ -36,6 +36,7 @@ export interface EventPayloads {
   SESSION_ENDED: { reason: string; interrupted: boolean }
   RUN_STARTED: { runId: string; language: string; execution?: ExecutionCorrelation }
   RUN_FINISHED: { runId: string; exitCode: number | null; durationMs: number; execution?: ExecutionCorrelation }
+  DEBUG_BREAKPOINT_CHANGED: { debugId: string | null; operation: 'added' | 'removed' | 'relocated'; lines: number[] }
   DEBUG_STARTED: { debugId: string }; DEBUG_ACTION: { debugId: string; action: 'step' | 'continue' | 'pause' | 'breakpoint' }
   DEBUG_FINISHED: { debugId: string; reason: string }
 }

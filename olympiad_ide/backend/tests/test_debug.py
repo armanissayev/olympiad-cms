@@ -133,3 +133,49 @@ def test_worker_final_state_survives_authoritative_expiry_and_output_failure(api
         row=db.get(DebugSession,sid)
         assert row.status==('EXPIRED' if fault=='api-expiry' else 'FAILED')
         assert row.error==('Authoritative timeout' if fault=='api-expiry' else 'output budget exhausted')
+
+
+def test_authenticated_handler_cancellation_waits_for_durable_cleanup(api,monkeypatch):
+    # Block real DB cleanup long enough to cancel its awaiting ASGI handler.
+    # The handler must finish that commit before its cancellation scope exits.
+    import anyio,asyncio,threading
+    from contextlib import contextmanager
+    from fastapi import WebSocketDisconnect
+    from types import SimpleNamespace
+    from uuid import UUID
+    monkeypatch.setenv('ALLOWED_ORIGINS','https://allowed.test');worker(api)
+    sid=api.post('/api/v1/debug/sessions',json=fixture(api)).json()['id'];path='/api/v1/debug/sessions/'+sid
+    token=api.post(path+'/attach').json()['token']
+    endpoint=next(route.endpoint for route in api.app.routes if getattr(route,'path',None)=='/api/v1/debug/sessions/{sid}/dap')
+    factory=api.app.state.session_factory;entered=threading.Event();release=threading.Event();committed=threading.Event();calls=0
+    @contextmanager
+    def delayed_factory():
+        nonlocal calls
+        calls+=1;cleanup=calls==2
+        if cleanup:entered.set();assert release.wait(2)
+        with factory() as db:yield db
+        if cleanup:committed.set()
+    monkeypatch.setattr(api.app.state,'session_factory',delayed_factory)
+    async def cancelled_handler():
+        class Socket:
+            headers={'origin':'https://allowed.test'};url=SimpleNamespace(query='')
+            initial=True
+            async def accept(self):pass
+            async def close(self,**kwargs):pass
+            async def send_json(self,payload):pass
+            async def receive_text(self):
+                if self.initial:self.initial=False;return json.dumps({'attachToken':token})
+                raise WebSocketDisconnect()
+        task=asyncio.create_task(endpoint(Socket(),UUID(sid)))
+        assert await anyio.to_thread.run_sync(entered.wait,1)
+        threading.Timer(.2,release.set).start();task.cancel()
+        try:await task
+        except asyncio.CancelledError:pass
+        assert committed.is_set(),'ASGI cancellation abandoned authenticated session cleanup'
+    try:
+        anyio.run(cancelled_handler)
+    finally:
+        release.set();committed.wait(2)
+    with factory() as db:
+        row=db.get(DebugSession,sid)
+        assert row.status=='STOPPED' and row.cancelled is True

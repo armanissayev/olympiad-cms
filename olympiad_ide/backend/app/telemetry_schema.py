@@ -166,6 +166,12 @@ class DebugFinish(DebugStart):
     reason: str = Field(max_length=200)
 
 
+class DebugBreakpointChanged(Strict):
+    debugId: UUID | None
+    operation: Literal['added', 'removed', 'relocated']
+    lines: list[Annotated[int, Field(ge=1, le=1_000_000, strict=True)]] = Field(max_length=100)
+
+
 class Envelope(Strict):
     schemaVersion: Literal[1]
     eventId: UUID
@@ -189,6 +195,7 @@ payloads.update({
     'WORKSPACE_RECONCILED': Reconcile, 'SESSION_ENDED': End,
     'CMS_SUBMISSION_INTENT': CMSSubmissionObservation, 'CMS_SUBMISSION_ADMITTED': CMSSubmissionObservation, 'CMS_SUBMISSION_REJECTED': CMSSubmissionObservation,
     'RUN_STARTED': RunStart, 'RUN_FINISHED': RunFinish, 'DEBUG_STARTED': DebugStart, 'DEBUG_ACTION': DebugAction, 'DEBUG_FINISHED': DebugFinish,
+    'DEBUG_BREAKPOINT_CHANGED': DebugBreakpointChanged,
 })
 Event = Annotated[Union[tuple(create_model(name + 'Event', __base__=Envelope, eventType=(Literal[name], ...), payload=(payload, ...)) for name, payload in payloads.items())], Field(discriminator='eventType')]
 

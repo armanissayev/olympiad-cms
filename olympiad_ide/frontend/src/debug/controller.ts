@@ -3,18 +3,20 @@ import { WorkspaceAPI } from '../persistence/api'
 import { database, type WorkspaceDatabase } from '../persistence/database'
 import { persistence } from '../persistence/controller'
 import { cmsEnabled, appBase } from '../cms/session'
+import { modelRegistry } from '../editor/modelRegistry'
 import { useWorkspaceStore } from '../store/workspaceStore'
 import { defaultConfiguration, captureSubmission } from '../execution/snapshot'
 import { useExecutionResources } from '../execution/resources'
 import { telemetry } from '../telemetry/collector'
+import type { EditorGroupId } from '../types/workspace'
 
 export interface DebugSession { id: string; status: string; files: { id: string; path: string }[]; sourceHash: string; error?: string | null }
 export interface Frame { id: number; name: string; line: number; fileId?: string; path?: string }
 export interface Variable { name: string; value: string; type?: string; variablesReference: number; scope?: string }
 type Status = 'idle' | 'starting' | 'running' | 'stopped' | 'stopping' | 'finished' | 'failed'
 interface BreakpointVerification { adapterId?: number; fileId: string; requestedLine: number; line: number; verified: boolean; message: string }
-interface State { verifiedBreakpoints: BreakpointVerification[]; session: DebugSession | null; status: Status; location: { fileId: string; line: number } | null; breakpoints: Record<string, number[]>; frames: Frame[]; variables: Variable[]; error: string | null; output: string; commandBusy: boolean; inspectionBusy: boolean }
-const empty = (): State => ({ verifiedBreakpoints: [], session: null, status: 'idle', location: null, breakpoints: {}, frames: [], variables: [], error: null, output: '', commandBusy: false, inspectionBusy: false })
+interface State { navigation: { fileId: string; line: number; nonce: number; groupId: EditorGroupId } | null; verifiedBreakpoints: BreakpointVerification[]; session: DebugSession | null; status: Status; location: { fileId: string; line: number } | null; breakpoints: Record<string, number[]>; frames: Frame[]; variables: Variable[]; error: string | null; output: string; commandBusy: boolean; inspectionBusy: boolean }
+const empty = (): State => ({ navigation: null, verifiedBreakpoints: [], session: null, status: 'idle', location: null, breakpoints: {}, frames: [], variables: [], error: null, output: '', commandBusy: false, inspectionBusy: false })
 export const useDebugStore = create<State>(() => empty())
 const active = (status: string) => ['starting', 'running', 'stopped', 'stopping'].includes(status)
 const cleanLines = (lines: number[]) => [...new Set(lines.filter(line => Number.isSafeInteger(line) && line > 0 && line <= 1000000))].sort((a, b) => a - b).slice(0, 100)
@@ -31,6 +33,8 @@ export class DebugController {
   private generation = 0
   private stoppedGeneration = 0
   private inspection = 0
+  private navigation = 0
+  private finishedTelemetry = new Set<string>()
   private inspections = new Map<string, number>()
   private initialized = false
   private initializedWaiter?: { resolve: () => void; reject: (error: Error) => void; timer: ReturnType<typeof setTimeout> }
@@ -80,11 +84,30 @@ export class DebugController {
   toggleBreakpoint(fileId: string, line: number) {
     if (useWorkspaceStore.getState().nodes[fileId]?.type !== 'file') return
     const points = useDebugStore.getState().breakpoints[fileId] ?? []
-    this.relocateBreakpoints(fileId, points.includes(line) ? points.filter(value => value !== line) : [...points, line])
+    this.relocateBreakpoints(fileId, points.includes(line) ? points.filter(value => value !== line) : [...points, line], points.includes(line) ? 'removed' : 'added')
   }
-  relocateBreakpoints(fileId: string, lines: number[]) {
+  relocateBreakpoints(fileId: string, lines: number[], operation: 'added' | 'removed' | 'relocated' = 'relocated') {
     if (useWorkspaceStore.getState().nodes[fileId]?.type !== 'file') return
-    useDebugStore.setState(state => ({ breakpoints: { ...state.breakpoints, [fileId]: cleanLines(lines) } })); this.saveBreakpoints()
+    const clean = cleanLines(lines), state = useDebugStore.getState()
+    if (JSON.stringify(clean) === JSON.stringify(state.breakpoints[fileId] ?? [])) return
+    useDebugStore.setState({ breakpoints: { ...state.breakpoints, [fileId]: clean } }); this.saveBreakpoints()
+    if (telemetry.session) telemetry.record('DEBUG_BREAKPOINT_CHANGED', fileId, { debugId: active(state.status) ? state.session?.id ?? null : null, operation, lines: clean })
+  }
+  goToBreakpoint(fileId: string, line: number) {
+    const state = useWorkspaceStore.getState(), file = state.nodes[fileId]
+    if (file?.type !== 'file' || !Number.isSafeInteger(line) || line < 1) { this.error(new Error('Breakpoint source is no longer available')); return }
+    const count = (modelRegistry.get(fileId)?.getValue() ?? file.content).split(/\r\n|\r|\n/).length
+    const target = Math.min(line, count)
+    state.openFile(fileId)
+    useDebugStore.setState({ navigation: { fileId, line: target, nonce: ++this.navigation, groupId: state.activeGroupId } })
+  }
+  acknowledgeNavigation(nonce: number) {
+    if (useDebugStore.getState().navigation?.nonce === nonce) useDebugStore.setState({ navigation: null })
+  }
+  private finished(sessionId: string, reason: string) {
+    if (this.finishedTelemetry.has(sessionId)) return
+    this.finishedTelemetry.add(sessionId)
+    if (telemetry.session) telemetry.record('DEBUG_FINISHED', null, { debugId: sessionId, reason: reason.slice(0, 200) })
   }
   private waitInitialized(): Promise<void> {
     if (this.initialized) return Promise.resolve()
@@ -101,7 +124,7 @@ export class DebugController {
     if (useDebugStore.getState().status === 'failed' && useDebugStore.getState().session) await this.stop()
     const generation = ++this.generation, workspace = useWorkspaceStore.getState().workspace.id
     this.closeTransport(); this.seq = 0; this.threadId = 0; this.initialized = false
-    useDebugStore.setState({ verifiedBreakpoints: [], session: null, status: 'starting', error: null, location: null, frames: [], variables: [], output: '', commandBusy: false, inspectionBusy: false })
+    useDebugStore.setState({ navigation: null, verifiedBreakpoints: [], session: null, status: 'starting', error: null, location: null, frames: [], variables: [], output: '', commandBusy: false, inspectionBusy: false })
     let created: DebugSession | null = null
     try {
       const configuration = defaultConfiguration(), capturedBreakpoints = structuredClone(useDebugStore.getState().breakpoints)
@@ -151,9 +174,9 @@ export class DebugController {
         const confirmations = (response.breakpoints ?? []) as { id?: number; line?: number; verified?: boolean; message?: string }[]
         useDebugStore.setState(state => ({ verifiedBreakpoints: [...state.verifiedBreakpoints, ...points.map((line, index) => ({ adapterId: confirmations[index]?.id, fileId: file.id, requestedLine: line, line: confirmations[index]?.line ?? line, verified: confirmations[index]?.verified === true, message: confirmations[index]?.message ?? (confirmations[index]?.verified ? '' : 'Adapter has not verified this breakpoint') }))] }))
       }
+      if (this.current(generation) && telemetry.session) telemetry.record('DEBUG_STARTED', null, { debugId: session.id })
       await this.send('configurationDone'); await launched
       if (this.current(generation) && useDebugStore.getState().status === 'starting') useDebugStore.setState({ status: 'running' })
-      if (this.current(generation) && telemetry.session) telemetry.record('DEBUG_STARTED', null, { debugId: session.id })
     } catch (error) {
       if (!this.current(generation)) return
       this.error(error); this.closeTransport(); useDebugStore.setState({ status: 'failed', commandBusy: false, inspectionBusy: false, location: null })
@@ -185,7 +208,8 @@ export class DebugController {
       if (session && session.id === useDebugStore.getState().session?.id) {
         useDebugStore.setState({ session })
         if (['FAILED', 'EXPIRED', 'STOPPED', 'FINISHED'].includes(session.status)) {
-          useDebugStore.setState({ status: ['FAILED', 'EXPIRED'].includes(session.status) ? 'failed' : 'finished', commandBusy: false, inspectionBusy: false, location: null, ...(session.error ? { error: session.error } : {}) }); this.closeTransport()
+          this.finished(session.id, session.status.toLowerCase())
+          useDebugStore.setState({ status: ['FAILED', 'EXPIRED'].includes(session.status) ? 'failed' : 'finished', commandBusy: false, inspectionBusy: false, location: null, frames: [], variables: [], ...(session.error ? { error: session.error } : {}) }); this.closeTransport()
         }
       }
       return
@@ -206,7 +230,7 @@ export class DebugController {
     }
     if (message.event === 'output') useDebugStore.setState(state => ({ output: (state.output + String(body.output ?? '')).slice(-262144) }))
     if (message.event === 'continued') useDebugStore.setState({ status: 'running', inspectionBusy: false, location: null, frames: [], variables: [] })
-    if (message.event === 'terminated' || message.event === 'exited') { useDebugStore.setState({ status: 'finished', commandBusy: false, inspectionBusy: false, location: null, frames: [], variables: [] }); return }
+    if (message.event === 'terminated' || message.event === 'exited') { const id = useDebugStore.getState().session?.id; if (id) this.finished(id, String(message.event)); useDebugStore.setState({ status: 'finished', commandBusy: false, inspectionBusy: false, location: null, frames: [], variables: [] }); return }
     if (message.event === 'stopped') {
       const stop = ++this.stoppedGeneration; this.threadId = Number(body.threadId)
       useDebugStore.setState({ status: 'stopped', commandBusy: false, inspectionBusy: true, error: null, location: null, frames: [], variables: [] })
@@ -248,8 +272,9 @@ export class DebugController {
     finally { if (this.current(generation)) useDebugStore.setState({ commandBusy: false }) }
   }
   async selectFrame(id: number, automatic = false) {
-    const inspection = ++this.inspection, generation = this.generation, stop = this.stoppedGeneration
+    const generation = this.generation, stop = this.stoppedGeneration
     if (useDebugStore.getState().status !== 'stopped' || (!automatic && (useDebugStore.getState().inspectionBusy || useDebugStore.getState().commandBusy))) return
+    const inspection = ++this.inspection
     const release = this.inspecting(generation, stop)
     useDebugStore.setState({ variables: [] })
     try {
@@ -272,8 +297,9 @@ export class DebugController {
     finally { release() }
   }
   async expandVariable(reference: number, automatic = false) {
-    const inspection = ++this.inspection, generation = this.generation, stop = this.stoppedGeneration
+    const generation = this.generation, stop = this.stoppedGeneration
     if (useDebugStore.getState().status !== 'stopped' || (!automatic && (useDebugStore.getState().inspectionBusy || useDebugStore.getState().commandBusy))) return
+    const inspection = ++this.inspection
     const release = this.inspecting(generation, stop)
     useDebugStore.setState({ variables: [] })
     try {
@@ -300,7 +326,7 @@ export class DebugController {
       }
       if (!this.current(generation)) return
       useDebugStore.setState({ session: result, status: ['FAILED', 'EXPIRED'].includes(result.status) ? 'failed' : 'finished', error: result.error ?? null })
-      if (telemetry.session) telemetry.record('DEBUG_FINISHED', null, { debugId: session.id, reason: result.status.toLowerCase() })
+      this.finished(session.id, result.status.toLowerCase())
     } catch (error) {
       if (this.current(generation)) useDebugStore.setState({ status: 'failed', error: `Stop is unconfirmed: ${error instanceof Error ? error.message : String(error)}. Check CMS authentication and retry Stop; no worker termination is assumed.` })
     }
