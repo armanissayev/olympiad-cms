@@ -31,3 +31,7 @@ include olympiad_ide/frontend/.nvmrc
 include olympiad_ide/backend/Dockerfile
 include olympiad_ide/deployment/standalone-source/Dockerfile olympiad_ide/deployment/standalone-source/compose.yaml olympiad_ide/deployment/standalone-source/.dockerignore
 include olympiad_ide/.gitignore
+
+# CMS test directories are not all Python packages; include regression sources explicitly.
+recursive-include cmstestsuite *.py
+include config/cms.conf.sample .gitignore
