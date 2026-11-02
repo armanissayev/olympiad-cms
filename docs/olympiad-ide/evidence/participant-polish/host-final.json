@@ -1,0 +1,31 @@
+{
+  "deployedApplicationCommit": "5106855e3c0cb003bd1558d163f7bcda46d35018",
+  "activeUnits": {
+    "cms-ide-stage-postgres": "active",
+    "cms-ide-stage-log": "active",
+    "cms-ide-stage-resource": "active",
+    "cms-ide-stage-judge": "active",
+    "cms-ide-stage-runtime": "active",
+    "cms-ide-stage-worker": "active",
+    "cms-ide-stage-debug": "active",
+    "cms-ide-stage-ranking": "active",
+    "cms-ide-stage-ingress": "active"
+  },
+  "bootEnabledUnits": {
+    "cms-ide-stage-postgres": "enabled",
+    "cms-ide-stage-log": "enabled",
+    "cms-ide-stage-resource": "enabled",
+    "cms-ide-stage-judge": "enabled",
+    "cms-ide-stage-runtime": "enabled",
+    "cms-ide-stage-worker": "enabled",
+    "cms-ide-stage-debug": "enabled",
+    "cms-ide-stage-ranking": "enabled",
+    "cms-ide-stage-ingress": "enabled"
+  },
+  "failedUnits": [],
+  "debugBoxClean": true,
+  "debugPrivateNetwork": "yes",
+  "nativeKeyMode": "0o600",
+  "debugEnvironmentMode": "0o600",
+  "tmux": "cms-staging-ops: 3 windows (created Mon Nov  2 20:48:05 2026)"
+}

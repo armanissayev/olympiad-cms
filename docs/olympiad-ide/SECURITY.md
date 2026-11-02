@@ -54,3 +54,7 @@ Unit tests with fixture scores do not certify hidden-data isolation in every thi
 ## Authorized public staging follow-up
 
 On3November2026 the user explicitly requested public CWS/IDE access and saved AWS ingress rules for80/443. Only nginx binds those additional public ports; underlying CWS/native/Admin/ranking/RPC/DB remain private. The nginx account retains NoNewPrivileges and only CAP_NET_BIND_SERVICE. Trusted public-IP TLS and automatic renewal were verified without bypassing certificate validation. See [PUBLIC_HTTPS](PUBLIC_HTTPS.md) for tests and the corrected asset-buffer ownership failure. Earlier statements about no public ingress apply to the initial 2November rehearsal.
+
+## Participant/Admin history follow-up
+
+CMS participant history GETs are denied while uploads/acknowledgements remain enabled. Only full CMS Admin auth can sign the separate admin-history audience/scope, target and request hashes with a one-use nonce. No browser role claim grants authority. Admin read-only server reconstruction is bounded, filters expired records and discloses gaps. Private Admin is not exposed publicly. See [ADMIN_HISTORY](ADMIN_HISTORY.md) and [actual acceptance](PARTICIPANT_ACCEPTANCE.md). Quiet participant recording disclosure remains; the pictured diagnostic modal/raw errors are removed.

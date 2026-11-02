@@ -1,0 +1,51 @@
+{
+  "cwsSubmissions": {
+    "route": "/tasks/cppsum/submissions",
+    "observedAuthorizedHost": "54.206.171.67",
+    "actualServerError": "jinja2.exceptions.UndefinedError: tokens_info is undefined",
+    "actualServerLogUtc": "2026-11-02 22:37:51",
+    "affectedBranch": "Unplayed submission when no token is currently usable; row macro did not receive tokens_info",
+    "fix": "Pass tokens_info explicitly through template and both row macro layers",
+    "regressionBefore": {
+      "passed": 1,
+      "failed": 2,
+      "reason": "HTTP500 for exhausted and future-token generation rows"
+    },
+    "regressionAfter": {
+      "passed": 3,
+      "failed": 0,
+      "seconds": 65.22,
+      "branches": [
+        "exhausted finite tokens",
+        "future token generation",
+        "available tokens"
+      ],
+      "submissionKinds": [
+        "official",
+        "unofficial"
+      ]
+    },
+    "redLog": "/private/tmp/cms-submissions-render-red.log",
+    "greenLog": "/private/tmp/cms-submissions-render-green.log",
+    "publicAuthenticatedRetest": "pending owner deployment; stale protected load-account password was not changed"
+  },
+  "telemetry": {
+    "actualScreenshotFailure": "CMS_SUBMISSION_INTENT/ADMITTED taskId numeric1 rejected as string_type",
+    "rootCause": "Native frontend emits numeric CMS IDs; backend accepted only string",
+    "fix": "Strict bounded positive safe integer or existing bounded string; preserve original envelope and digest",
+    "telemetryTestsPassed": 17,
+    "beforeFailed": 1,
+    "afterFailed": 0,
+    "coverage": [
+      "unchanged queued numeric INTENT/ADMITTED batch",
+      "same-batch idempotent retry",
+      "subsequent source edit and exact replay",
+      "legacy string observation",
+      "reject booleans, zero, negative, floating, oversize and malformed IDs"
+    ],
+    "redLog": "/private/tmp/cms-telemetry-taskid-red.log",
+    "greenLog": "/private/tmp/cms-telemetry-taskid-green.log"
+  },
+  "serverChanged": false,
+  "committed": false
+}

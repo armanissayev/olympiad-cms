@@ -81,3 +81,7 @@ This is an executed same-cluster logical PostgreSQL dump/restore. A physical bas
 ## Rollback
 
 Disable olympiad_ide_enabled, intentionally stop native service using ResourceService, remove its ingress route, and stop the independent runtime/custom/debug worker units when no longer needed; remove the exact DAP WebSocket route along with other IDE routing. CWS remains the fallback. Retain new tables, backups, installation UUID, user code, local storage and private key backups. Re-enabling restores the same scopes. Do not downgrade CMS dump-model readers over newly written version45 exports without an explicit conversion.
+
+## Participant/Admin workflow follow-up
+
+This update keeps f6a001 unchanged and needs no schema migration or new grants. Numeric CMS observation task IDs and legacy strings are accepted without rewriting envelopes or digests, allowing retained queued batches to retry. Per-problem browser database names/workspace IDs and existing records remain retained during in-place switching. Server Admin review checks existing identity bindings; it never adopts records by username. No participant files, old local recordings or existing passwords were deleted/reset. [Actual acceptance](PARTICIPANT_ACCEPTANCE.md).

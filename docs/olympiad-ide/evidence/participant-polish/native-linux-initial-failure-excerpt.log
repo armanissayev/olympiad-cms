@@ -1,0 +1,11 @@
+Initial isolated-regression invocation used missing /etc/cms-ide-stage/unit.conf.
+CMS fell back to defaults; the database-name safety guard blocked fixture initialization.
+Correct retained configuration: /etc/cms-ide-stage/cms-unit.conf.
+Raw failure log retained privately; this excerpt contains only the first guard trace and summary.
+
+______________ ERROR at setup of TestAddAdmin.test_dont_overwrite ______________
+/opt/cms-ide-stage/source/cmstestsuite/unit_tests/databasemixin.py:258: in setUpClass
+    assert engine.url.database.endswith("fortesting"), (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: The database name is not in the form '<name>fortesting' and  this could mean that you're running tests on the wrong database. Aborting
+21 failed, 445 passed, 9 skipped, 37 warnings, 293 errors, 28 subtests passed in 10.05s

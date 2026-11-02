@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "privateAdmin": "https://localhost:28444",
+  "certificatePublicKeySha256": "x26x/uZo6586nguMoNVoRtzYGQnqaotaPLTWFmaxsjw=",
+  "participantUserId": "352",
+  "taskId": "1",
+  "checks": [
+    "Unauthenticated private Admin history redirects to CMS Admin login",
+    "Actual participant cookie does not authorize private Admin history",
+    "Authenticated full CMS Admin selects actual participant/problem and reads uploaded source from a separate browser",
+    "Server checkpoint timeline, Previous/Next and actual Play/Pause/speed work; source is read-only",
+    "Changing reviewed participant immediately clears prior source and metadata"
+  ],
+  "actualParticipantContextVerified": true,
+  "recording": {
+    "id": "44bc7cdb-d7ce-4324-a599-8cabc2188ea8",
+    "lastSequence": 4,
+    "sourceFile": "participant1793660997973.cpp",
+    "sourceSha256": "704fa61aae911881a42e2ffb330f44a6e388efb52ed2ba42c07df1f538c8faf5",
+    "checkpointSequence": 0,
+    "integrity": "Complete"
+  },
+  "expectedParticipantSourceMatched": true,
+  "historyMutationRequests": 0,
+  "pageErrors": []
+}

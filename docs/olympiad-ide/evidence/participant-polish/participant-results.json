@@ -1,0 +1,300 @@
+{
+  "status": "passed",
+  "baseUrl": "https://54.206.171.67",
+  "checks": [
+    "Task changes retain the same document/tab and restore separate source files and STDIN",
+    "F9, explicit line and visible line-number breakpoints update a real paused isolate session",
+    "Simple top-right green Submit chooses problem/file and receives real C++ and Python CMS scores",
+    "Numeric submission observations upload successfully; participant recording replay APIs are forbidden",
+    "Authenticated native CWS submission list stays HTTP200 with an unplayed row and exhausted contest tokens"
+  ],
+  "taskChanges": [
+    {
+      "from": 1,
+      "to": 2,
+      "documentPreserved": true,
+      "newWindows": 0
+    },
+    {
+      "from": 2,
+      "to": 1,
+      "documentPreserved": true,
+      "newWindows": 0
+    },
+    {
+      "from": 1,
+      "to": 2,
+      "documentPreserved": true,
+      "newWindows": 0
+    },
+    {
+      "from": 2,
+      "to": 1,
+      "documentPreserved": true,
+      "newWindows": 0
+    },
+    {
+      "from": 1,
+      "to": 2,
+      "documentPreserved": true,
+      "newWindows": 0
+    },
+    {
+      "from": 2,
+      "to": 1,
+      "documentPreserved": true,
+      "newWindows": 0
+    }
+  ],
+  "submissions": [
+    {
+      "task": "cppsum",
+      "taskId": 1,
+      "sourceFilename": "participant1793660997973.cpp",
+      "sourceTextSha256": "704fa61aae911881a42e2ffb330f44a6e388efb52ed2ba42c07df1f538c8faf5",
+      "intentId": "8a01ef46-831a-471d-9adc-612d873ba5fe",
+      "submissionId": "ckQAL74f9V8DQ9m9Pt3Uh2odKrfuUkZPoH4eTsDQrc4.",
+      "admitted": true,
+      "realJudging": true,
+      "status": 5,
+      "publicScore": 25,
+      "fullScoreRestricted": true
+    },
+    {
+      "task": "pysum",
+      "taskId": 2,
+      "sourceFilename": "participant1793660997973.py",
+      "sourceTextSha256": "6cf3335b38ec7a9d9ff039e2c83f36eb1789a4b8f57caaf1e9c0770802717e38",
+      "intentId": "e619e1eb-6470-46ec-a414-c9a302ed77a8",
+      "submissionId": "NuNyDbdnR95BoFK8VoE1ni0Q9M1qbH3fgGAfnjcfjH8.",
+      "admitted": true,
+      "realJudging": true,
+      "status": 5,
+      "publicScore": 25,
+      "fullScoreRestricted": true
+    },
+    {
+      "task": "cppsum",
+      "taskId": 1,
+      "sourceFilename": "participant1793660997973.cpp",
+      "sourceTextSha256": "704fa61aae911881a42e2ffb330f44a6e388efb52ed2ba42c07df1f538c8faf5",
+      "intentId": "55fb6b44-cf93-40e2-8c05-202bb1e0f15f",
+      "submissionId": "UJgHlQveXtGZlEq6pynckpi1J7IaV7Tgp81jIMRwnNY.",
+      "admitted": true,
+      "realJudging": true,
+      "status": 5,
+      "publicScore": 25,
+      "fullScoreRestricted": true
+    }
+  ],
+  "debug": {
+    "id": "0bb42d72-ecc4-481c-9636-04810a018a32",
+    "sourceHash": "bf37f6ad566bbc8db0d00a4a14bc3f5311a8d713c60f548c937819b0a7c4820d",
+    "sourceTextSha256": "4c6a471ba89e1cb8ec7ccc1ed375a87b8fb445ec71436ac216d4189b6c0d4d05",
+    "f9": true,
+    "explicitLine": true,
+    "lineNumberClick": true,
+    "liveAddRemove": true,
+    "actualStopLines": [
+      5,
+      6,
+      5
+    ],
+    "terminal": "STOPPED",
+    "actualPausedCounter": "418560501",
+    "immutableSourceHashPreserved": true,
+    "wire": [
+      {
+        "direction": "framesent",
+        "kind": "setBreakpoints",
+        "lines": []
+      },
+      {
+        "direction": "framereceived",
+        "kind": "stopped",
+        "reason": "pause",
+        "threadId": 1
+      },
+      {
+        "direction": "framesent",
+        "kind": "setBreakpoints",
+        "lines": [
+          5
+        ]
+      },
+      {
+        "direction": "framereceived",
+        "kind": "stopped",
+        "reason": "breakpoint",
+        "threadId": 1,
+        "hitBreakpointIds": [
+          1
+        ]
+      },
+      {
+        "direction": "framesent",
+        "kind": "setBreakpoints",
+        "lines": []
+      },
+      {
+        "direction": "framesent",
+        "kind": "setBreakpoints",
+        "lines": [
+          6
+        ]
+      },
+      {
+        "direction": "framereceived",
+        "kind": "stopped",
+        "reason": "breakpoint",
+        "threadId": 1,
+        "hitBreakpointIds": [
+          2
+        ]
+      },
+      {
+        "direction": "framesent",
+        "kind": "setBreakpoints",
+        "lines": []
+      },
+      {
+        "direction": "framesent",
+        "kind": "setBreakpoints",
+        "lines": [
+          5
+        ]
+      },
+      {
+        "direction": "framereceived",
+        "kind": "stopped",
+        "reason": "breakpoint",
+        "threadId": 1,
+        "hitBreakpointIds": [
+          3
+        ]
+      },
+      {
+        "direction": "framesent",
+        "kind": "setBreakpoints",
+        "lines": []
+      }
+    ]
+  },
+  "telemetry": [
+    {
+      "status": 200,
+      "sessionId": "0d6a4245-2dbc-4f71-bc74-8791cdddf43e",
+      "observations": [
+        {
+          "type": "CMS_SUBMISSION_INTENT",
+          "taskId": 1
+        }
+      ]
+    },
+    {
+      "status": 200,
+      "sessionId": "0d6a4245-2dbc-4f71-bc74-8791cdddf43e",
+      "observations": [
+        {
+          "type": "CMS_SUBMISSION_ADMITTED",
+          "taskId": 1
+        }
+      ]
+    },
+    {
+      "status": 200,
+      "sessionId": "2e6011b4-11e7-4065-b01e-3e8bf670f24b",
+      "observations": [
+        {
+          "type": "CMS_SUBMISSION_INTENT",
+          "taskId": 2
+        },
+        {
+          "type": "CMS_SUBMISSION_ADMITTED",
+          "taskId": 2
+        }
+      ]
+    },
+    {
+      "status": 200,
+      "sessionId": "44bc7cdb-d7ce-4324-a599-8cabc2188ea8",
+      "observations": [
+        {
+          "type": "CMS_SUBMISSION_INTENT",
+          "taskId": 1
+        },
+        {
+          "type": "CMS_SUBMISSION_ADMITTED",
+          "taskId": 1
+        }
+      ]
+    }
+  ],
+  "pageErrors": [],
+  "serverErrors": [],
+  "popups": [],
+  "budgets": {
+    "debugStarts": 1,
+    "officialPosts": 3,
+    "tokenPosts": 2
+  },
+  "documentMarker": "eec35d34-1620-4564-b323-a56004fa3403",
+  "participant": {
+    "username": "ui-acceptance-20261102225545",
+    "principalId": "fd1e87ae-4924-5b22-a867-e83fc4486e5d",
+    "contestId": "1"
+  },
+  "sourceFixtures": [
+    {
+      "task": "cppsum",
+      "taskId": 1,
+      "filename": "participant1793660997973.cpp",
+      "sourceText": "#include <iostream>\nint main(){long long a,b;std::cin>>a>>b;std::cout<<a+b<<\"\\n\";}\n",
+      "sha256": "704fa61aae911881a42e2ffb330f44a6e388efb52ed2ba42c07df1f538c8faf5"
+    },
+    {
+      "task": "pysum",
+      "taskId": 2,
+      "filename": "participant1793660997973.py",
+      "sourceText": "a,b=map(int,input().split())\nprint(a+b)\n",
+      "sha256": "6cf3335b38ec7a9d9ff039e2c83f36eb1789a4b8f57caaf1e9c0770802717e38"
+    }
+  ],
+  "telemetrySessions": [
+    {
+      "id": "329c4445-5c79-4919-87bb-5d8d550f5b1f",
+      "taskId": 1
+    },
+    {
+      "id": "d31b4f78-9fc9-4947-a2f8-7768046d9697",
+      "taskId": 2
+    },
+    {
+      "id": "7ba23517-56bd-4b94-b92c-2ad3dd57fdbd",
+      "taskId": 1
+    },
+    {
+      "id": "0d6a4245-2dbc-4f71-bc74-8791cdddf43e",
+      "taskId": 1
+    },
+    {
+      "id": "bc0b0b5f-758b-47d4-a7ba-dfc311d36d68",
+      "taskId": 2
+    },
+    {
+      "id": "2e6011b4-11e7-4065-b01e-3e8bf670f24b",
+      "taskId": 2
+    },
+    {
+      "id": "44bc7cdb-d7ce-4324-a599-8cabc2188ea8",
+      "taskId": 1
+    }
+  ],
+  "nativeCws": {
+    "cppSubmissionsHttp": 200,
+    "authenticated": true,
+    "tokenPosts": 2,
+    "exhaustedContestTokens": true,
+    "unplayedSecondCppSubmission": true
+  }
+}

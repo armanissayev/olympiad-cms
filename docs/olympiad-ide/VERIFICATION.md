@@ -56,7 +56,7 @@ The beta is now available through trusted public HTTPS; its private SSH tunnel r
 
 [PUBLIC_HTTPS](PUBLIC_HTTPS.md) records the completed public-IP deployment. The real-worker native browser repeated all14checks with zero page errors through trusted public HTTPS, without a tunnel or TLS bypass. Public readiness200, CWS login, C++/Python actual judging, Run/Stop/recovery and renewal dry-run passed. All eight existing supervisor units are enabled at boot; tmux provides the persistent operations/log session. The original failed public asset load and its corrected proxy-buffer ownership are retained as evidence. No reboot test or new production capacity claim is made.
 
-## Current workbench and Phase 5/6 — 3 November 2026
+## Earlier workbench and Phase 5/6 — 3 November 2026
 
 Deployed source `e9044e7b03032018b038a03c8fad2abf4d551bfa`. See [WORKBENCH_ACCEPTANCE](WORKBENCH_ACCEPTANCE.md) for commands, environment versions, the complete new requirement matrix and preserved failures.
 
@@ -75,3 +75,11 @@ Deployed source `e9044e7b03032018b038a03c8fad2abf4d551bfa`. See [WORKBENCH_ACCEP
 Public links: https://54.206.171.67/ and https://54.206.171.67/ide/. [Sanitized evidence](evidence/workbench-vnext/) includes final JSON/logs/screenshots and earlier browser failures. The primary actual variable bug and backend disconnect cancellation failure were fixed and retested; harness paste/toggle/Step Out/selector mistakes are labeled separately. No GDB paging patch was applied. History recording discovery remains local-browser only. All 124 original source hashes match. Earlier 350 account measurements do not establish 350 concurrent editor/debugger capacity.
 
 Final source/native distribution audit passed for exact commit 7dee52dc plus 13 manifest-verified assets, including both browser scripts and 9 sanitized screenshots, with no dependencies/credentials/databases/compiled classes. [Packaging evidence](evidence/workbench-vnext/package-check.json). Final read-only host check found 9 healthy boot-enabled units, no failed units, debug box 600 clean and public HTTPS readiness 200. Local regression PostgreSQL was stopped; AWS staging remains running.
+
+## Current participant workflow/Admin history follow-up
+
+Deployed `5106855e3c0cb003bd1558d163f7bcda46d35018`. [PARTICIPANT_ACCEPTANCE](PARTICIPANT_ACCEPTANCE.md) records all requested behaviors, actual commands, source hashes, role denials and failures. **759 Linux CMS tests passed (9 skipped, 28 subtests); 97 runtime tests passed locally/Linux; 130 frontend tests passed with lint/typecheck/build.** All totals include focused tests; do not add them again.
+
+Real public participant acceptance passed six problem changes with the same document and restored source/STDIN, all three breakpoint entry methods and real live adapter stop locations 5/6/5, three CMS-judged C++/Python submissions scoring public 25/25, two allowed token uses and exhausted-token CWS HTTP 200. Numeric observation uploads passed 200; participant history reads were 403. Separate private Admin browser verified target ownership, real before/after TEXT_INSERT source reconstruction, timeline/Play/Pause and read-only behavior. No page/server errors or popups in final browser runs.
+
+The initial full Linux invocation used a missing config path and failed safety checks; the retained correct cms-unit.conf and strict preflight produced the final 759/97 pass run. [Initial failure and final evidence](evidence/participant-polish/). No application configuration or database guard was weakened. Admin remains private and participant history/diagnostic UI is removed. Only uploaded retained data can be replayed. Existing release/capacity gates remain unchanged.

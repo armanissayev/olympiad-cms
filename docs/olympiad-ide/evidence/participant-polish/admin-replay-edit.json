@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "participantUserId": "352",
+  "taskId": "1",
+  "historyMutationRequests": 0,
+  "recordingId": "329c4445-5c79-4919-87bb-5d8d550f5b1f",
+  "lastSequence": 18,
+  "selectedEditSequence": 11,
+  "actualEventType": "TEXT_INSERT",
+  "eventId": "5d29d161-7251-4811-aa62-af7263b0dd88",
+  "sourceFile": "participant1793660997973.cpp",
+  "before": {
+    "sequence": 10,
+    "fileExists": true,
+    "contentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "characters": 0
+  },
+  "after": {
+    "sequence": 11,
+    "fileExists": true,
+    "contentSha256": "704fa61aae911881a42e2ffb330f44a6e388efb52ed2ba42c07df1f538c8faf5",
+    "characters": 83
+  },
+  "initialFileExists": false,
+  "checkpointSequence": 1,
+  "nativeReadRequestsForSearch": 12,
+  "expectedParticipantSourceMatched": true,
+  "actualAdminUiBeforeAfterSeekVerified": true,
+  "pageErrors": []
+}

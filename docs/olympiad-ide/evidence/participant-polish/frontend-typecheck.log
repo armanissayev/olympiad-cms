@@ -1,0 +1,4 @@
+
+> olympiad-ide@0.1.0 typecheck
+> tsc -b --pretty false
+

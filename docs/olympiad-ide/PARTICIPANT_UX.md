@@ -59,3 +59,5 @@ Local outputs are `/private/tmp/cms-participant-full-tests.log`, `/private/tmp/c
 The owning deployment report records the actual source commit, Linux results and public-browser acceptance. Those checks were pending when this architecture note was written. No new database migration, service ownership arrangement or interpreter environment is required by these frontend changes.
 
 History access controls must be enforced by the CMS Admin/native gateway and private runtime, not merely by hiding a button. The participant's own browser profile can inspect its existing IndexedDB; hiding UI cannot make browser-owned historical bytes unreadable. Data is preserved rather than erased. A participant recording remains an observation with disclosed gaps and integrity limits, not proof that browser telemetry is complete or honest.
+
+Deployed public-browser acceptance passed against 5106855e, including actual scored C++/Python submissions and live isolate breakpoints. See [PARTICIPANT_ACCEPTANCE](PARTICIPANT_ACCEPTANCE.md) for current Linux counts and evidence.

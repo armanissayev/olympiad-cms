@@ -1,0 +1,17 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.6, pytest-9.1.1, pluggy-1.7.0 -- /private/tmp/olympiad-runtime-venv/bin/python
+rootdir: /Users/isaevarman/Developer/cms/olympiad_ide/backend
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 8 items
+
+tests/test_admin_history.py::test_admin_history_requires_separate_cms_scope_and_rejects_spoofing PASSED [ 12%]
+tests/test_admin_history.py::test_admin_history_reads_only_signed_installation_participant_contest_task PASSED [ 25%]
+tests/test_admin_history.py::test_server_history_uses_uploaded_initial_and_nearest_verified_checkpoint PASSED [ 37%]
+tests/test_admin_history.py::test_server_history_never_fabricates_missing_or_corrupt_events PASSED [ 50%]
+tests/test_admin_history.py::test_development_identity_cannot_access_admin_history PASSED [ 62%]
+tests/test_admin_history.py::test_reported_gaps_clear_active_identity_until_recorded_navigation PASSED [ 75%]
+tests/test_admin_history.py::test_corrupt_later_source_event_never_mislabels_partial_nodes_as_checkpoint PASSED [ 87%]
+tests/test_admin_history.py::test_expired_recordings_are_not_exposed_or_deleted_by_review PASSED [100%]
+
+============================== 8 passed in 1.67s ===============================

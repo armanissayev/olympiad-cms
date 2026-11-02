@@ -1,0 +1,28 @@
+...                                                                      [100%]
+=============================== warnings summary ===============================
+cms/plugin.py:24
+  /Users/isaevarman/Developer/cms/cms/plugin.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+    import pkg_resources
+
+../../../../private/tmp/cms-integration-venv/lib/python3.12/site-packages/sqlalchemy/sql/sqltypes.py:1902
+  /private/tmp/cms-integration-venv/lib/python3.12/site-packages/sqlalchemy/sql/sqltypes.py:1902: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+    epoch = dt.datetime.utcfromtimestamp(0)
+
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py: 22 warnings
+  /Users/isaevarman/Developer/cms/cmscommon/datetime.py:46: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return datetime.utcnow()
+
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py::TestTaskSubmissionRendering::test_available_tokens_still_offer_play_action
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py::TestTaskSubmissionRendering::test_exhausted_tokens_render_both_official_and_unofficial_rows
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py::TestTaskSubmissionRendering::test_future_generation_renders_wait_for_both_submission_kinds
+  /Users/isaevarman/Developer/cms/cmscommon/datetime.py:48: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+    return datetime.utcfromtimestamp(timestamp)
+
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py::TestTaskSubmissionRendering::test_available_tokens_still_offer_play_action
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py::TestTaskSubmissionRendering::test_exhausted_tokens_render_both_official_and_unofficial_rows
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py::TestTaskSubmissionRendering::test_future_generation_renders_wait_for_both_submission_kinds
+  /private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py:553: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    expires = datetime.datetime.utcnow() + datetime.timedelta(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+3 passed, 30 warnings in 65.22s (0:01:05)

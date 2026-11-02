@@ -1,0 +1,6 @@
+2026-11-02 23:15:33,111 - INFO [<unknown>] Using configuration file /etc/cms-ide-stage/cms-unit.conf.
+/opt/cms-ide-stage/source/cms/plugin.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+CMS_UNIT_PREFLIGHT_OK: explicit config, exact isolated database, fixture coordinates
+CMS_UNIT_EXIT 0
+RUNTIME_UNIT_EXIT 0

@@ -1,0 +1,49 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.6, pytest-9.2.0, pluggy-1.7.0 -- /private/tmp/cms-integration-venv/bin/python
+rootdir: /Users/isaevarman/Developer/cms
+configfile: pytest.ini
+plugins: cov-5.0.0, anyio-4.16.0
+collecting ... collected 6 items
+
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_anonymous_and_read_only_admin_cannot_read_history PASSED [ 16%]
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_disabled_ordinary_admin_import_does_not_require_optional_pyjwt PASSED [ 33%]
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_full_admin_gets_selectors_readonly_source_and_sidebar_entry PASSED [ 50%]
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_native_history_assertion_has_separate_admin_scope_and_target PASSED [ 66%]
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_other_contest_user_or_problem_is_rejected_before_transport PASSED [ 83%]
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_proxy_is_private_bounded_and_signs_checked_target PASSED [100%]
+
+=============================== warnings summary ===============================
+cms/plugin.py:24
+  /Users/isaevarman/Developer/cms/cms/plugin.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+    import pkg_resources
+
+../../../../private/tmp/cms-integration-venv/lib/python3.12/site-packages/sqlalchemy/sql/sqltypes.py:1902
+  /private/tmp/cms-integration-venv/lib/python3.12/site-packages/sqlalchemy/sql/sqltypes.py:1902: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+    epoch = dt.datetime.utcfromtimestamp(0)
+
+../../../../private/tmp/cms-integration-venv/lib/python3.12/site-packages/werkzeug/contrib/securecookie.py:103
+  /private/tmp/cms-integration-venv/lib/python3.12/site-packages/werkzeug/contrib/securecookie.py:103: DeprecationWarning: 'werkzeug.contrib.sessions' is deprecated as of version 0.15 and will be removed in version 1.0. It has moved to https://github.com/pallets/secure-cookie.
+    from ..contrib.sessions import ModificationTrackingDict
+
+cms/server/admin/authentication.py:22
+  /Users/isaevarman/Developer/cms/cms/server/admin/authentication.py:22: DeprecationWarning: 'werkzeug.contrib.securecookie' is deprecated as of version 0.15 and will be removed in version 1.0. It has moved to https://github.com/pallets/secure-cookie.
+    from werkzeug.contrib.securecookie import SecureCookie
+
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py: 13 warnings
+  /Users/isaevarman/Developer/cms/cmscommon/datetime.py:46: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return datetime.utcnow()
+
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_anonymous_and_read_only_admin_cannot_read_history
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_full_admin_gets_selectors_readonly_source_and_sidebar_entry
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_other_contest_user_or_problem_is_rejected_before_transport
+  /private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py:553: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    expires = datetime.datetime.utcnow() + datetime.timedelta(
+
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_anonymous_and_read_only_admin_cannot_read_history
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_anonymous_and_read_only_admin_cannot_read_history
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_other_contest_user_or_problem_is_rejected_before_transport
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_other_contest_user_or_problem_is_rejected_before_transport
+  /Users/isaevarman/Developer/cms/cms/server/admin/templates/error.html:24: DeprecationWarning: 'soft_unicode' has been renamed to 'soft_str'. The old name will be removed in MarkupSafe 2.1.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 6 passed, 24 warnings in 1.68s ========================

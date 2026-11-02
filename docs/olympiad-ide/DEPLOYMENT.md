@@ -157,3 +157,7 @@ To roll back, disable native config and intentionally stop it through ResourceSe
 ## Public staging access
 
 The authorized 3 November follow-up added public HTTPS at https://54.206.171.67/ and /ide/, with a trusted IP certificate, isolated Certbot environment, automatic renewal and boot-enabled supervisors. See [PUBLIC_HTTPS](PUBLIC_HTTPS.md) for actual evidence, configuration and preserved failures. Admin/RPC/DB endpoints remain private. This changes the earlier loopback-only staging boundary and does not certify production readiness.
+
+## Participant/Admin workflow follow-up
+
+Current application 5106855e is deployed using the existing tmux updater and unchanged supervisors. [PARTICIPANT_ACCEPTANCE](PARTICIPANT_ACCEPTANCE.md) records actual 130/97/759 frontend/runtime/Linux-CMS results and both browser flows. Admin code history is served by the existing private AdminWebServer with lazy optional PyJWT import; feature-disabled ordinary Admin startup is tested. No schema migration/new grants or additional public port is required. Run the retained reverify_linux.py preflight before the isolated suites; cms-unit.conf must exist rather than silently falling back.

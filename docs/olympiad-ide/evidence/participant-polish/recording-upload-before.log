@@ -1,0 +1,10 @@
+F.                                                                       [100%]
+=================================== FAILURES ===================================
+_ test_cms_submission_observations_preserve_numeric_task_ids_and_queued_batch_digest _
+tests/test_telemetry.py:287: in test_cms_submission_observations_preserve_numeric_task_ids_and_queued_batch_digest
+    assert response.status_code == 200, response.text
+E   AssertionError: {"error":{"code":"validation_error","message":"2 validation errors:\n  {'type': 'string_type', 'loc': ('body', 'events', 0, 'CMS_SUBMISSION_INTENT', 'payload', 'taskId'), 'msg': 'Input should be a valid string', 'input': 1}\n  {'type': 'string_type', 'loc': ('body', 'events', 1, 'CMS_SUBMISSION_ADMITTED', 'payload', 'taskId'), 'msg': 'Input should be a valid string', 'input': 1}\n\n  File \"/Users/isaevarman/Developer/cms/olympiad_ide/backend/app/telemetry.py\", line 265, in batch\n    POST /api/v1/telemetry/batches"}}
+E   assert 422 == 200
+E    +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+=========================== short test summary info ============================
+FAILED tests/test_telemetry.py::test_cms_submission_observations_preserve_numeric_task_ids_and_queued_batch_digest

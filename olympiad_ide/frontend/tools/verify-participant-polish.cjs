@@ -273,6 +273,10 @@ const sha256 = value => crypto.createHash('sha256').update(value).digest('hex');
     await expect(debugPanel.getByRole('button', { name: 'Pause', exact: true })).toBeEnabled({ timeout: 60000 });
     await debugPanel.getByRole('button', { name: 'Pause', exact: true }).click();
     await expect(debugPanel.getByRole('button', { name: 'Continue', exact: true })).toBeEnabled({ timeout: 20000 });
+    const counter = debugPanel.locator('.debug-variable').filter({ has: page.getByRole('button', { name: 'counter', exact: true }) }).first();
+    await expect(counter).toBeVisible();
+    const pausedCounter = await counter.locator('code').innerText();
+    expect(pausedCounter).toMatch(/^\d+$/); expect(Number(pausedCounter)).toBeLessThan(1000000007);
     await page.locator('.editor-pane .view-lines .view-line').nth(4).click({ position: { x: 8, y: 8 } });
     await editor.press('F9');
     await expect(debugPanel.getByRole('button', { name: 'Remove ' + debugName + ':5', exact: true })).toBeVisible();
@@ -300,7 +304,7 @@ const sha256 = value => crypto.createHash('sha256').update(value).digest('hex');
     expect(terminal.body.sourceHash).toBe(created.sourceHash); activeDebugId = null;
     report.debug = { id: created.id, sourceHash: created.sourceHash, sourceTextSha256: sha256(debugSource),
       f9: true, explicitLine: true, lineNumberClick: true, liveAddRemove: true, actualStopLines: [5, 6, 5],
-      terminal: 'STOPPED', immutableSourceHashPreserved: true, wire };
+      terminal: 'STOPPED', actualPausedCounter: pausedCounter, immutableSourceHashPreserved: true, wire };
     report.checks.push('F9, explicit line and visible line-number breakpoints update a real paused isolate session'); save();
 
     const green = page.locator('.cms-submit-region'), topSubmit = green.getByRole('button', { name: 'Submit', exact: true });

@@ -1,0 +1,744 @@
+.FF                                                                      [100%]
+=================================== FAILURES ===================================
+_ TestTaskSubmissionRendering.test_exhausted_tokens_render_both_official_and_unofficial_rows _
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py:59: in test_exhausted_tokens_render_both_official_and_unofficial_rows
+    self.assertEqual(response.status_code, 200)
+E   AssertionError: 500 != 200
+----------------------------- Captured stdout call -----------------------------
+2026-11-03 03:44:52,422 - INFO [<unknown>] Found translation ar
+2026-11-03 03:44:52,422 - INFO [<unknown>] Found translation bg
+2026-11-03 03:44:52,423 - INFO [<unknown>] Found translation bs
+2026-11-03 03:44:52,423 - INFO [<unknown>] Found translation cs
+2026-11-03 03:44:52,424 - INFO [<unknown>] Found translation de
+2026-11-03 03:44:52,424 - INFO [<unknown>] Found translation es
+2026-11-03 03:44:52,425 - INFO [<unknown>] Found translation es-CL
+2026-11-03 03:44:52,425 - INFO [<unknown>] Found translation et
+2026-11-03 03:44:52,426 - INFO [<unknown>] Found translation fr
+2026-11-03 03:44:52,427 - INFO [<unknown>] Found translation hu
+2026-11-03 03:44:52,427 - INFO [<unknown>] Found translation it
+2026-11-03 03:44:52,428 - INFO [<unknown>] Found translation ja
+2026-11-03 03:44:52,428 - INFO [<unknown>] Found translation ko
+2026-11-03 03:44:52,429 - INFO [<unknown>] Found translation lt
+2026-11-03 03:44:52,429 - INFO [<unknown>] Found translation lv
+2026-11-03 03:44:52,430 - INFO [<unknown>] Found translation nl
+2026-11-03 03:44:52,431 - INFO [<unknown>] Found translation ro
+2026-11-03 03:44:52,431 - INFO [<unknown>] Found translation ru
+2026-11-03 03:44:52,432 - INFO [<unknown>] Found translation sl
+2026-11-03 03:44:52,433 - INFO [<unknown>] Found translation th
+2026-11-03 03:44:52,433 - INFO [<unknown>] Found translation uk
+2026-11-03 03:44:52,434 - INFO [<unknown>] Found translation vi
+2026-11-03 03:44:52,434 - INFO [<unknown>] Found translation zh-Hans-CN
+2026-11-03 03:44:52,435 - INFO [<unknown>] Found translation zh-Hant-TW
+2026-11-03 03:44:52,437 - INFO [<unknown>] Successful login attempt from IP address 127.0.0.1, as user '91640771', on contest 91640769, at 2026-11-02 22:44:52.435467
+2026-11-03 03:44:52,440 - INFO [<unknown>] Successful cookie authentication as user '91640771', on contest 91640769, returning from 2026-11-02 22:44:52.435467, at 2026-11-02 22:44:52.438638
+2026-11-03 03:44:52,454 - ERROR [<unknown>] Uncaught exception GET /tasks/sum6a7b70188498483b8d2a206299bf073d/submissions (127.0.0.1)
+HTTPServerRequest(protocol='http', host='localhost', method='GET', uri='/tasks/sum6a7b70188498483b8d2a206299bf073d/submissions', version='HTTP/1.1', remote_ip='127.0.0.1', headers={'Host': 'localhost', 'Cookie': '91640769_login=2|1:0|10:1793659492|14:91640769_login|100:WyI5MTY0MDc3MSIsICJwbGFpbnRleHQ6ZGlzcG9zYWJsZS1zdWJtaXNzaW9uLXJlbmRlciIsIDE3OTM2NTk0OTIuNDM1NDY3XQ==|ffec3f9793563ca4b63ab858b2d22a50e09a19c99eb8edd7bead91f3788abbd2'})
+Traceback (most recent call last):
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 1510, in _execute
+    result = method(*self.path_args, **self.path_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 2898, in wrapper
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/phase_management.py", line 209, in wrapped
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/util.py", line 65, in wrapped_f
+    f(self, *args)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/tasksubmission.py", line 169, in get
+    self.render("task_submissions.html",
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/base.py", line 82, in render
+    for chunk in t.generate(**params):
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1045, in generate
+    yield self.environment.handle_exception(exc_info, True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 24, in <module>
+    {% set can_play_token_now = can_play_token and tokens_info[2] is none %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1039, in generate
+    for event in self.root_render_func(self.new_context(vars)):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 46, in root
+    $(".score_details table.testcase-list tbody tr:not(.undefined) td.outcome").each(function () {
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 14, in root
+    {% for extension in (lang|to_language).source_extensions %}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/base.html", line 27, in root
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 320, in block_body
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 287, in block_core
+    <input type="file" class="input-xlarge" id="input_zip" name="submission"/>
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 216, in macro
+    {% endif %}
+               ^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 500, in macro
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 411, in getitem
+    return obj[argument]
+           ~~~^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'tokens_info' is undefined
+2026-11-03 03:44:52,465 - ERROR [<unknown>] Uncaught exception (UndefinedError("'tokens_info' is undefined")) while processing a request: Traceback (most recent call last):
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 1510, in _execute
+    result = method(*self.path_args, **self.path_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 2898, in wrapper
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/phase_management.py", line 209, in wrapped
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/util.py", line 65, in wrapped_f
+    f(self, *args)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/tasksubmission.py", line 169, in get
+    self.render("task_submissions.html",
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/base.py", line 82, in render
+    for chunk in t.generate(**params):
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1045, in generate
+    yield self.environment.handle_exception(exc_info, True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 24, in <module>
+    {% set can_play_token_now = can_play_token and tokens_info[2] is none %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1039, in generate
+    for event in self.root_render_func(self.new_context(vars)):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 46, in root
+    $(".score_details table.testcase-list tbody tr:not(.undefined) td.outcome").each(function () {
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 14, in root
+    {% for extension in (lang|to_language).source_extensions %}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/base.html", line 27, in root
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 320, in block_body
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 287, in block_core
+    <input type="file" class="input-xlarge" id="input_zip" name="submission"/>
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 216, in macro
+    {% endif %}
+               ^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 500, in macro
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 411, in getitem
+    return obj[argument]
+           ~~~^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'tokens_info' is undefined
+
+2026-11-03 03:44:52,467 - ERROR [<unknown>] 500 GET /tasks/sum6a7b70188498483b8d2a206299bf073d/submissions (127.0.0.1) 29.41ms
+------------------------------ Captured log call -------------------------------
+INFO     cms.locale.locale:locale.py:287 Found translation ar
+INFO     cms.locale.locale:locale.py:287 Found translation bg
+INFO     cms.locale.locale:locale.py:287 Found translation bs
+INFO     cms.locale.locale:locale.py:287 Found translation cs
+INFO     cms.locale.locale:locale.py:287 Found translation de
+INFO     cms.locale.locale:locale.py:287 Found translation es
+INFO     cms.locale.locale:locale.py:287 Found translation es-CL
+INFO     cms.locale.locale:locale.py:287 Found translation et
+INFO     cms.locale.locale:locale.py:287 Found translation fr
+INFO     cms.locale.locale:locale.py:287 Found translation hu
+INFO     cms.locale.locale:locale.py:287 Found translation it
+INFO     cms.locale.locale:locale.py:287 Found translation ja
+INFO     cms.locale.locale:locale.py:287 Found translation ko
+INFO     cms.locale.locale:locale.py:287 Found translation lt
+INFO     cms.locale.locale:locale.py:287 Found translation lv
+INFO     cms.locale.locale:locale.py:287 Found translation nl
+INFO     cms.locale.locale:locale.py:287 Found translation ro
+INFO     cms.locale.locale:locale.py:287 Found translation ru
+INFO     cms.locale.locale:locale.py:287 Found translation sl
+INFO     cms.locale.locale:locale.py:287 Found translation th
+INFO     cms.locale.locale:locale.py:287 Found translation uk
+INFO     cms.locale.locale:locale.py:287 Found translation vi
+INFO     cms.locale.locale:locale.py:287 Found translation zh-Hans-CN
+INFO     cms.locale.locale:locale.py:287 Found translation zh-Hant-TW
+INFO     cms.server.contest.authentication:authentication.py:134 Successful login attempt from IP address 127.0.0.1, as user '91640771', on contest 91640769, at 2026-11-02 22:44:52.435467
+INFO     cms.server.contest.authentication:authentication.py:348 Successful cookie authentication as user '91640771', on contest 91640769, returning from 2026-11-02 22:44:52.435467, at 2026-11-02 22:44:52.438638
+ERROR    tornado.application:web.py:1590 Uncaught exception GET /tasks/sum6a7b70188498483b8d2a206299bf073d/submissions (127.0.0.1)
+HTTPServerRequest(protocol='http', host='localhost', method='GET', uri='/tasks/sum6a7b70188498483b8d2a206299bf073d/submissions', version='HTTP/1.1', remote_ip='127.0.0.1', headers={'Host': 'localhost', 'Cookie': '91640769_login=2|1:0|10:1793659492|14:91640769_login|100:WyI5MTY0MDc3MSIsICJwbGFpbnRleHQ6ZGlzcG9zYWJsZS1zdWJtaXNzaW9uLXJlbmRlciIsIDE3OTM2NTk0OTIuNDM1NDY3XQ==|ffec3f9793563ca4b63ab858b2d22a50e09a19c99eb8edd7bead91f3788abbd2'})
+Traceback (most recent call last):
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 1510, in _execute
+    result = method(*self.path_args, **self.path_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 2898, in wrapper
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/phase_management.py", line 209, in wrapped
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/util.py", line 65, in wrapped_f
+    f(self, *args)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/tasksubmission.py", line 169, in get
+    self.render("task_submissions.html",
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/base.py", line 82, in render
+    for chunk in t.generate(**params):
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1045, in generate
+    yield self.environment.handle_exception(exc_info, True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 24, in <module>
+    {% set can_play_token_now = can_play_token and tokens_info[2] is none %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1039, in generate
+    for event in self.root_render_func(self.new_context(vars)):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 46, in root
+    $(".score_details table.testcase-list tbody tr:not(.undefined) td.outcome").each(function () {
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 14, in root
+    {% for extension in (lang|to_language).source_extensions %}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/base.html", line 27, in root
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 320, in block_body
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 287, in block_core
+    <input type="file" class="input-xlarge" id="input_zip" name="submission"/>
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 216, in macro
+    {% endif %}
+               ^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 500, in macro
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 411, in getitem
+    return obj[argument]
+           ~~~^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'tokens_info' is undefined
+ERROR    cms.server.contest.handlers.base:base.py:152 Uncaught exception (UndefinedError("'tokens_info' is undefined")) while processing a request: Traceback (most recent call last):
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 1510, in _execute
+    result = method(*self.path_args, **self.path_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 2898, in wrapper
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/phase_management.py", line 209, in wrapped
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/util.py", line 65, in wrapped_f
+    f(self, *args)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/tasksubmission.py", line 169, in get
+    self.render("task_submissions.html",
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/base.py", line 82, in render
+    for chunk in t.generate(**params):
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1045, in generate
+    yield self.environment.handle_exception(exc_info, True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 24, in <module>
+    {% set can_play_token_now = can_play_token and tokens_info[2] is none %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1039, in generate
+    for event in self.root_render_func(self.new_context(vars)):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 46, in root
+    $(".score_details table.testcase-list tbody tr:not(.undefined) td.outcome").each(function () {
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 14, in root
+    {% for extension in (lang|to_language).source_extensions %}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/base.html", line 27, in root
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 320, in block_body
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 287, in block_core
+    <input type="file" class="input-xlarge" id="input_zip" name="submission"/>
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 216, in macro
+    {% endif %}
+               ^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 500, in macro
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 411, in getitem
+    return obj[argument]
+           ~~~^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'tokens_info' is undefined
+
+ERROR    tornado.access:web.py:2063 500 GET /tasks/sum6a7b70188498483b8d2a206299bf073d/submissions (127.0.0.1) 29.41ms
+_ TestTaskSubmissionRendering.test_future_generation_renders_wait_for_both_submission_kinds _
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py:68: in test_future_generation_renders_wait_for_both_submission_kinds
+    self.assertEqual(response.status_code, 200)
+E   AssertionError: 500 != 200
+----------------------------- Captured stdout call -----------------------------
+2026-11-03 03:44:52,510 - INFO [<unknown>] Found translation ar
+2026-11-03 03:44:52,511 - INFO [<unknown>] Found translation bg
+2026-11-03 03:44:52,511 - INFO [<unknown>] Found translation bs
+2026-11-03 03:44:52,512 - INFO [<unknown>] Found translation cs
+2026-11-03 03:44:52,512 - INFO [<unknown>] Found translation de
+2026-11-03 03:44:52,513 - INFO [<unknown>] Found translation es
+2026-11-03 03:44:52,513 - INFO [<unknown>] Found translation es-CL
+2026-11-03 03:44:52,514 - INFO [<unknown>] Found translation et
+2026-11-03 03:44:52,515 - INFO [<unknown>] Found translation fr
+2026-11-03 03:44:52,515 - INFO [<unknown>] Found translation hu
+2026-11-03 03:44:52,516 - INFO [<unknown>] Found translation it
+2026-11-03 03:44:52,516 - INFO [<unknown>] Found translation ja
+2026-11-03 03:44:52,517 - INFO [<unknown>] Found translation ko
+2026-11-03 03:44:52,518 - INFO [<unknown>] Found translation lt
+2026-11-03 03:44:52,518 - INFO [<unknown>] Found translation lv
+2026-11-03 03:44:52,519 - INFO [<unknown>] Found translation nl
+2026-11-03 03:44:52,519 - INFO [<unknown>] Found translation ro
+2026-11-03 03:44:52,520 - INFO [<unknown>] Found translation ru
+2026-11-03 03:44:52,520 - INFO [<unknown>] Found translation sl
+2026-11-03 03:44:52,521 - INFO [<unknown>] Found translation th
+2026-11-03 03:44:52,522 - INFO [<unknown>] Found translation uk
+2026-11-03 03:44:52,522 - INFO [<unknown>] Found translation vi
+2026-11-03 03:44:52,523 - INFO [<unknown>] Found translation zh-Hans-CN
+2026-11-03 03:44:52,523 - INFO [<unknown>] Found translation zh-Hant-TW
+2026-11-03 03:44:52,525 - INFO [<unknown>] Successful login attempt from IP address 127.0.0.1, as user '91640781', on contest 91640779, at 2026-11-02 22:44:52.523741
+2026-11-03 03:44:52,530 - INFO [<unknown>] Successful cookie authentication as user '91640781', on contest 91640779, returning from 2026-11-02 22:44:52.523741, at 2026-11-02 22:44:52.528490
+2026-11-03 03:44:52,543 - ERROR [<unknown>] Uncaught exception GET /tasks/sumcf5113946a71412a8322e4d8786f8bb7/submissions (127.0.0.1)
+HTTPServerRequest(protocol='http', host='localhost', method='GET', uri='/tasks/sumcf5113946a71412a8322e4d8786f8bb7/submissions', version='HTTP/1.1', remote_ip='127.0.0.1', headers={'Host': 'localhost', 'Cookie': '91640779_login=2|1:0|10:1793659492|14:91640779_login|100:WyI5MTY0MDc4MSIsICJwbGFpbnRleHQ6ZGlzcG9zYWJsZS1zdWJtaXNzaW9uLXJlbmRlciIsIDE3OTM2NTk0OTIuNTIzNzQxXQ==|828fad939cfba8b4a50b017346c3648c18dac6ff394768a4d0662adaf52c2c43'})
+Traceback (most recent call last):
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 1510, in _execute
+    result = method(*self.path_args, **self.path_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 2898, in wrapper
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/phase_management.py", line 209, in wrapped
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/util.py", line 65, in wrapped_f
+    f(self, *args)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/tasksubmission.py", line 169, in get
+    self.render("task_submissions.html",
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/base.py", line 82, in render
+    for chunk in t.generate(**params):
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1045, in generate
+    yield self.environment.handle_exception(exc_info, True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 24, in <module>
+    {% set can_play_token_now = can_play_token and tokens_info[2] is none %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1039, in generate
+    for event in self.root_render_func(self.new_context(vars)):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 46, in root
+    $(".score_details table.testcase-list tbody tr:not(.undefined) td.outcome").each(function () {
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 14, in root
+    {% for extension in (lang|to_language).source_extensions %}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/base.html", line 27, in root
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 320, in block_body
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 287, in block_core
+    <input type="file" class="input-xlarge" id="input_zip" name="submission"/>
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 216, in macro
+    {% endif %}
+               ^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 500, in macro
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 411, in getitem
+    return obj[argument]
+           ~~~^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'tokens_info' is undefined
+2026-11-03 03:44:52,548 - ERROR [<unknown>] Uncaught exception (UndefinedError("'tokens_info' is undefined")) while processing a request: Traceback (most recent call last):
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 1510, in _execute
+    result = method(*self.path_args, **self.path_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 2898, in wrapper
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/phase_management.py", line 209, in wrapped
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/util.py", line 65, in wrapped_f
+    f(self, *args)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/tasksubmission.py", line 169, in get
+    self.render("task_submissions.html",
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/base.py", line 82, in render
+    for chunk in t.generate(**params):
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1045, in generate
+    yield self.environment.handle_exception(exc_info, True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 24, in <module>
+    {% set can_play_token_now = can_play_token and tokens_info[2] is none %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1039, in generate
+    for event in self.root_render_func(self.new_context(vars)):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 46, in root
+    $(".score_details table.testcase-list tbody tr:not(.undefined) td.outcome").each(function () {
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 14, in root
+    {% for extension in (lang|to_language).source_extensions %}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/base.html", line 27, in root
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 320, in block_body
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 287, in block_core
+    <input type="file" class="input-xlarge" id="input_zip" name="submission"/>
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 216, in macro
+    {% endif %}
+               ^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 500, in macro
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 411, in getitem
+    return obj[argument]
+           ~~~^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'tokens_info' is undefined
+
+2026-11-03 03:44:52,549 - ERROR [<unknown>] 500 GET /tasks/sumcf5113946a71412a8322e4d8786f8bb7/submissions (127.0.0.1) 21.21ms
+------------------------------ Captured log call -------------------------------
+INFO     cms.locale.locale:locale.py:287 Found translation ar
+INFO     cms.locale.locale:locale.py:287 Found translation bg
+INFO     cms.locale.locale:locale.py:287 Found translation bs
+INFO     cms.locale.locale:locale.py:287 Found translation cs
+INFO     cms.locale.locale:locale.py:287 Found translation de
+INFO     cms.locale.locale:locale.py:287 Found translation es
+INFO     cms.locale.locale:locale.py:287 Found translation es-CL
+INFO     cms.locale.locale:locale.py:287 Found translation et
+INFO     cms.locale.locale:locale.py:287 Found translation fr
+INFO     cms.locale.locale:locale.py:287 Found translation hu
+INFO     cms.locale.locale:locale.py:287 Found translation it
+INFO     cms.locale.locale:locale.py:287 Found translation ja
+INFO     cms.locale.locale:locale.py:287 Found translation ko
+INFO     cms.locale.locale:locale.py:287 Found translation lt
+INFO     cms.locale.locale:locale.py:287 Found translation lv
+INFO     cms.locale.locale:locale.py:287 Found translation nl
+INFO     cms.locale.locale:locale.py:287 Found translation ro
+INFO     cms.locale.locale:locale.py:287 Found translation ru
+INFO     cms.locale.locale:locale.py:287 Found translation sl
+INFO     cms.locale.locale:locale.py:287 Found translation th
+INFO     cms.locale.locale:locale.py:287 Found translation uk
+INFO     cms.locale.locale:locale.py:287 Found translation vi
+INFO     cms.locale.locale:locale.py:287 Found translation zh-Hans-CN
+INFO     cms.locale.locale:locale.py:287 Found translation zh-Hant-TW
+INFO     cms.server.contest.authentication:authentication.py:134 Successful login attempt from IP address 127.0.0.1, as user '91640781', on contest 91640779, at 2026-11-02 22:44:52.523741
+INFO     cms.server.contest.authentication:authentication.py:348 Successful cookie authentication as user '91640781', on contest 91640779, returning from 2026-11-02 22:44:52.523741, at 2026-11-02 22:44:52.528490
+ERROR    tornado.application:web.py:1590 Uncaught exception GET /tasks/sumcf5113946a71412a8322e4d8786f8bb7/submissions (127.0.0.1)
+HTTPServerRequest(protocol='http', host='localhost', method='GET', uri='/tasks/sumcf5113946a71412a8322e4d8786f8bb7/submissions', version='HTTP/1.1', remote_ip='127.0.0.1', headers={'Host': 'localhost', 'Cookie': '91640779_login=2|1:0|10:1793659492|14:91640779_login|100:WyI5MTY0MDc4MSIsICJwbGFpbnRleHQ6ZGlzcG9zYWJsZS1zdWJtaXNzaW9uLXJlbmRlciIsIDE3OTM2NTk0OTIuNTIzNzQxXQ==|828fad939cfba8b4a50b017346c3648c18dac6ff394768a4d0662adaf52c2c43'})
+Traceback (most recent call last):
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 1510, in _execute
+    result = method(*self.path_args, **self.path_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 2898, in wrapper
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/phase_management.py", line 209, in wrapped
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/util.py", line 65, in wrapped_f
+    f(self, *args)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/tasksubmission.py", line 169, in get
+    self.render("task_submissions.html",
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/base.py", line 82, in render
+    for chunk in t.generate(**params):
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1045, in generate
+    yield self.environment.handle_exception(exc_info, True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 24, in <module>
+    {% set can_play_token_now = can_play_token and tokens_info[2] is none %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1039, in generate
+    for event in self.root_render_func(self.new_context(vars)):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 46, in root
+    $(".score_details table.testcase-list tbody tr:not(.undefined) td.outcome").each(function () {
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 14, in root
+    {% for extension in (lang|to_language).source_extensions %}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/base.html", line 27, in root
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 320, in block_body
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 287, in block_core
+    <input type="file" class="input-xlarge" id="input_zip" name="submission"/>
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 216, in macro
+    {% endif %}
+               ^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 500, in macro
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 411, in getitem
+    return obj[argument]
+           ~~~^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'tokens_info' is undefined
+ERROR    cms.server.contest.handlers.base:base.py:152 Uncaught exception (UndefinedError("'tokens_info' is undefined")) while processing a request: Traceback (most recent call last):
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 1510, in _execute
+    result = method(*self.path_args, **self.path_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py", line 2898, in wrapper
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/phase_management.py", line 209, in wrapped
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/util.py", line 65, in wrapped_f
+    f(self, *args)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/tasksubmission.py", line 169, in get
+    self.render("task_submissions.html",
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/handlers/base.py", line 82, in render
+    for chunk in t.generate(**params):
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1045, in generate
+    yield self.environment.handle_exception(exc_info, True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 24, in <module>
+    {% set can_play_token_now = can_play_token and tokens_info[2] is none %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 1039, in generate
+    for event in self.root_render_func(self.new_context(vars)):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 46, in root
+    $(".score_details table.testcase-list tbody tr:not(.undefined) td.outcome").each(function () {
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 14, in root
+    {% for extension in (lang|to_language).source_extensions %}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/base.html", line 27, in root
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/contest.html", line 320, in block_body
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/task_submissions.html", line 287, in block_core
+    <input type="file" class="input-xlarge" id="input_zip" name="submission"/>
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 216, in macro
+    {% endif %}
+               ^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 262, in call
+    return __obj(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 570, in __call__
+    return self._invoke(arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/asyncsupport.py", line 110, in _invoke
+    return original_invoke(self, arguments, autoescape)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/runtime.py", line 574, in _invoke
+    rv = self._func(*arguments)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/isaevarman/Developer/cms/cms/server/contest/templates/macro/submission.html", line 500, in macro
+  File "/private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/environment.py", line 411, in getitem
+    return obj[argument]
+           ~~~^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'tokens_info' is undefined
+
+ERROR    tornado.access:web.py:2063 500 GET /tasks/sumcf5113946a71412a8322e4d8786f8bb7/submissions (127.0.0.1) 21.21ms
+=============================== warnings summary ===============================
+cms/plugin.py:24
+  /Users/isaevarman/Developer/cms/cms/plugin.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+    import pkg_resources
+
+../../../../private/tmp/cms-integration-venv/lib/python3.12/site-packages/sqlalchemy/sql/sqltypes.py:1902
+  /private/tmp/cms-integration-venv/lib/python3.12/site-packages/sqlalchemy/sql/sqltypes.py:1902: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+    epoch = dt.datetime.utcfromtimestamp(0)
+
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py: 18 warnings
+  /Users/isaevarman/Developer/cms/cmscommon/datetime.py:46: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return datetime.utcnow()
+
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py::TestTaskSubmissionRendering::test_available_tokens_still_offer_play_action
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py::TestTaskSubmissionRendering::test_exhausted_tokens_render_both_official_and_unofficial_rows
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py::TestTaskSubmissionRendering::test_future_generation_renders_wait_for_both_submission_kinds
+  /Users/isaevarman/Developer/cms/cmscommon/datetime.py:48: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+    return datetime.utcfromtimestamp(timestamp)
+
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py::TestTaskSubmissionRendering::test_available_tokens_still_offer_play_action
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py::TestTaskSubmissionRendering::test_exhausted_tokens_render_both_official_and_unofficial_rows
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py::TestTaskSubmissionRendering::test_future_generation_renders_wait_for_both_submission_kinds
+  /private/tmp/cms-integration-venv/lib/python3.12/site-packages/tornado/web.py:553: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    expires = datetime.datetime.utcnow() + datetime.timedelta(
+
+cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py: 14 warnings
+  /private/tmp/cms-integration-venv/lib/python3.12/site-packages/jinja2/debug.py:283: DeprecationWarning: co_lnotab is deprecated, use co_lines instead.
+    code.co_lnotab, (), ())
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py::TestTaskSubmissionRendering::test_exhausted_tokens_render_both_official_and_unofficial_rows
+FAILED cmstestsuite/unit_tests/server/contest/task_submissions_render_test.py::TestTaskSubmissionRendering::test_future_generation_renders_wait_for_both_submission_kinds
+2 failed, 1 passed, 40 warnings in 1.11s
