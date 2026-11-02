@@ -1,0 +1,22 @@
+{
+  "kind": "real-linux-syscall-filter",
+  "helperFlags": "--syscalls=31",
+  "architecture": "x86_64",
+  "result": {
+    "AF_VSOCK": 97,
+    "fcntl_lock": 1,
+    "flock": 38,
+    "io_uring_setup": {
+      "errno": 38,
+      "return": -1
+    },
+    "keyctl": {
+      "errno": 38,
+      "return": -1
+    }
+  },
+  "status": "passed",
+  "cpuTime": 0.029,
+  "wallTime": 0.029,
+  "peakMemoryKiB": 5960
+}

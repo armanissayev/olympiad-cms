@@ -1,5 +1,6 @@
 # Local PostgreSQL dump/restore rehearsal
 
+Historical local-phase evidence. Later authorized Linux results, including the idle-connection correction and real judging, are recorded in [LINUX_ACCEPTANCE](../LINUX_ACCEPTANCE.md).
 **Passed on 2026-11-02.** PostgreSQL 14.15 (Homebrew) tools restored both task-owned databases into newly created, empty databases in the same temporary local cluster at `127.0.0.1:55459`. This verifies database preservation in this local fixture. It does not certify production backup operations, Linux execution, external file storage, secret restoration, cross-database atomicity, or application failover.
 
 The native agent had stopped all final CMS fixture processes/listeners; the IDE runtime was quiescent. The only source databases were `cmsidesmokefinalfortesting` and `ideruntime`. Neither source database was modified. Each source used its own exported repeatable-read, read-only PostgreSQL snapshot, held open through dump and verification. There is no implied atomic transaction spanning the two databases. No existing destination was overwritten, no `--clean`/drop command was used, and no other user/live database was used as a test target.

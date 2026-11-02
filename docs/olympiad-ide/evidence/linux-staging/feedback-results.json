@@ -1,0 +1,25 @@
+{
+  "kind": "real-linux-feedback-policy",
+  "checks": [
+    "Actual CWS token unlocks only permitted full score/details; hidden inputs/outputs remain inaccessible",
+    "EvaluationService invalidation performed fresh real testcase evaluations; tokened feedback refreshed",
+    "Active dataset change hides stale scores, triggers actual compiling/evaluation and updates native/CWS/ranking to40",
+    "Original active dataset restored without losing historical results or receipt ownership"
+  ],
+  "token": {
+    "publicBefore": 25.0,
+    "fullScoreAbsentBefore": true,
+    "fullAfterToken": 100.0,
+    "detailsExpanded": true,
+    "hiddenInputsStillAbsent": true
+  },
+  "datasetSwitch": {
+    "originalDataset": 1,
+    "alternateDataset": 3,
+    "initialState": 1,
+    "freshRealScore": 40.0,
+    "freshPublicScore": 10.0,
+    "rankingChangedTo": 40
+  },
+  "status": "passed"
+}

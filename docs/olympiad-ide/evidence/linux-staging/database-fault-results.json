@@ -1,0 +1,21 @@
+{
+  "kind": "linux-staging-database-faults",
+  "checks": [
+    "CMS DB outage fails closed; unadmitted intent404 then deliberate exact retry201/200 and real judging recovery",
+    "IDE DB outage leaves CMS native/CWS and real official judging available; original workspace survives recovery"
+  ],
+  "cmsDown": {
+    "live": 200,
+    "ready": 503,
+    "context": 500,
+    "official": 500
+  },
+  "ideDown": {
+    "runtimeReady": 503,
+    "gateway": 503,
+    "context": 200,
+    "cws": 200,
+    "official": 201
+  },
+  "status": "passed"
+}

@@ -1,5 +1,6 @@
 # Native CMS and IDE database fault evidence — 2026-11-02
 
+Historical local-phase evidence. Later authorized Linux results, including the idle-connection correction and real judging, are recorded in [LINUX_ACCEPTANCE](../LINUX_ACCEPTANCE.md).
 The bounded fault run **passed** using the clean installed CMS wheel, two native service shards, actual CWS login over verified test-local TLS, a separate private runtime process, and two newly created PostgreSQL databases. `PYTHONPATH` was unset. CMS and native service imports resolved under `/private/tmp/cms-native-clean-venv/lib/python3.12/site-packages/`, not the source checkout. All services used explicit contest IDs. The test harness came from the integration checkout; no application code was changed for this test.
 
 ## Safety and exact scope

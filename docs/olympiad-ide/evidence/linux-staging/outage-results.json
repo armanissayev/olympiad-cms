@@ -1,0 +1,31 @@
+{
+  "kind": "real-linux-component-outages",
+  "checks": [
+    "Worker outage: real custom admission503 while official201->real judged result and CWS200",
+    "Runtime outage: gateway503 while native/CWS200 and official201->real judged result",
+    "EvaluationService outage: durable201/retry200 and unassisted normal restart/sweep produced real judged result",
+    "Intentional native stop honored by ResourceService; ordinary CWS multipart submission302"
+  ],
+  "official": [
+    {
+      "intentId": "3390a2ae-1522-414a-9aed-edb1dedfa5d7",
+      "submissionId": "5mqAC9drW-D-xvqTb4LMXMKKVKUlfgQenk4FBE2CwH0."
+    },
+    {
+      "intentId": "6a173b63-5fdc-4883-b6c6-572dcd0f4bf5",
+      "submissionId": "rL0zdaUz_B4eVPQCQLl9gYQTXGZzlAGrAo2D6iiLoak."
+    },
+    {
+      "intentId": "c8411baa-f987-4dc6-9623-9b6d5ad494ae",
+      "submissionId": "jeV9YyPmIMVVYgiXFAtlyEZUa8-aqaoydPpOUYjRrUw."
+    }
+  ],
+  "evaluationRecoverySeconds": 7.373,
+  "fallback": {
+    "submissionId": "qSfpih3j7cPOE5T4o2BwxhdzdYyrd5AkDdg4Qmb5grY.",
+    "intentId": null,
+    "correlation": null,
+    "realJudging": "scored"
+  },
+  "status": "passed"
+}

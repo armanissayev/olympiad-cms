@@ -21,7 +21,7 @@
 - API responses use no-store; service worker caches only exact public application assets. No CMS secrets, assertions, cookies or passwords are included in source snapshots, journals or recording.
 - Dedicated mode0600/0400 assertion files, no symlink key paths, no example secrets, no credentials in source-import/package manifest.
 
-## Deployment controls requiring rehearsal
+## Deployment controls
 
 TLS is mandatory; use the supplied nginx cookie/forwarding protections and private listener rules. Allow participant network access only to443; restrict administrator access separately. PostgreSQL, CMS RPC, private runtime and worker control ports must not be contestant-accessible. SSH/monitoring access is operator-controlled. No AWS security group or other live network setting was changed in this task.
 
@@ -31,6 +31,6 @@ Configure storage quotas/retention and monitor database size, queue age, failed 
 
 ## Limitations
 
-CMS1.5.1's old stack and upstream authentication semantics remain; this is not a CMS-wide security modernization. Pinning dependencies is not a vulnerability audit. Review deployment dependency advisories and imported-source licensing before release. The nginx/systemd templates, real helper isolation, worker least-privilege credentials, load limits, backup restoration and final-minute failure behavior require the Linux acceptance rehearsal described in VERIFICATION.md.
+CMS1.5.1's old stack and upstream authentication semantics remain; this is not a CMS-wide security modernization. Pinning dependencies is not a vulnerability audit. Review deployment dependency advisories and imported-source licensing before release. The authorized Linux rehearsal verified cgroup v2, user quotas, syscall restrictions, execution-only helper access (4750), separate official/custom accounts, web/API NoNewPrivileges, custom PrivateNetwork, restricted DB/file access, component/DB faults and matched database/application restoration. See LINUX_ACCEPTANCE and its actual boundary/syscall reports. A shared staging kernel remains a common root-helper failure domain; dedicated production execution hosts, off-host recovery and representative load limits still require review.
 
 Unit tests with fixture scores do not certify hidden-data isolation in every third-party CMS task/score plugin. Unsupported task types fall back explicitly. The first supported topology is one contest and loopback runtime; multi-host runtime transport needs a new reviewed authenticated-channel design.

@@ -2,7 +2,7 @@
 include requirements-olympiad-ide.txt
 include requirements-olympiad-ide.lock
 include tools/build_olympiad_ide.py
-recursive-include docs/olympiad-ide *.md *.json
+recursive-include docs/olympiad-ide *.md *.json *.log
 include olympiad_ide/README.md olympiad_ide/SPEC.md
 include olympiad_ide/frontend/package.json olympiad_ide/frontend/package-lock.json
 include olympiad_ide/frontend/*.ts olympiad_ide/frontend/*.js olympiad_ide/frontend/index.html
@@ -17,7 +17,7 @@ recursive-include olympiad_ide/backend/tests *.py
 include olympiad_ide/worker/__init__.py olympiad_ide/worker/Dockerfile olympiad_ide/worker/*.service
 recursive-include olympiad_ide/worker/app *.py
 recursive-include olympiad_ide/worker/tests *.py
-recursive-include olympiad_ide/tools *.py
+recursive-include olympiad_ide/tools *.py *.sh
 recursive-include olympiad_ide/deployment *.conf *.service *.example *.sql
 recursive-include olympiad_ide/docs *.md
 recursive-include cms/server/olympiadide/static *.js *.css *.html *.ttf *.woff *.woff2 *.svg *.png

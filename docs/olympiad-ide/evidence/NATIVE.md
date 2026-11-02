@@ -1,5 +1,6 @@
 # Native CMS service evidence — 2026-11-02
 
+Historical local-phase evidence. Later authorized Linux results, including the idle-connection correction and real judging, are recorded in [LINUX_ACCEPTANCE](../LINUX_ACCEPTANCE.md).
 ## Scope and environment
 
 This evidence concerns the native `OlympiadIDEService` added to CMS v1.5.1 (base commit `7c9fec8aa1a25ec93d624aebf815804dd93df9db`). Tests used macOS arm64, Python 3.12, the CMS requirements in a dedicated virtual environment, separately installed private-runtime dependencies, disposable PostgreSQL databases on loopback, and production frontend assets under `/ide/`. No AWS tunnel, existing application process, live contest database, or production credentials were used.

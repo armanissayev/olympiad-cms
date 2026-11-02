@@ -1,5 +1,6 @@
 # Native CMS frontend implementation and verification
 
+Historical local-phase evidence. Later authorized Linux results, including the idle-connection correction and real judging, are recorded in [LINUX_ACCEPTANCE](../LINUX_ACCEPTANCE.md).
 Date: 2026-11-02. Target: `/Users/isaevarman/Developer/cms/olympiad_ide/frontend`. Original `/Users/isaevarman/Developer/olympiad-ide` was not edited. Root owns Git provenance, source import, native service, runtime and CMS database implementation.
 
 ## Implemented

@@ -1,0 +1,14 @@
+{
+  "kind": "real-final-minutes",
+  "start": "2026-11-02T15:49:42.352971Z",
+  "deadline": "2026-11-02T15:51:42.352971Z",
+  "participants": 10,
+  "rateHttpPerSecond": 5,
+  "concurrency": 2,
+  "loadExitCode": 0,
+  "admittedBeforeDeadline": 10,
+  "lastReceivedAt": "2026-11-02T15:50:53.918711Z",
+  "committedReceiptAfterDeadline": 200,
+  "newLateIntent": 422,
+  "status": "passed"
+}

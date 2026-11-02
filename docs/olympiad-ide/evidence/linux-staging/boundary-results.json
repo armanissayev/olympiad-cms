@@ -1,0 +1,10 @@
+{
+  "kind": "linux-staging-boundaries",
+  "checks": [
+    "Helper4750 root:isolatestage executable only by official/custom execution accounts; CMS/native/API/ingress denied",
+    "Custom controller cannot read CMS config/key/judge cache; API cannot read CMS config/key",
+    "Custom worker network namespace cannot establish TCP to CMS RPC, CWS, native or private runtime",
+    "Custom worker CMS DB CONNECT denied, IDE workspace SELECT denied, execution job SELECT allowed"
+  ],
+  "status": "passed"
+}

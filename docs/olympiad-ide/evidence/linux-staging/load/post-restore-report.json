@@ -1,0 +1,93 @@
+{
+  "capacityClaim": "None. Only executed scenarios are measurements;350 participants remain untested unless explicitly measured here.",
+  "execution": "measured",
+  "finishedAt": "2026-11-02T17:01:23.826666+00:00",
+  "kind": "cms-progressive-load",
+  "metadata": {
+    "participantProgramExecutionsVerified": false,
+    "runner": {
+      "cpuCount": 2,
+      "machine": "x86_64",
+      "python": "3.12.16",
+      "release": "7.0.0-1014-aws",
+      "system": "Linux"
+    },
+    "serverHardware": {
+      "instance": "user-authorized dedicated AWS staging; no sizing certification",
+      "kernel": "7.0.0-1014-aws",
+      "logicalCpus": 2,
+      "memoryGiB": 3.7
+    },
+    "testSuiteCost": "custom:1small C++20 compile +1case; CMS:1small C++17 compile +4Batch cases; ~1KiB editor source",
+    "toolchains": {
+      "gcc": "g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+      "java": "OpenJDK17.0.20.1",
+      "python": "Python 3.14.4",
+      "runtimePython": "3.12.16"
+    }
+  },
+  "scenarios": [
+    {
+      "attemptedOperations": 350,
+      "configured": {
+        "concurrency": 12,
+        "durationSeconds": 600,
+        "iterations": 1,
+        "name": "context_read",
+        "participants": 350,
+        "rampSeconds": 0,
+        "ratePerSecond": 20,
+        "timeoutSeconds": 15
+      },
+      "databaseConnections": null,
+      "durationLimitReached": false,
+      "elapsedSeconds": 100.682,
+      "failedOperations": 0,
+      "httpErrors": {},
+      "httpLatencyMs": {
+        "max": 2956.372,
+        "p50": 39.663,
+        "p95": 2054.814,
+        "p99": 2476.711
+      },
+      "httpRequests": 1400,
+      "httpRequestsPerSecond": 13.905,
+      "httpStatuses": {
+        "200": 1050,
+        "302": 350
+      },
+      "metricsNote": "Server/queue/storage metrics are not collected; collect separate trusted host/database measurements.",
+      "name": "context_read",
+      "officialOutcomeUnknown": 0,
+      "operationLatencyIncludesClientPacing": true,
+      "operationLatencyMs": {
+        "max": 609.136,
+        "p50": 151.994,
+        "p95": 400.731,
+        "p99": 601.899
+      },
+      "operationsPerSecond": 3.476,
+      "participantsWithHttpRequests": 350,
+      "queueAgeSeconds": null,
+      "responseBytes": 3900110,
+      "scheduledOperations": 350,
+      "serverCpuPercent": null,
+      "serverMemoryBytes": null,
+      "storageGrowthBytes": null
+    }
+  ],
+  "schemaVersion": 1,
+  "startedAt": "2026-11-02T16:59:43.115461+00:00",
+  "target": {
+    "contestId": 1,
+    "contestName": "ide-load-linux-staging",
+    "installationId": "9cdf6391-b414-4fd1-a53a-7170e86f6951",
+    "origin": "https://localhost:28443",
+    "targetId": "a6207549-2507-40f3-9058-d83bbded3be5"
+  },
+  "validation": {
+    "maximumDurationSeconds": 600,
+    "maximumHttpRequests": 2100,
+    "participants": 350
+  }
+}

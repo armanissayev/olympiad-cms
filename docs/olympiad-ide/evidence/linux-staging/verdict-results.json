@@ -1,0 +1,62 @@
+{
+  "kind": "real-linux-official-failure-verdicts",
+  "cases": [
+    {
+      "fixture": "compilation_error",
+      "language": "C++17 / g++",
+      "submissionId": "mFQ1Fme9nxfLcxqgJ7C08bHrtT3V-WHzlGkEB1zw_3U.",
+      "sourceSha256": "a4535980b3f7c34b36e3a44732c15251540253fa508f4513bb310c006f23cfad",
+      "participantTerminalState": 2,
+      "compilation": "fail",
+      "evaluation": null,
+      "fullScoreOperatorOnly": 0.0,
+      "publicScore": 0.0,
+      "evaluatedCases": 0,
+      "restrictedDataAbsent": true,
+      "compilerDiagnosticVisible": true
+    },
+    {
+      "fixture": "wrong_answer",
+      "language": "C++17 / g++",
+      "submissionId": "t7iT0ZTSKDMk8M4j-NN2D2erodqUqgLNB9_2r-zfoQo.",
+      "sourceSha256": "15c683e7903f0ab71f4524f03cfdda49a0a69dc90bf6de34cb50a96208b3615b",
+      "participantTerminalState": 5,
+      "compilation": "ok",
+      "evaluation": "ok",
+      "fullScoreOperatorOnly": 0.0,
+      "publicScore": 0.0,
+      "evaluatedCases": 4,
+      "restrictedDataAbsent": true,
+      "compilerDiagnosticVisible": false
+    },
+    {
+      "fixture": "runtime_error",
+      "language": "Python 3 / CPython",
+      "submissionId": "ZGNpIOHWW_3pDekLMtTo0Dadlxm0ihr4EuKHijNFO1g.",
+      "sourceSha256": "f8c93befbd89ab6d0fb0aa73056ad5eaa33ff622490d9292b9f0a0ef6252480a",
+      "participantTerminalState": 5,
+      "compilation": "ok",
+      "evaluation": "ok",
+      "fullScoreOperatorOnly": 0.0,
+      "publicScore": 0.0,
+      "evaluatedCases": 4,
+      "restrictedDataAbsent": true,
+      "compilerDiagnosticVisible": true
+    },
+    {
+      "fixture": "time_limit",
+      "language": "Python 3 / CPython",
+      "submissionId": "c4pVn7GDEr8vFRax28lcMPcTb_Zeqp4ZYY5imTmw8ws.",
+      "sourceSha256": "6f03a883a34c8b19ec2dba2a1e2941488319b72a4d2f441aa474cff0744647c1",
+      "participantTerminalState": 5,
+      "compilation": "ok",
+      "evaluation": "ok",
+      "fullScoreOperatorOnly": 0.0,
+      "publicScore": 0.0,
+      "evaluatedCases": 4,
+      "restrictedDataAbsent": true,
+      "compilerDiagnosticVisible": true
+    }
+  ],
+  "status": "passed"
+}

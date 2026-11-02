@@ -1,0 +1,49 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ TestIdleConnectionRecovery.test_killed_idle_connection_is_replaced_before_request _
+/opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1276: in _execute_context
+    self.dialect.do_execute(
+/opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py:608: in do_execute
+    cursor.execute(statement, parameters)
+E   psycopg2.OperationalError: server closed the connection unexpectedly
+E   	This probably means the server terminated abnormally
+E   	before or while processing the request.
+
+The above exception was the direct cause of the following exception:
+/opt/cms-ide-stage/source/cmstestsuite/unit_tests/db/connection_recovery_test.py:24: in test_killed_idle_connection_is_replaced_before_request
+    self.assertNotEqual(recovered.execute("SELECT pg_backend_pid()").scalar(), original_pid)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1003: in execute
+    return self._execute_text(object_, multiparams, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1172: in _execute_text
+    ret = self._execute_context(
+/opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1316: in _execute_context
+    self._handle_dbapi_exception(
+/opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1510: in _handle_dbapi_exception
+    util.raise_(
+/opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/sqlalchemy/util/compat.py:182: in raise_
+    raise exception
+/opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1276: in _execute_context
+    self.dialect.do_execute(
+/opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py:608: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly
+E   	This probably means the server terminated abnormally
+E   	before or while processing the request.
+E   
+E   [SQL: SELECT pg_backend_pid()]
+E   (Background on this error at: http://sqlalche.me/e/13/e3q8)
+=============================== warnings summary ===============================
+../../../../opt/cms-ide-stage/source/cms/plugin.py:24
+  /opt/cms-ide-stage/source/cms/plugin.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+    import pkg_resources
+
+../../../../opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/sqlalchemy/sql/sqltypes.py:1902
+  /opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/sqlalchemy/sql/sqltypes.py:1902: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+    epoch = dt.datetime.utcfromtimestamp(0)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED ../../../../opt/cms-ide-stage/source/cmstestsuite/unit_tests/db/connection_recovery_test.py::TestIdleConnectionRecovery::test_killed_idle_connection_is_replaced_before_request
+1 failed, 2 warnings in 0.63s

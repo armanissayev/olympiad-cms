@@ -1,5 +1,6 @@
 # Source, wheel and clean installation verification
 
+Historical local-phase evidence. Later authorized Linux results, including the idle-connection correction and real judging, are recorded in [LINUX_ACCEPTANCE](../LINUX_ACCEPTANCE.md).
 Recorded 2 November 2026 on macOS arm64/Python3.12.6/Node24.19.0. The source repository is complete; there are no runtime imports/symlinks pointing to the original IDE. All124 original source hashes and sizes were independently rechecked unchanged. Original-source paths appear only in provenance/historical documentation.
 
 The opt-in frontend build uses the committed lockfile and stages13 public assets with SHA256 in a generated manifest. Ordinary CMS installation does not invoke Node. The upstream global build ignore is explicitly overridden for the frontend build-plugin source/tests; generated build output, dependencies, keys and environment state remain ignored. MANIFEST.in includes frontend source/lock/build plugins, supported Node marker, browser verifier, private backend/worker sources, load guide, deployment templates and the asset manifest needed to rebuild an extracted sdist.

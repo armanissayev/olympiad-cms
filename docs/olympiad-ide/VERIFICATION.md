@@ -1,93 +1,53 @@
 # Verification and acceptance status
 
-Updated 2 November 2026. Tests used a new PostgreSQL14 cluster on127.0.0.1:55459, disposable databases/schemas, generated users/secrets and temporary browser profiles. No AWS/live contest or existing user database was used. macOS arm64 has no approved Linux isolate/CMS Worker environment.
+Updated 2 November 2026 after the authorized Linux staging rehearsal. **The disposable beta end-to-end workflow passed.** The same CMS participant used Monaco, real isolate Run/Stop, official C++/Python Submit and actual CMS judging/public scores, with receipt, outage and restored-database recovery. Live contest readiness remains conditional.
 
-## Observed results
+Read [LINUX_ACCEPTANCE](LINUX_ACCEPTANCE.md) for exact commands, versions, failures, the 12-requirement matrix, load figures, restore proof and release gates. Sanitized outputs are under [evidence/linux-staging](evidence/linux-staging/); reproducible commands/configuration/test sources are in the [staging guide](../../olympiad_ide/tools/linux_staging/README.md).
+
+## Current real Linux results
 
 | Check | Actual outcome |
 | --- | --- |
-| Untouched CMSv1.5.1 complete unit baseline | 670 passed,9 skipped,6 shared-mime-info failures |
-| Final integrated CMS complete unit suite | **739 passed,9 skipped,6 same failures;28 load/fault-safety subtests passed** |
-| Focused CMS admission/feedback/migration/dump tests | 46 passed |
-| Existing CWS submission/phase tests | 99 passed,1 existing environment skip |
-| Native context/lifecycle plus original ResourceService | 28 passed (25 new plus3 existing) |
-| Database fault harness safety guards | 3 passed,10 subtests |
-| Imported private runtime PostgreSQL suite | **75 passed** |
-| Frontend unit suite | **81 passed**; lint/typecheck/build passed on Node24.19.0 |
-| Retained standalone production browser suite | **13 passed,1 real-worker skip** |
-| Imported worker policy/sandbox collection | **7 passed,26 Linux tests skipped** |
-| Real-process native HTTPS smoke | Passed actual CWS login, runtime persistence, C++/Python admission, source bytes, receipt/restart/deadline/logout, two-shard lifecycle and runtime outage |
-| Real native Chromium acceptance | Passed immutable snapshot, lost response/reload with one POST, history, /ide offline assets/Monaco workers, logout/local retention |
-| Progressive load tool | 9 tests/18 subtests; tiny TLS run1 participant,2 logins,5 context reads,11 HTTP requests,0 errors |
-| Clean package/install | See evidence/PACKAGING.md for final distribution verification |
-| Local PostgreSQL backup/restore | Passed exact28CMS/21IDE tables, source/receipt/principal IDs; see evidence/RESTORE.md |
-| Separate CMS/IDE DB outage and recovery | Passed installed-wheel actual-process faults; see evidence/DATABASE_FAULTS.md |
-| Real custom Linux execution and CMS judging | **Not run; blocked by unavailable authorized Linux environment** |
-| 300–350 participants, production final minutes/deployment | **Not run; no capacity claim** |
+| Mandatory isolate tests, approval unset during tests | **26 passed, 7 deselected**, twice; none of the 26 skipped |
+| Remaining worker policies | 6 passed, 1 expected non-Linux-denial skip, 26 deselected |
+| Complete CMS suite after DB recovery fix | **746 passed, 9 skipped, 28 subtests passed**; Linux MIME checks pass |
+| Separate IDE PostgreSQL suite | **75 passed** |
+| Frontend under Node 22 | **81 passed**; npm ci, typecheck, lint and build passed |
+| Real-worker native Chromium | 14 checks passed initially and after restoration; zero page errors |
+| Actual official judging | Correct C++/Python scored 100 operator/25 public; four evaluations each; real CE/WA/RTE/TLE and permitted diagnostics verified |
+| CWS/Admin/ranking; tokens/rejudge/dataset | Passed actual visibility, token disclosure, fresh rejudging, alternate dataset scores 40/10 and ranking 40, then original dataset restored |
+| Component outages and CWS fallback | Passed custom worker, private API, EvaluationService and native outages; ordinary CWS fallback was really judged |
+| Separate CMS/IDE DB faults | Passed after idle-connection validation fix 349d1e95; no false success or in-flight transaction replay |
+| Matched database/application restoration | Passed 28 CMS/21 IDE tables, source/large-object bytes, 351 principals and 353 workspace mappings; restored copies active; browser passed afterward |
+| Progressive 1→350-account workload | 4,561 HTTP requests, zero HTTP errors; **five short-poll terminal assertions failed**; those exact five admissions later scored 100; original report retained |
+| Actual 120-second deadline mixture | 10 actors, 420 HTTP requests, zero errors; real custom/official results; post-deadline receipt GET 200 and new intent 422 |
+| Final 350-account login/context check | 350 fresh logins, 1,400 HTTP requests, zero errors; not a sustained editor-capacity test |
+| Host security boundaries | Actual cgroup v2, user quotas, seccomp and toolchains; execution-only helper 4750; web/API denied; custom network, DB and file restrictions verified |
 
-Targeted tests overlap the full CMS suite; totals must not be added as unique coverage. Original IDE baseline and historical Phase4/AWS reports remain separate in BASELINE.md and evidence/{FRONTEND,BACKEND,BROWSER}.md.
+Focused checks overlap full suites and are not added as distinct tests. Logs retain warnings. All application listeners are loopback. Only the explicitly authorized EC2 host was accessed; no production data, DNS, networking/security-group change or other AWS host was involved.
 
-The six complete-suite failures are the same untouched-CMS failures in cmscommon/mimetypes_test.py (icon/name/file-name lookup). This Mac lacks the configured Linux shared-mime-info database. They were not removed or turned into skips. The integrated suite is therefore not reported as entirely green. Existing pkg_resources/Python3.12 deprecations and upstream fake-sweeper teardown logging warnings remain; the latter originates in io/triggeredservice_test.py's untracked loop. New recovery tests do not start a sweeper.
+## Failures and correction
 
-## Executed commands
+The first Linux CMS DB outage left a committed submission stuck after a stale pooled connection failed in the judging path. A real PostgreSQL regression failed before and passed after `pool_pre_ping=True`, commit `349d1e9559023b57b28d3e0dac95ca2b97c4a0dc`. The full CMS suite and complete fault/recovery retest then passed. The fix does not replay in-flight transactions or official POSTs.
 
-These exact local paths describe this verification environment, not production secrets/configuration templates. Configuration files contain only generated disposable credentials and are intentionally not committed.
+Five official POST 201 responses in the main load run were known admissions, but its roughly two-second final feedback window expired before scoring. The exit 1 report and five failures remain intact. Separate read-only source/result/participant reconciliation proves those exact submissions later scored 100. Longer bounded polling in the independent final-minute run passed. Cold browser startup, a Stop fixture race, isolate UID provisioning, nginx temp permissions and unit-fixture corrections are recorded in LINUX_ACCEPTANCE.
 
-~~~sh
-# CMS complete integrated regression, from the CMS checkout
-CMS_CONFIG=/private/tmp/cms-regression.conf PYTHONPATH=/Users/isaevarman/Developer/cms /private/tmp/cms-integration-venv/bin/python -m pytest cmstestsuite/unit_tests -q --tb=short
+## Historical local verification
 
-# Private runtime; the suite creates isolated PostgreSQL schemas
-cd /Users/isaevarman/Developer/cms/olympiad_ide/backend
-TEST_DATABASE_URL=postgresql+psycopg://isaevarman@127.0.0.1:55459/ideruntime /private/tmp/olympiad-runtime-venv/bin/python -m pytest -q --tb=short
+The earlier Mac phase used generated PostgreSQL 14 databases on 127.0.0.1:55459 and no remote worker. Its individual evidence documents remain preserved and labeled as historical. Their “Linux not run” limits are superseded only by the new Linux report.
 
-# Worker collection: no approval bypass and no Linux execution on macOS
-cd /Users/isaevarman/Developer/cms
-PYTHONPATH=/Users/isaevarman/Developer/cms/olympiad_ide:/Users/isaevarman/Developer/cms/olympiad_ide/backend /private/tmp/olympiad-runtime-venv/bin/python -m pytest olympiad_ide/worker/tests -q --tb=short
+| Earlier local check | Historical outcome |
+| --- | --- |
+| Untouched CMS v1.5.1 | 670 passed, 9 skipped, 6 shared-mime-info failures |
+| Integrated CMS | 739 passed, 9 skipped, the same 6 Mac MIME failures; 28 subtests |
+| Runtime/frontend/standalone browser | 75/81/13 passed; one real-worker browser skip |
+| Worker on Mac | 7 policy passes, 26 Linux skips |
+| Native HTTPS/process/browser | Real login, admission, receipt, lifecycle and offline/recovery; no judging claim at that stage |
+| Tiny local load | 1 participant, 11 HTTP requests, zero errors |
+| Local restore, faults and packaging | Earlier identity-preserving restore and clean-wheel checks; see individual evidence |
 
-# Frontend under Node24 on PATH
-cd /Users/isaevarman/Developer/cms/olympiad_ide/frontend
-npm ci
-npm test
-npm run typecheck
-npm run lint
-npm run build
-~~~
+All 124 original source hashes still match SOURCE_IMPORT.json. Historical checks are not added to Linux totals.
 
-The frontend/native/standalone browser exact fixture commands and results are in evidence/FRONTEND_INTEGRATION.md. The real-process harness command is in evidence/NATIVE.md; it refuses a populated/non-fortesting CMS database and starts only its own LogService/ResourceService/CWS/native processes. It requires a separately started private runtime and builds a temporary local TLS ingress. It does not start judging/sandbox workers.
+## Remaining release gates
 
-Admission/dump/race commands are in evidence/ADMISSION.md; load inputs/rates/runner metadata and percentiles are in evidence/LOAD.md. Temporary raw logs are under /private/tmp; durable sanitized summaries are committed. Initial sandbox-denied socket attempts are not test passes; authorized local reruns are distinguished.
-
-## Requirement matrix
-
-| Requirement | Evidence and test location | Status/limit |
-| --- | --- | --- |
-| Audited pin/import/build/installed launchers | BASELINE, SOURCE_IMPORT, PACKAGING; build tool and setup registration | Implemented; final packaging evidence |
-| Optional config, valid/invalid settings, disabled discovery | service/OlympiadIDEServiceTest.py | Passed; core config absent/disabled preserved |
-| RS launch/status/log/restart/intentional stop/duplicate prevention/two shards | cmstestsuite/olympiadide_smoke.py; NATIVE | Actual processes passed |
-| CWS login, expiry/password/participation/IP rules, forged principal | service/OlympiadIDEContextTest.py and existing authentication_test.py; real browser | Passed targeted/retained tests; follows upstream IP autologin semantics |
-| Assertion signature/audience/expiry/request/replay/direct rejection | backend/tests/test_cms_identity.py | Passed real PostgreSQL, including concurrent nonce consumption |
-| User/task/contest/job/telemetry/workspace isolation, no legacy claim | test_cms_identity.py; frontend CMS tests | Passed; source-only legacy import |
-| Live snapshots, UTF-8/file/language map and exact CMS bytes | native admission_test.py, frontend cms tests, real browser | Passed C++/Python admission; no actual compilation claim |
-| Shared count/interval/deadline/extra-time policy | admission_test.py, existing workflow/phase tests | Passed including independent-process CWS/native races |
-| Duplicate/changed intent, before-commit rollback, after-commit lost response, restart | admission_test.py, real browser and native smoke | One durable submission per intent; no blind CWS retry |
-| Missed/duplicate notification recovery | admission tests and upstream recovery enumeration | Durable work discovered; actual worker execution still blocked |
-| Public/token/full/active-dataset/rejudge feedback | feedback_test.py, shared CWS serializers | Fixture results passed; real judge/score/ranking remains blocked |
-| Offline /ide reload, exact service-worker scope, Monaco workers | frontend/offline tests and real native Chromium | Passed |
-| Split editor, persistence, replay, custom contracts | original63 frontend retained, backend/browser/worker-policy suites | Passed available suites;26Linux+1browser skips |
-| Runtime failure independent of official/CWS | final actual-process outage injection | runtime503 while context/CWS200 and official201 |
-| Missing worker capacity and workspace quotas | backend CMS tests, native browser | Passed; no unrestricted execution fallback |
-| CMS DB failure/commit errors, identity-store failure | actual installed-wheel fixture plus guarded readiness/rollback tests | Actual separate CMS/IDE DB outages and receipt/workspace recovery passed; see DATABASE_FAULTS |
-| Telemetry quota/gaps without submission dependency | existing telemetry tests, separate receipt path, UI tests | Passed available contracts; production quota-stress not run |
-| Additive migrations, dump-v45 and logical roundtrip | admission/receipt_dump tests, Alembic checks | Passed available tests; see RESTORE for physical-ID rehearsal |
-| Separate roles/network/helper privileges | source/config review, worker-role.sql | Actual Linux restricted-role/network verification remains |
-| CWS/Admin/judging/scoring/ranking disabled-feature regression | full CMS unit suite, disabled old-schema CWS, actual CWS smoke | Admin/scoring unit coverage; full real distributed judging/ranking not run |
-| Progressive login/autosave/telemetry/run/submit/final minutes | cms_load.py + validated fixture scenarios | Only tiny login/context measured;350 and mutating runs untested |
-
-## Required Linux acceptance
-
-Use authorized disposable Linux infrastructure and the committed sources/locks. First validate installation, nginx configuration/cookies, separate roles and health. Restore disposable backups and verify original identity IDs/source hashes. Run RUN_LINUX_SANDBOX_TESTS=1 with the retained worker suite under its documented approved isolation conditions, then the REAL_LINUX_WORKER=1 browser scenario with real worker capacity. Record kernel/isolate/toolchain versions, limits, cancellation, fresh boxes and cleanup. Do not set sandbox approval merely to make tests start.
-
-Next run actual CMS EvaluationService, judging Workers, scoring and configured ranking for C++ and Python submissions created through /ide/. Verify real diagnostics/score visibility, CWS/Admin/ranking appearance, token disclosure, rejudging/dataset switches and deadline fault cases. Repeat separate CMS/IDE DB outage/recovery and runtime/worker fallback on the deployment topology. Local DB fault checks passed; CWS temporarily returned500 from an upstream stale connection before recovering, as recorded in DATABASE_FAULTS.md.
-
-Finally ramp the load tool on300–350 distinct disposable participants with realistic arrival rates and separate custom compilation limits. Execute autosave, telemetry, custom Run, official submission and final_minutes fixtures; collect p50/p95/p99, queue age, DB connections, disk growth, CPU/RAM and errors. Current unknown metrics are null, not zero. Acceptance requires evidence for all eight user steps; real custom execution and real official feedback are still outstanding.
+The beta remains available through the private SSH tunnel. A live contest requires dependency/security/licence review, dedicated production execution isolation, timing calibration, production TLS/access/retention/backup policy, off-host recovery and representative sustained 300–350-editor/telemetry/compile/deadline stress tests. Short same-host measurements do not certify that capacity. No reboot, production rollout, merge, push or PR was performed.

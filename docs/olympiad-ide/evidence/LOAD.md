@@ -1,5 +1,6 @@
 # Progressive-load tooling and tiny local measurement
 
+Historical local-phase evidence. Later authorized Linux results, including the idle-connection correction and real judging, are recorded in [LINUX_ACCEPTANCE](../LINUX_ACCEPTANCE.md).
 On2026-11-02 the new `olympiad_ide/tools/cms_load.py` ran against the final disposable native CMS HTTPS fixture at `https://localhost:18443`. It used one generated participant, separate fresh login sessions, and no workspace/telemetry/run/official submission mutations. Credentials were read from an external mode0600 file, never printed or committed. TLS was verified against the fixture's certificate. Hardware: local macOS/Darwin25.5.0 arm64,8logicalCPUs, Python3.12.6. Worker toolchains and representative test-suite cost were not measured because no participant program executed.
 
 Command (external generated target manifest and credentials; UUID here identifies only that disposable run):

@@ -54,6 +54,12 @@ The restore-test services must refer to new empty databases. Restore protected C
 
 CMS's logical DumpExporter/Importer is different: it can remap numeric IDs. Tests prove source bytes, receipt relationships and original scope/hash/correlation survive logical export/import, but original scope is then provenance, not authority to adopt runtime data under new IDs. Stable receipt lookup resolves its owned stored relationship first. Do not assume identical runtime principal after logical import; use a new installation trust domain or an explicitly reviewed mapping/reconciliation. Production restore and this cross-system reconciliation remain release gates.
 
+## Completed Linux staging restoration
+
+On 2 November 2026, both ResourceService owners and runtime/custom worker/ranking writers were quiesced. PostgreSQL18.6 restored the task-owned CMS/IDE databases into new empty `cms_restore_21c7bd2d5bfortesting` and `ide_restore_d4008d5dedfortesting` databases. All 28 CMS/21 IDE tables, row fingerprints, schema/constraints/indexes/sequences, large-object bytes and 28 native source hashes matched. Exact IDs, 351 principals, 353 workspace mappings and Alembic `f5a001` were preserved. Originals remain retained. The application switched to the restored copies and the same participant recovered workspaces, receipts and judged responses. The real-worker browser and 350-account login/context checks passed afterward.
+
+This is an executed same-cluster logical PostgreSQL dump/restore. A physical basebackup, cross-database atomic snapshot and off-host disaster recovery were not tested. Protected configuration/ranking state was archived but not restored onto a second host. Exact commands/counts/limits are in [LINUX_ACCEPTANCE](LINUX_ACCEPTANCE.md) and [restore evidence](evidence/linux-staging/restore-application-results.json). Production recovery remains a separate gate.
+
 ## Rollback
 
 Disable olympiad_ide_enabled, intentionally stop native service using ResourceService, remove its ingress route, and stop the independent runtime/worker units when no longer needed. CWS remains the fallback. Retain new tables, backups, installation UUID, user code, local storage and private key backups. Re-enabling restores the same scopes. Do not downgrade CMS dump-model readers over newly written version45 exports without an explicit conversion.

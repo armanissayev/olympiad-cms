@@ -1,0 +1,15 @@
+real CWS login { status: 200, url: 'https://localhost:28443/' }
+native bar Disposable native CMS Linux acceptance
+staging-participant
+Contest active · 46:06:22
+cppsum — Integer sum — C++
+pysum — Integer sum — Python
+Submit & official feedback
+CMS participant page
+Real isolated custom Run measured 556364aa-9553-4971-a986-95366b602fbb
+Real isolated running cancellation verified 5fe54687-a743-4ceb-9455-b969f90c7514
+C++ native receipt 201 admitted W_3od5ES4byCUlj5YAYjbSoOqeGmigVBd4v3YPaRckU.
+Python lost-ack reload reconciled 55NKswERzWxXQS1LZ9Z0A_vug8sMhaTXThIvB5PUbIk. single POST
+native offline reload and authentication recovery passed
+real CWS logout blocks IDE and retains scoped local database
+errors []

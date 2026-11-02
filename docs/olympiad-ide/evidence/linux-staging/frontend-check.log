@@ -1,0 +1,65 @@
+npm WARN deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 240 packages in 6s
+
+61 packages are looking for funding
+  run `npm fund` for details
+
+> olympiad-ide@0.1.0 typecheck
+> tsc -b --pretty false
+
+
+> olympiad-ide@0.1.0 lint
+> eslint . --max-warnings 0
+
+
+> olympiad-ide@0.1.0 test
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/opt/cms-ide-stage/source/olympiad_ide/frontend[39m
+
+ [32m✓[39m src/telemetry/telemetry.test.ts [2m([22m[2m21 tests[22m[2m)[22m[33m 427[2mms[22m[39m
+ [32m✓[39m src/execution/execution.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 270[2mms[22m[39m
+ [32m✓[39m src/persistence/repository.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 266[2mms[22m[39m
+ [32m✓[39m src/cms/submissions.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 65[2mms[22m[39m
+ [32m✓[39m src/store/workspaceStore.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m src/persistence/controller.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 287[2mms[22m[39m
+ [32m✓[39m src/cms/session.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+ [32m✓[39m src/editor/monaco.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m build/offlineShell.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/persistence/api.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 10[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m10 passed[39m[22m[90m (10)[39m
+[2m      Tests [22m [1m[32m81 passed[39m[22m[90m (81)[39m
+[2m   Start at [22m 15:16:29
+[2m   Duration [22m 8.23s[2m (transform 450ms, setup 273ms, import 913ms, tests 1.39s, environment 3.27s)[22m
+
+
+> olympiad-ide@0.1.0 build
+> tsc -b && vite build
+
+vite v6.4.4 building for production...
+transforming...
+✓ 2253 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                             0.54 kB │ gzip:   0.32 kB
+dist/sw.js                                  1.46 kB
+dist/assets/editor.worker-BctYAlYZ.js     231.29 kB
+dist/assets/boot-TThBJXy8.css              12.25 kB │ gzip:   3.20 kB
+dist/assets/index-CfvyH2Kv.css             26.27 kB │ gzip:   6.57 kB
+dist/assets/editor-CP2cXDiA.css            66.41 kB │ gzip:  11.12 kB
+dist/assets/preload-helper-aztwcE6W.js      1.11 kB │ gzip:   0.65 kB
+dist/assets/java-B_fMsGYe.js                3.47 kB │ gzip:   1.53 kB
+dist/assets/python-6aFPo-3s.js              4.49 kB │ gzip:   1.85 kB
+dist/assets/cpp-CLLBncYj.js                 5.55 kB │ gzip:   2.22 kB
+dist/assets/index-CMP1IjdL.js             149.59 kB │ gzip:  48.50 kB
+dist/assets/boot-BemkXN87.js              727.11 kB │ gzip: 198.80 kB
+dist/assets/editor.api-D8ma7D2Q.js      2,284.78 kB │ gzip: 588.69 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 11.62s

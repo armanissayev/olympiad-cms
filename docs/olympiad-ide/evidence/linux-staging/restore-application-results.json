@@ -1,0 +1,160 @@
+{
+  "kind": "linux-staging-application-restore",
+  "checks": [
+    "quiesced application writers",
+    "new empty PostgreSQL destinations",
+    "all table rows/schema/sequences/large objects compared",
+    "same participant session and workspace UUIDs recover through native gateway",
+    "same committed receipts and actual judged feedback recover",
+    "ordinary CWS available after restored application restart"
+  ],
+  "status": "passed",
+  "restoredDatabases": {
+    "cmside_linux_fortesting": "cms_restore_21c7bd2d5bfortesting",
+    "ide_linux_staging": "ide_restore_d4008d5dedfortesting"
+  },
+  "workspaceFingerprintsCompared": 2,
+  "committedReceiptsCompared": 2,
+  "originalDatabasesRetained": true,
+  "sourceDataPrinted": false,
+  "restoreReport": {
+    "crossDatabaseAtomicity": false,
+    "databases": [
+      {
+        "alembicVersions": null,
+        "allRowFingerprintsEqual": true,
+        "cmsDatabaseVersionTable": false,
+        "cmsModelDumpVersion": 45,
+        "columnsConstraintsIndexesSequencesEqual": true,
+        "commands": [
+          {
+            "command": "/usr/lib/postgresql/18/bin/createdb -h /run/cms-ide-stage-pg -p 15432 -U stagepguser --no-password --maintenance-db=cmside_linux_fortesting --template=template0 --owner=cmsstage cms_restore_21c7bd2d5bfortesting",
+            "exitCode": 0,
+            "seconds": 0.243
+          },
+          {
+            "command": "/usr/lib/postgresql/18/bin/pg_dump -h /run/cms-ide-stage-pg -p 15432 -U stagepguser --no-password --format=custom --snapshot=00000017-00000112-1 --file=/var/lib/cms-ide-stage/backups/restore-b5f6v766/cmside_linux_fortesting.dump cmside_linux_fortesting",
+            "exitCode": 0,
+            "seconds": 0.171
+          },
+          {
+            "command": "/usr/lib/postgresql/18/bin/pg_restore -h /run/cms-ide-stage-pg -p 15432 -U stagepguser --no-password --exit-on-error --single-transaction --dbname=cms_restore_21c7bd2d5bfortesting /var/lib/cms-ide-stage/backups/restore-b5f6v766/cmside_linux_fortesting.dump",
+            "exitCode": 0,
+            "seconds": 0.129
+          }
+        ],
+        "dumpBytes": 917046,
+        "dumpMode": "0o600",
+        "dumpSHA256": "daa70a5d90313977d18d063aaf012dc3ebb97d1b0ee3ee06bddc5faa83d9e096",
+        "exactCMSFileBytesCompared": 28,
+        "largeObjectBytesEqual": true,
+        "largeObjectsCompared": 19,
+        "principalMappingsCompared": null,
+        "source": "cmside_linux_fortesting",
+        "status": "passed",
+        "tableCounts": {
+          "admins": 1,
+          "announcements": 0,
+          "attachments": 2,
+          "contests": 1,
+          "datasets": 3,
+          "evaluations": 128,
+          "executables": 32,
+          "files": 30,
+          "fsobjects": 19,
+          "managers": 0,
+          "messages": 0,
+          "olympiad_ide_receipts": 28,
+          "participations": 351,
+          "printjobs": 0,
+          "questions": 0,
+          "statements": 2,
+          "submission_results": 32,
+          "submissions": 30,
+          "tasks": 2,
+          "teams": 0,
+          "testcases": 12,
+          "tokens": 1,
+          "user_test_executables": 0,
+          "user_test_files": 0,
+          "user_test_managers": 0,
+          "user_test_results": 0,
+          "user_tests": 0,
+          "users": 351
+        },
+        "tablesCompared": 28,
+        "target": "cms_restore_21c7bd2d5bfortesting",
+        "workspaceTaskMappingsCompared": null
+      },
+      {
+        "alembicVersions": [
+          "f5a001"
+        ],
+        "allRowFingerprintsEqual": true,
+        "cmsDatabaseVersionTable": null,
+        "cmsModelDumpVersion": null,
+        "columnsConstraintsIndexesSequencesEqual": true,
+        "commands": [
+          {
+            "command": "/usr/lib/postgresql/18/bin/createdb -h /run/cms-ide-stage-pg -p 15432 -U stagepguser --no-password --maintenance-db=ide_linux_staging --template=template0 --owner=idemigratestage ide_restore_d4008d5dedfortesting",
+            "exitCode": 0,
+            "seconds": 0.042
+          },
+          {
+            "command": "/usr/lib/postgresql/18/bin/pg_dump -h /run/cms-ide-stage-pg -p 15432 -U stagepguser --no-password --format=custom --snapshot=00000012-00003939-1 --file=/var/lib/cms-ide-stage/backups/restore-b5f6v766/ide_linux_staging.dump ide_linux_staging",
+            "exitCode": 0,
+            "seconds": 0.105
+          },
+          {
+            "command": "/usr/lib/postgresql/18/bin/pg_restore -h /run/cms-ide-stage-pg -p 15432 -U stagepguser --no-password --exit-on-error --single-transaction --dbname=ide_restore_d4008d5dedfortesting /var/lib/cms-ide-stage/backups/restore-b5f6v766/ide_linux_staging.dump",
+            "exitCode": 0,
+            "seconds": 0.093
+          }
+        ],
+        "dumpBytes": 623755,
+        "dumpMode": "0o600",
+        "dumpSHA256": "18fda9c82b7bacf43a33dfe0ab7b028f34d80043d846c4f2cb687420c7747269",
+        "exactCMSFileBytesCompared": null,
+        "largeObjectBytesEqual": true,
+        "largeObjectsCompared": 0,
+        "principalMappingsCompared": 351,
+        "source": "ide_linux_staging",
+        "status": "passed",
+        "tableCounts": {
+          "alembic_version": 1,
+          "cms_assertion_nonces": 84,
+          "cms_principals": 351,
+          "cms_workspace_bindings": 353,
+          "development_identities": 351,
+          "execution_events": 186,
+          "execution_jobs": 23,
+          "execution_resource_receipts": 6,
+          "execution_resources": 6,
+          "execution_snapshots": 23,
+          "execution_workers": 5,
+          "file_nodes": 362,
+          "recovery_snapshots": 369,
+          "synchronization_operations": 1424,
+          "telemetry_batches": 368,
+          "telemetry_checkpoints": 371,
+          "telemetry_events": 1022,
+          "telemetry_sessions": 365,
+          "workspace_revisions": 1424,
+          "workspace_settings": 353,
+          "workspaces": 353
+        },
+        "tablesCompared": 21,
+        "target": "ide_restore_d4008d5dedfortesting",
+        "workspaceTaskMappingsCompared": 353
+      }
+    ],
+    "directory": "/var/lib/cms-ide-stage/backups/restore-b5f6v766",
+    "host": "/run/cms-ide-stage-pg",
+    "kind": "linux-staging-postgresql-restore-rehearsal",
+    "port": 15432,
+    "postgresTools": "18.6 Ubuntu",
+    "productionReadinessClaim": false,
+    "sourceDataPrinted": false,
+    "status": "passed"
+  }
+}

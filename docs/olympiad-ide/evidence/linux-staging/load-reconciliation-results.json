@@ -1,0 +1,65 @@
+{
+  "kind": "short-poll-load-reconciliation",
+  "readOnly": true,
+  "reconciledAt": "2026-11-02T17:08:55.932085+00:00",
+  "originalReportUnchanged": true,
+  "originalFailedOperations": 5,
+  "submissions": [
+    {
+      "databaseId": 5,
+      "submissionId": "YuZ08Rn3nRVQpAKs1b1kiZFTAH6Z3D8z8t3NTbmVII8.",
+      "compileOutcome": "ok",
+      "evaluationOutcome": "ok",
+      "fullScoreOperatorOnly": 100.0,
+      "publicScore": 25.0,
+      "evaluatedCases": 4,
+      "sourceSha256": "e97c1241b9ec0b0d2305eb018e060cea57ec5a401bbc45635bacceffbf1908e4",
+      "participantTerminalState": 5
+    },
+    {
+      "databaseId": 6,
+      "submissionId": "Dl_49rKsw8HqySxdCYWQBspsQF5yZfKyV69XGt2zq3o.",
+      "compileOutcome": "ok",
+      "evaluationOutcome": "ok",
+      "fullScoreOperatorOnly": 100.0,
+      "publicScore": 25.0,
+      "evaluatedCases": 4,
+      "sourceSha256": "e97c1241b9ec0b0d2305eb018e060cea57ec5a401bbc45635bacceffbf1908e4",
+      "participantTerminalState": 5
+    },
+    {
+      "databaseId": 7,
+      "submissionId": "nQNbZJiL8zs_uLOYEqSxVsyG0zHymZtORFMy7yW1Vcc.",
+      "compileOutcome": "ok",
+      "evaluationOutcome": "ok",
+      "fullScoreOperatorOnly": 100.0,
+      "publicScore": 25.0,
+      "evaluatedCases": 4,
+      "sourceSha256": "e97c1241b9ec0b0d2305eb018e060cea57ec5a401bbc45635bacceffbf1908e4",
+      "participantTerminalState": 5
+    },
+    {
+      "databaseId": 8,
+      "submissionId": "IM50JNhfVwwA29gi2bM3TY5pPc7tUBz4m-KA9qlsNjA.",
+      "compileOutcome": "ok",
+      "evaluationOutcome": "ok",
+      "fullScoreOperatorOnly": 100.0,
+      "publicScore": 25.0,
+      "evaluatedCases": 4,
+      "sourceSha256": "e97c1241b9ec0b0d2305eb018e060cea57ec5a401bbc45635bacceffbf1908e4",
+      "participantTerminalState": 5
+    },
+    {
+      "databaseId": 9,
+      "submissionId": "3es-1gZD9h5BUdBVMr-ueisWRTdM4hWxq2-zUeHD9pI.",
+      "compileOutcome": "ok",
+      "evaluationOutcome": "ok",
+      "fullScoreOperatorOnly": 100.0,
+      "publicScore": 25.0,
+      "evaluatedCases": 4,
+      "sourceSha256": "e97c1241b9ec0b0d2305eb018e060cea57ec5a401bbc45635bacceffbf1908e4",
+      "participantTerminalState": 5
+    }
+  ],
+  "status": "passed"
+}

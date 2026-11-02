@@ -1,0 +1,35 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0 -- /opt/cms-ide-stage/runtime-venv/bin/python
+rootdir: /opt/cms-ide-stage/source
+configfile: pytest.ini
+plugins: anyio-4.15.1
+collecting ... collected 33 items / 7 deselected / 26 selected
+
+worker/tests/test_worker.py::test_real_language_programs[cpp17-files0-main.cpp--Hello\n-FINISHED] PASSED [  3%]
+worker/tests/test_worker.py::test_real_language_programs[cpp20-files1-main.cpp-2 3\n-5\n-FINISHED] PASSED [  7%]
+worker/tests/test_worker.py::test_real_language_programs[cpp20-files2-main.cpp--5-FINISHED] PASSED [ 11%]
+worker/tests/test_worker.py::test_real_language_programs[cpp17-files3-main.cpp--None-COMPILATION_ERROR] PASSED [ 15%]
+worker/tests/test_worker.py::test_real_language_programs[cpp20-files4-main.cpp--None-RUNTIME_ERROR] PASSED [ 19%]
+worker/tests/test_worker.py::test_real_language_programs[cpp20-files5-main.cpp--None-TIME_LIMIT_EXCEEDED] PASSED [ 23%]
+worker/tests/test_worker.py::test_real_language_programs[python3-files6-main.py--Hello\n-FINISHED] PASSED [ 26%]
+worker/tests/test_worker.py::test_real_language_programs[python3-files7-main.py-2 3\n-5\n-FINISHED] PASSED [ 30%]
+worker/tests/test_worker.py::test_real_language_programs[python3-files8-main.py--7\n-FINISHED] PASSED [ 34%]
+worker/tests/test_worker.py::test_real_language_programs[python3-files9-main.py--None-RUNTIME_ERROR] PASSED [ 38%]
+worker/tests/test_worker.py::test_real_language_programs[python3-files10-main.py--None-TIME_LIMIT_EXCEEDED] PASSED [ 42%]
+worker/tests/test_worker.py::test_real_language_programs[java17-files11-demo/Main.java--Hello\n-FINISHED] PASSED [ 46%]
+worker/tests/test_worker.py::test_real_language_programs[java17-files12-demo/Main.java--5\n-FINISHED] PASSED [ 50%]
+worker/tests/test_worker.py::test_real_language_programs[java17-files13-demo/Main.java--None-COMPILATION_ERROR] PASSED [ 53%]
+worker/tests/test_worker.py::test_real_language_programs[java17-files14-demo/Main.java--None-RUNTIME_ERROR] PASSED [ 57%]
+worker/tests/test_worker.py::test_real_pathological_programs_are_contained[import os\nwhile True: os.fork()-RUNTIME_ERROR] PASSED [ 61%]
+worker/tests/test_worker.py::test_real_pathological_programs_are_contained[import sys\nwhile True: sys.stdout.write("x"*8192);sys.stdout.flush()-OUTPUT_LIMIT_EXCEEDED] PASSED [ 65%]
+worker/tests/test_worker.py::test_real_pathological_programs_are_contained[import socket\nsocket.create_connection(("1.1.1.1",53),timeout=1)-RUNTIME_ERROR] PASSED [ 69%]
+worker/tests/test_worker.py::test_real_pathological_programs_are_contained[open("/var/local/lib/isolate/101/box/secret").read()-RUNTIME_ERROR] PASSED [ 73%]
+worker/tests/test_worker.py::test_real_pathological_programs_are_contained[open("/etc/olympiad/worker.env").read()-RUNTIME_ERROR] PASSED [ 76%]
+worker/tests/test_worker.py::test_real_pathological_programs_are_contained[def f():f()\nf()-RUNTIME_ERROR] PASSED [ 80%]
+worker/tests/test_worker.py::test_real_credentials_are_not_inherited PASSED [ 84%]
+worker/tests/test_worker.py::test_real_neighbor_box_files_are_hidden PASSED [ 88%]
+worker/tests/test_worker.py::test_real_box_disk_quota_is_enforced PASSED [ 92%]
+worker/tests/test_worker.py::test_real_memory_exhaustion_is_bounded PASSED [ 96%]
+worker/tests/test_worker.py::test_real_java_memory_overhead_is_explicitly_bounded PASSED [100%]
+
+======================= 26 passed, 7 deselected in 9.81s =======================

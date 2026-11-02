@@ -2,9 +2,9 @@
 
 ## Tested boundary
 
-The integration was installed and exercised on macOS arm64 with Python3.12.6, Node24.19.0, PostgreSQL14 and separate CMS/ASGI environments. Native ResourceService lifecycle, two HTTP/RPC shards, real CWS login over local TLS, private workspace persistence, C++/Python official admission and browser recovery passed. See VERIFICATION.md for exact commands and limitations.
+The integration passed a real disposable Ubuntu 26.04.1 staging rehearsal on the explicitly authorized host, including all 26 Linux sandbox tests, actual CMS C++/Python judging, real-worker native browser recovery, separate service/database outages and matched database/application restoration. See [LINUX_ACCEPTANCE](LINUX_ACCEPTANCE.md) and the [staging procedure](../../olympiad_ide/tools/linux_staging/README.md) for exact commands, versions, corrected configuration and remaining limits. Earlier macOS/local evidence remains historical.
 
-The following /opt, systemd, nginx, role and Linux worker instructions are an operator deployment recipe. They have not been applied to a live host or certified by a Linux rehearsal. Start on an authorized disposable Linux contest, complete the release gates, then schedule rollout. No AWS/live database access is implied.
+The generic /opt/nginx/systemd templates below require adaptation and review for production. The tested staging layout uses separate official/custom execution accounts, ResourceService owners and restricted helper permissions. Dedicated production worker hosts and production sizing remain release gates. No production host, DNS or AWS networking was changed.
 
 ## Install and build
 
@@ -116,7 +116,9 @@ sudo journalctl -u cms-resource-ide -u olympiad-runtime --since today
 
 CMS also writes per-coordinate logs and forwards to LogService; Checker/Admin resource status lists configured native shards. Avoid logging request bodies/cookies/assertions. A runtime503 pauses background sync; local source remains recoverable and CMS submission/CWS stay available. No worker capacity disables custom Run while official Submit stays available. CMS DB failure prevents authentication/admission and yields unavailable, never fabricated success. Telemetry gaps remain disclosed. Receipt reconciliation after ambiguous failure is GET by immutable intent before any deliberate same-body retry.
 
-Schedule existing telemetry retention maintenance using the IDE role and documented policy; monitor database/storage growth, connection use, queue age/leases, error rates and percentile latency. Use olympiad_ide/tools/CMS_LOAD.md for progressive disposable-target load, with explicit mutating flags. Current evidence covers only a tiny login/context test.
+The real Linux CMS DB fault exposed stale pooled connections stranding judging. Fix 349d1e95 enables SQLAlchemy1.3 pool_pre_ping. It validates idle connections only and never replays an in-flight transaction or official POST. Preserve receipt reconciliation after ambiguous failures and review pinned gevent fork/finalization warnings before release.
+
+Schedule existing telemetry retention maintenance using the IDE role and documented policy; monitor database/storage growth, connection use, queue age/leases, error rates and percentile latency. Use olympiad_ide/tools/CMS_LOAD.md for progressive disposable-target load, with explicit mutating flags. Linux evidence includes a progressive 350-account short workload, ten-actor deadline mixture and 350 fresh logins/context checks after restoration. These do not certify sustained 350-editor/compile capacity; see LINUX_ACCEPTANCE.
 
 ## Rollout and rollback
 

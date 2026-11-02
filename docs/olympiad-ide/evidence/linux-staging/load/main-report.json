@@ -1,0 +1,573 @@
+{
+  "capacityClaim": "None. Only executed scenarios are measurements;350 participants remain untested unless explicitly measured here.",
+  "execution": "measured",
+  "finishedAt": "2026-11-02T15:43:32.764151+00:00",
+  "kind": "cms-progressive-load",
+  "metadata": {
+    "participantProgramExecutionsVerified": false,
+    "runner": {
+      "cpuCount": 2,
+      "machine": "x86_64",
+      "python": "3.12.16",
+      "release": "7.0.0-1014-aws",
+      "system": "Linux"
+    },
+    "serverHardware": {
+      "instance": "user-authorized dedicated AWS staging; no sizing certification",
+      "kernel": "7.0.0-1014-aws",
+      "logicalCpus": 2,
+      "memoryGiB": 3.7
+    },
+    "testSuiteCost": "custom:1small C++20 compile +1case; CMS:1small C++17 compile +4Batch cases; ~1KiB editor source",
+    "toolchains": {
+      "gcc": "g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+      "java": "OpenJDK17.0.20.1",
+      "python": "Python 3.14.4",
+      "runtimePython": "3.12.16"
+    }
+  },
+  "scenarios": [
+    {
+      "attemptedOperations": 1,
+      "configured": {
+        "concurrency": 1,
+        "durationSeconds": 600,
+        "iterations": 1,
+        "name": "context_read",
+        "participants": 1,
+        "rampSeconds": 0,
+        "ratePerSecond": 3,
+        "timeoutSeconds": 15
+      },
+      "databaseConnections": null,
+      "durationLimitReached": false,
+      "elapsedSeconds": 1.018,
+      "failedOperations": 0,
+      "httpErrors": {},
+      "httpLatencyMs": {
+        "max": 280.347,
+        "p50": 16.476,
+        "p95": 240.804,
+        "p99": 272.438
+      },
+      "httpRequests": 4,
+      "httpRequestsPerSecond": 3.931,
+      "httpStatuses": {
+        "200": 3,
+        "302": 1
+      },
+      "metricsNote": "Server/queue/storage metrics are not collected; collect separate trusted host/database measurements.",
+      "name": "context_read",
+      "officialOutcomeUnknown": 0,
+      "operationLatencyIncludesClientPacing": true,
+      "operationLatencyMs": {
+        "max": 333.675,
+        "p50": 333.675,
+        "p95": 333.675,
+        "p99": 333.675
+      },
+      "operationsPerSecond": 0.983,
+      "participantsWithHttpRequests": 1,
+      "queueAgeSeconds": null,
+      "responseBytes": 11133,
+      "scheduledOperations": 1,
+      "serverCpuPercent": null,
+      "serverMemoryBytes": null,
+      "storageGrowthBytes": null
+    },
+    {
+      "attemptedOperations": 10,
+      "configured": {
+        "concurrency": 10,
+        "durationSeconds": 600,
+        "iterations": 1,
+        "name": "context_read",
+        "participants": 10,
+        "rampSeconds": 0,
+        "ratePerSecond": 3,
+        "timeoutSeconds": 15
+      },
+      "databaseConnections": null,
+      "durationLimitReached": false,
+      "elapsedSeconds": 12.012,
+      "failedOperations": 0,
+      "httpErrors": {},
+      "httpLatencyMs": {
+        "max": 279.409,
+        "p50": 11.148,
+        "p95": 277.496,
+        "p99": 278.863
+      },
+      "httpRequests": 37,
+      "httpRequestsPerSecond": 3.08,
+      "httpStatuses": {
+        "200": 28,
+        "302": 9
+      },
+      "metricsNote": "Server/queue/storage metrics are not collected; collect separate trusted host/database measurements.",
+      "name": "context_read",
+      "officialOutcomeUnknown": 0,
+      "operationLatencyIncludesClientPacing": true,
+      "operationLatencyMs": {
+        "max": 3001.005,
+        "p50": 2999.694,
+        "p95": 3000.702,
+        "p99": 3000.944
+      },
+      "operationsPerSecond": 0.833,
+      "participantsWithHttpRequests": 10,
+      "queueAgeSeconds": null,
+      "responseBytes": 103211,
+      "scheduledOperations": 10,
+      "serverCpuPercent": null,
+      "serverMemoryBytes": null,
+      "storageGrowthBytes": null
+    },
+    {
+      "attemptedOperations": 50,
+      "configured": {
+        "concurrency": 12,
+        "durationSeconds": 600,
+        "iterations": 1,
+        "name": "context_read",
+        "participants": 50,
+        "rampSeconds": 0,
+        "ratePerSecond": 10.0,
+        "timeoutSeconds": 15
+      },
+      "databaseConnections": null,
+      "durationLimitReached": false,
+      "elapsedSeconds": 16.912,
+      "failedOperations": 0,
+      "httpErrors": {},
+      "httpLatencyMs": {
+        "max": 2626.37,
+        "p50": 13.451,
+        "p95": 1571.104,
+        "p99": 2393.445
+      },
+      "httpRequests": 170,
+      "httpRequestsPerSecond": 10.052,
+      "httpStatuses": {
+        "200": 130,
+        "302": 40
+      },
+      "metricsNote": "Server/queue/storage metrics are not collected; collect separate trusted host/database measurements.",
+      "name": "context_read",
+      "officialOutcomeUnknown": 0,
+      "operationLatencyIncludesClientPacing": true,
+      "operationLatencyMs": {
+        "max": 1204.088,
+        "p50": 600.37,
+        "p95": 1203.288,
+        "p99": 1204.03
+      },
+      "operationsPerSecond": 2.957,
+      "participantsWithHttpRequests": 50,
+      "queueAgeSeconds": null,
+      "responseBytes": 475605,
+      "scheduledOperations": 50,
+      "serverCpuPercent": null,
+      "serverMemoryBytes": null,
+      "storageGrowthBytes": null
+    },
+    {
+      "attemptedOperations": 100,
+      "configured": {
+        "concurrency": 12,
+        "durationSeconds": 600,
+        "iterations": 1,
+        "name": "context_read",
+        "participants": 100,
+        "rampSeconds": 0,
+        "ratePerSecond": 20,
+        "timeoutSeconds": 15
+      },
+      "databaseConnections": null,
+      "durationLimitReached": false,
+      "elapsedSeconds": 17.314,
+      "failedOperations": 0,
+      "httpErrors": {},
+      "httpLatencyMs": {
+        "max": 2880.562,
+        "p50": 13.359,
+        "p95": 1858.478,
+        "p99": 2568.521
+      },
+      "httpRequests": 250,
+      "httpRequestsPerSecond": 14.439,
+      "httpStatuses": {
+        "200": 200,
+        "302": 50
+      },
+      "metricsNote": "Server/queue/storage metrics are not collected; collect separate trusted host/database measurements.",
+      "name": "context_read",
+      "officialOutcomeUnknown": 0,
+      "operationLatencyIncludesClientPacing": true,
+      "operationLatencyMs": {
+        "max": 600.699,
+        "p50": 375.4,
+        "p95": 600.371,
+        "p99": 600.536
+      },
+      "operationsPerSecond": 5.776,
+      "participantsWithHttpRequests": 100,
+      "queueAgeSeconds": null,
+      "responseBytes": 707285,
+      "scheduledOperations": 100,
+      "serverCpuPercent": null,
+      "serverMemoryBytes": null,
+      "storageGrowthBytes": null
+    },
+    {
+      "attemptedOperations": 200,
+      "configured": {
+        "concurrency": 12,
+        "durationSeconds": 600,
+        "iterations": 1,
+        "name": "context_read",
+        "participants": 200,
+        "rampSeconds": 0,
+        "ratePerSecond": 20,
+        "timeoutSeconds": 15
+      },
+      "databaseConnections": null,
+      "durationLimitReached": false,
+      "elapsedSeconds": 34.372,
+      "failedOperations": 0,
+      "httpErrors": {},
+      "httpLatencyMs": {
+        "max": 2849.404,
+        "p50": 13.596,
+        "p95": 1871.646,
+        "p99": 2447.632
+      },
+      "httpRequests": 500,
+      "httpRequestsPerSecond": 14.547,
+      "httpStatuses": {
+        "200": 400,
+        "302": 100
+      },
+      "metricsNote": "Server/queue/storage metrics are not collected; collect separate trusted host/database measurements.",
+      "name": "context_read",
+      "officialOutcomeUnknown": 0,
+      "operationLatencyIncludesClientPacing": true,
+      "operationLatencyMs": {
+        "max": 607.132,
+        "p50": 455.743,
+        "p95": 600.648,
+        "p99": 603.141
+      },
+      "operationsPerSecond": 5.819,
+      "participantsWithHttpRequests": 200,
+      "queueAgeSeconds": null,
+      "responseBytes": 1415180,
+      "scheduledOperations": 200,
+      "serverCpuPercent": null,
+      "serverMemoryBytes": null,
+      "storageGrowthBytes": null
+    },
+    {
+      "attemptedOperations": 300,
+      "configured": {
+        "concurrency": 12,
+        "durationSeconds": 600,
+        "iterations": 1,
+        "name": "context_read",
+        "participants": 300,
+        "rampSeconds": 0,
+        "ratePerSecond": 20,
+        "timeoutSeconds": 15
+      },
+      "databaseConnections": null,
+      "durationLimitReached": false,
+      "elapsedSeconds": 39.142,
+      "failedOperations": 0,
+      "httpErrors": {},
+      "httpLatencyMs": {
+        "max": 2987.937,
+        "p50": 13.156,
+        "p95": 1784.966,
+        "p99": 2106.695
+      },
+      "httpRequests": 600,
+      "httpRequestsPerSecond": 15.329,
+      "httpStatuses": {
+        "200": 500,
+        "302": 100
+      },
+      "metricsNote": "Server/queue/storage metrics are not collected; collect separate trusted host/database measurements.",
+      "name": "context_read",
+      "officialOutcomeUnknown": 0,
+      "operationLatencyIncludesClientPacing": true,
+      "operationLatencyMs": {
+        "max": 602.332,
+        "p50": 599.503,
+        "p95": 600.572,
+        "p99": 601.3
+      },
+      "operationsPerSecond": 7.664,
+      "participantsWithHttpRequests": 300,
+      "queueAgeSeconds": null,
+      "responseBytes": 1716180,
+      "scheduledOperations": 300,
+      "serverCpuPercent": null,
+      "serverMemoryBytes": null,
+      "storageGrowthBytes": null
+    },
+    {
+      "attemptedOperations": 350,
+      "configured": {
+        "concurrency": 12,
+        "durationSeconds": 600,
+        "iterations": 1,
+        "name": "context_read",
+        "participants": 350,
+        "rampSeconds": 0,
+        "ratePerSecond": 20,
+        "timeoutSeconds": 15
+      },
+      "databaseConnections": null,
+      "durationLimitReached": false,
+      "elapsedSeconds": 29.996,
+      "failedOperations": 0,
+      "httpErrors": {},
+      "httpLatencyMs": {
+        "max": 2931.217,
+        "p50": 11.267,
+        "p95": 1571.68,
+        "p99": 2209.732
+      },
+      "httpRequests": 500,
+      "httpRequestsPerSecond": 16.669,
+      "httpStatuses": {
+        "200": 450,
+        "302": 50
+      },
+      "metricsNote": "Server/queue/storage metrics are not collected; collect separate trusted host/database measurements.",
+      "name": "context_read",
+      "officialOutcomeUnknown": 0,
+      "operationLatencyIncludesClientPacing": true,
+      "operationLatencyMs": {
+        "max": 644.782,
+        "p50": 599.78,
+        "p95": 601.178,
+        "p99": 602.754
+      },
+      "operationsPerSecond": 11.668,
+      "participantsWithHttpRequests": 350,
+      "queueAgeSeconds": null,
+      "responseBytes": 1459930,
+      "scheduledOperations": 350,
+      "serverCpuPercent": null,
+      "serverMemoryBytes": null,
+      "storageGrowthBytes": null
+    },
+    {
+      "attemptedOperations": 350,
+      "configured": {
+        "concurrency": 12,
+        "durationSeconds": 600,
+        "iterations": 1,
+        "name": "autosave",
+        "participants": 350,
+        "rampSeconds": 0,
+        "ratePerSecond": 20,
+        "timeoutSeconds": 15
+      },
+      "databaseConnections": null,
+      "durationLimitReached": false,
+      "elapsedSeconds": 69.981,
+      "failedOperations": 0,
+      "httpErrors": {},
+      "httpLatencyMs": {
+        "max": 97.035,
+        "p50": 27.766,
+        "p95": 32.293,
+        "p99": 36.722
+      },
+      "httpRequests": 1400,
+      "httpRequestsPerSecond": 20.006,
+      "httpStatuses": {
+        "200": 1050,
+        "201": 350
+      },
+      "metricsNote": "Server/queue/storage metrics are not collected; collect separate trusted host/database measurements.",
+      "name": "autosave",
+      "officialOutcomeUnknown": 0,
+      "operationLatencyIncludesClientPacing": true,
+      "operationLatencyMs": {
+        "max": 1806.172,
+        "p50": 1796.253,
+        "p95": 1798.128,
+        "p99": 1800.71
+      },
+      "operationsPerSecond": 5.001,
+      "participantsWithHttpRequests": 350,
+      "queueAgeSeconds": null,
+      "responseBytes": 2101400,
+      "scheduledOperations": 350,
+      "serverCpuPercent": null,
+      "serverMemoryBytes": null,
+      "storageGrowthBytes": null
+    },
+    {
+      "attemptedOperations": 350,
+      "configured": {
+        "concurrency": 12,
+        "durationSeconds": 600,
+        "iterations": 1,
+        "name": "telemetry",
+        "participants": 350,
+        "rampSeconds": 0,
+        "ratePerSecond": 20,
+        "timeoutSeconds": 15
+      },
+      "databaseConnections": null,
+      "durationLimitReached": false,
+      "elapsedSeconds": 52.473,
+      "failedOperations": 0,
+      "httpErrors": {},
+      "httpLatencyMs": {
+        "max": 37.145,
+        "p50": 25.087,
+        "p95": 29.297,
+        "p99": 31.206
+      },
+      "httpRequests": 1050,
+      "httpRequestsPerSecond": 20.01,
+      "httpStatuses": {
+        "200": 700,
+        "201": 350
+      },
+      "metricsNote": "Server/queue/storage metrics are not collected; collect separate trusted host/database measurements.",
+      "name": "telemetry",
+      "officialOutcomeUnknown": 0,
+      "operationLatencyIncludesClientPacing": true,
+      "operationLatencyMs": {
+        "max": 1806.866,
+        "p50": 1799.844,
+        "p95": 1801.532,
+        "p99": 1803.499
+      },
+      "operationsPerSecond": 6.67,
+      "participantsWithHttpRequests": 350,
+      "queueAgeSeconds": null,
+      "responseBytes": 155400,
+      "scheduledOperations": 350,
+      "serverCpuPercent": null,
+      "serverMemoryBytes": null,
+      "storageGrowthBytes": null
+    },
+    {
+      "attemptedOperations": 5,
+      "configured": {
+        "concurrency": 1,
+        "durationSeconds": 600,
+        "iterations": 1,
+        "name": "custom_runs",
+        "participants": 5,
+        "rampSeconds": 0,
+        "ratePerSecond": 2,
+        "timeoutSeconds": 15
+      },
+      "databaseConnections": null,
+      "durationLimitReached": false,
+      "elapsedSeconds": 12.026,
+      "failedOperations": 0,
+      "httpErrors": {},
+      "httpLatencyMs": {
+        "max": 34.806,
+        "p50": 25.161,
+        "p95": 34.58,
+        "p99": 34.753
+      },
+      "httpRequests": 25,
+      "httpRequestsPerSecond": 2.079,
+      "httpStatuses": {
+        "200": 20,
+        "201": 5
+      },
+      "metricsNote": "Server/queue/storage metrics are not collected; collect separate trusted host/database measurements.",
+      "name": "custom_runs",
+      "officialOutcomeUnknown": 0,
+      "operationLatencyIncludesClientPacing": true,
+      "operationLatencyMs": {
+        "max": 2501.148,
+        "p50": 2498.691,
+        "p95": 2501.013,
+        "p99": 2501.121
+      },
+      "operationsPerSecond": 0.416,
+      "participantsWithHttpRequests": 5,
+      "queueAgeSeconds": null,
+      "responseBytes": 32805,
+      "scheduledOperations": 5,
+      "serverCpuPercent": null,
+      "serverMemoryBytes": null,
+      "storageGrowthBytes": null
+    },
+    {
+      "attemptedOperations": 5,
+      "configured": {
+        "concurrency": 1,
+        "durationSeconds": 600,
+        "iterations": 1,
+        "name": "official_submissions",
+        "participants": 5,
+        "rampSeconds": 0,
+        "ratePerSecond": 2,
+        "timeoutSeconds": 15
+      },
+      "databaseConnections": null,
+      "durationLimitReached": false,
+      "elapsedSeconds": 12.015,
+      "failedOperations": 5,
+      "httpErrors": {},
+      "httpLatencyMs": {
+        "max": 27.639,
+        "p50": 13.675,
+        "p95": 24.4,
+        "p99": 26.874
+      },
+      "httpRequests": 25,
+      "httpRequestsPerSecond": 2.081,
+      "httpStatuses": {
+        "200": 20,
+        "201": 5
+      },
+      "metricsNote": "Server/queue/storage metrics are not collected; collect separate trusted host/database measurements.",
+      "name": "official_submissions",
+      "officialOutcomeUnknown": 0,
+      "operationLatencyIncludesClientPacing": true,
+      "operationLatencyMs": {
+        "max": 2500.787,
+        "p50": 2499.561,
+        "p95": 2500.57,
+        "p99": 2500.744
+      },
+      "operationsPerSecond": 0.416,
+      "participantsWithHttpRequests": 5,
+      "queueAgeSeconds": null,
+      "responseBytes": 6610,
+      "scheduledOperations": 5,
+      "serverCpuPercent": null,
+      "serverMemoryBytes": null,
+      "storageGrowthBytes": null
+    }
+  ],
+  "schemaVersion": 1,
+  "startedAt": "2026-11-02T15:38:35.473379+00:00",
+  "target": {
+    "contestId": 1,
+    "contestName": "ide-load-linux-staging",
+    "installationId": "9cdf6391-b414-4fd1-a53a-7170e86f6951",
+    "origin": "https://localhost:28443",
+    "targetId": "a6207549-2507-40f3-9058-d83bbded3be5"
+  },
+  "validation": {
+    "maximumDurationSeconds": 6600,
+    "maximumHttpRequests": 10696,
+    "participants": 350
+  }
+}

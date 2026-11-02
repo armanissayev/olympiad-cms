@@ -1,0 +1,996 @@
+{
+  "kind": "linux-staging-final-environment",
+  "time": "2026-11-02T17:20:06.979329+00:00",
+  "os": "Ubuntu 26.04.1 LTS",
+  "kernel": "7.0.0-1014-aws",
+  "architecture": "x86_64",
+  "logicalCpus": 2,
+  "memoryBytes": 3996524544,
+  "diskRoot": {
+    "total": 30010245120,
+    "used": 5767335936,
+    "free": 24226131968
+  },
+  "cmsSourceCommit": "349d1e9559023b57b28d3e0dac95ca2b97c4a0dc",
+  "cmsBaseTag": "CMSv1.5.1",
+  "cmsBaseCommit": "7c9fec8aa1a25ec93d624aebf815804dd93df9db",
+  "cms": {
+    "python": "3.12.16",
+    "packages": {
+      "SQLAlchemy": "1.3.24",
+      "gevent": "25.5.1",
+      "tornado": "4.5.3",
+      "pytest": "9.2.0",
+      "psutil": "7.0.0"
+    }
+  },
+  "runtime": {
+    "python": "3.12.16",
+    "packages": {
+      "SQLAlchemy": "2.1.5",
+      "fastapi": "0.150.0",
+      "uvicorn": "0.54.0",
+      "pytest": "9.1.1",
+      "alembic": "1.20.0"
+    }
+  },
+  "toolchains": {
+    "gpp": "g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "python3": "Python 3.14.4",
+    "javac": "javac 17.0.20.1",
+    "node": "v22.22.1",
+    "nginx": "nginx version: nginx/1.28.3 (Ubuntu)",
+    "postgres": "postgres (PostgreSQL) 18.6 (Ubuntu 18.6-0ubuntu0.26.04.1)"
+  },
+  "isolate": {
+    "commit": "8f185bb37f3f23e29b33b0c7727c91c13429abe3",
+    "version": "The process isolator 2.7\n(c) 2012--2026 Martin Mares and Bernard Blackham\nBuilt on 2026-11-02 from Git commit v2.7",
+    "helperSha256": "75b512f66baa9c291282e5f2546193175d964f9f5f694a286e0d5edbcd80a837",
+    "helperMode": "0o4750",
+    "cgroupControllers": "cpuset cpu io memory hugetlb pids rdma misc dmem",
+    "keeper": "ActiveState=active\nControlGroup=/isolate.slice/isolate.service\nDelegate=yes",
+    "mount": "ext4 rw,relatime,quota,usrquota",
+    "swapEntries": 0
+  },
+  "installedDatabaseModuleSha256": "5e06cd8057f1b49b56960049aed2afcdf4c62732876bb5d837bad78e15f9aa1c",
+  "sourceDatabaseModuleSha256": "5e06cd8057f1b49b56960049aed2afcdf4c62732876bb5d837bad78e15f9aa1c",
+  "services": {
+    "cms-ide-stage-postgres.service": {
+      "ActiveState": "active",
+      "MainPID": "33044",
+      "User": "stagepguser",
+      "PrivateNetwork": "no",
+      "NoNewPrivileges": "no",
+      "children": [
+        {
+          "pid": 33050,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: io worker 0",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 33051,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: io worker 1",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 33052,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: io worker 2",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 33053,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: checkpointer ",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 33054,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: background writer ",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 33056,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: walwriter ",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 33057,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: autovacuum launcher ",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 33058,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: logical replication launcher ",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 45850,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 45851,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 45866,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres:",
+            "ideworkerstage",
+            "ide_restore_d4008d5dedfortesting",
+            "[local]",
+            "idle"
+          ]
+        },
+        {
+          "pid": 45894,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 45908,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: ideapistage ide_restore_d4008d5dedfortesting [local] idle",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 46270,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: ideapistage ide_restore_d4008d5dedfortesting [local] idle",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 46318,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: ideapistage ide_restore_d4008d5dedfortesting [local] idle",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 46319,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: ideapistage ide_restore_d4008d5dedfortesting [local] idle",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 46388,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 47516,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 47517,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 47518,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 47522,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 47523,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 47524,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 47525,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 47527,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 47528,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 47529,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 47677,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 47678,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 47681,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "pid": 47701,
+          "ppid": 33044,
+          "user": "stagepguser",
+          "command": [
+            "postgres: cmsstage cms_restore_21c7bd2d5bfortesting [local] idle",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        }
+      ]
+    },
+    "cms-ide-stage-runtime.service": {
+      "ActiveState": "active",
+      "MainPID": "45844",
+      "User": "ideapistage",
+      "PrivateNetwork": "no",
+      "NoNewPrivileges": "yes",
+      "children": []
+    },
+    "cms-ide-stage-log.service": {
+      "ActiveState": "active",
+      "MainPID": "43039",
+      "User": "cmsstage",
+      "PrivateNetwork": "no",
+      "NoNewPrivileges": "yes",
+      "children": []
+    },
+    "cms-ide-stage-resource.service": {
+      "ActiveState": "active",
+      "MainPID": "45843",
+      "User": "cmsstage",
+      "PrivateNetwork": "no",
+      "NoNewPrivileges": "yes",
+      "children": [
+        {
+          "pid": 45853,
+          "ppid": 45843,
+          "user": "cmsstage",
+          "command": [
+            "python",
+            "cmsAdminWebServer",
+            "0",
+            "-c",
+            "1"
+          ]
+        },
+        {
+          "pid": 45855,
+          "ppid": 45843,
+          "user": "cmsstage",
+          "command": [
+            "python",
+            "cmsContestWebServer",
+            "0",
+            "-c",
+            "1"
+          ]
+        },
+        {
+          "pid": 45858,
+          "ppid": 45843,
+          "user": "cmsstage",
+          "command": [
+            "python",
+            "cmsEvaluationService",
+            "0",
+            "-c",
+            "1"
+          ]
+        },
+        {
+          "pid": 45863,
+          "ppid": 45843,
+          "user": "cmsstage",
+          "command": [
+            "python",
+            "cmsOlympiadIDEService",
+            "0",
+            "-c",
+            "1"
+          ]
+        },
+        {
+          "pid": 45864,
+          "ppid": 45843,
+          "user": "cmsstage",
+          "command": [
+            "python",
+            "cmsProxyService",
+            "0",
+            "-c",
+            "1"
+          ]
+        },
+        {
+          "pid": 45865,
+          "ppid": 45843,
+          "user": "cmsstage",
+          "command": [
+            "python",
+            "cmsScoringService",
+            "0",
+            "-c",
+            "1"
+          ]
+        }
+      ]
+    },
+    "cms-ide-stage-judge.service": {
+      "ActiveState": "active",
+      "MainPID": "45845",
+      "User": "cmsjudgestage",
+      "PrivateNetwork": "no",
+      "NoNewPrivileges": "no",
+      "children": [
+        {
+          "pid": 45856,
+          "ppid": 45845,
+          "user": "cmsjudgestage",
+          "command": [
+            "python",
+            "cmsWorker",
+            "0",
+            "-c",
+            "1"
+          ]
+        }
+      ]
+    },
+    "cms-ide-stage-ranking.service": {
+      "ActiveState": "active",
+      "MainPID": "45842",
+      "User": "cmsstage",
+      "PrivateNetwork": "no",
+      "NoNewPrivileges": "yes",
+      "children": []
+    },
+    "cms-ide-stage-worker.service": {
+      "ActiveState": "active",
+      "MainPID": "45846",
+      "User": "ideworkerstage",
+      "PrivateNetwork": "yes",
+      "NoNewPrivileges": "no",
+      "children": []
+    },
+    "cms-ide-stage-ingress.service": {
+      "ActiveState": "active",
+      "MainPID": "35625",
+      "User": "cmsingressstage",
+      "PrivateNetwork": "no",
+      "NoNewPrivileges": "yes",
+      "children": [
+        {
+          "pid": 36607,
+          "ppid": 35625,
+          "user": "cmsingressstage",
+          "command": [
+            "nginx: worker process",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        }
+      ]
+    }
+  },
+  "listeners": "State  Recv-Q Send-Q Local Address:Port  Peer Address:Port\nLISTEN 0      4096      127.0.0.54:53         0.0.0.0:*   \nLISTEN 0      4096         0.0.0.0:22         0.0.0.0:*   \nLISTEN 0      511        127.0.0.1:28443      0.0.0.0:*   \nLISTEN 0      511        127.0.0.1:28444      0.0.0.0:*   \nLISTEN 0      511        127.0.0.1:28445      0.0.0.0:*   \nLISTEN 0      128        127.0.0.2:31006      0.0.0.0:*   \nLISTEN 0      128        127.0.0.2:31101      0.0.0.0:*   \nLISTEN 0      2048       127.0.0.1:18801      0.0.0.0:*   \nLISTEN 0      4096   127.0.0.53%lo:53         0.0.0.0:*   \nLISTEN 0      128        127.0.0.1:31008      0.0.0.0:*   \nLISTEN 0      128        127.0.0.1:31000      0.0.0.0:*   \nLISTEN 0      128        127.0.0.1:31001      0.0.0.0:*   \nLISTEN 0      128        127.0.0.1:31002      0.0.0.0:*   \nLISTEN 0      128        127.0.0.1:31003      0.0.0.0:*   \nLISTEN 0      128        127.0.0.1:31004      0.0.0.0:*   \nLISTEN 0      128        127.0.0.1:31005      0.0.0.0:*   \nLISTEN 0      128        127.0.0.1:31007      0.0.0.0:*   \nLISTEN 0      128        127.0.0.1:18888      0.0.0.0:*   \nLISTEN 0      128        127.0.0.1:18889      0.0.0.0:*   \nLISTEN 0      128        127.0.0.1:18890      0.0.0.0:*   \nLISTEN 0      128        127.0.0.1:18891      0.0.0.0:*   \nLISTEN 0      4096            [::]:22            [::]:*",
+  "publicApplicationListeners": false,
+  "publicPorts": [
+    22
+  ],
+  "loadGeneratorTopology": "same-host loopback TLS; max12 concurrent HTTP actors; separately tested remote Chromium via SSH tunnel"
+}

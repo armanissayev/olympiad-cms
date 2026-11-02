@@ -1,0 +1,19 @@
+{
+  "samples": 83,
+  "cpuMaxPercent": 80.7,
+  "cpuMeanPercent": 16.21,
+  "memoryUsedMaxBytes": 1308659712,
+  "memoryAvailableMinBytes": 2245218304,
+  "customQueueMaxAgeSeconds": 0.120313,
+  "customQueueMaxDepth": 1,
+  "databases": {
+    "cmside_linux_fortesting": {
+      "maxConnections": 21,
+      "storageGrowthBytes": 40960
+    },
+    "ide_linux_staging": {
+      "maxConnections": 7,
+      "storageGrowthBytes": 73728
+    }
+  }
+}
