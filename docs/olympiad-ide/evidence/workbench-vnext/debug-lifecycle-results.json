@@ -1,0 +1,100 @@
+{
+  "status": "passed",
+  "baseUrl": "https://54.206.171.67",
+  "checks": [
+    "Mobile CWS IDE card and actionable link fit the initial viewport",
+    "Real C++/Python/Java Pause events, stack frames and counter locals",
+    "C++/Python Stop UI waits for confirmed STOPPED worker state",
+    "Active Java refresh disconnects and stops old worker; saved source recovers idle"
+  ],
+  "sessions": [
+    {
+      "language": "C++",
+      "file": "lifecycle1793657743834.cpp",
+      "id": "a23bd9b4-343c-4b37-a004-3bdf2a6d55aa",
+      "sourceHash": "8695fb4942162b25f495d61cec462be5305f4d2c5b4ad181f79afa95f57fbe05",
+      "sourceTextSha256": "c3ef10055c5cbd970cc5b2ebda1e542514a688d6ea16ce591d8b2fca9778e262",
+      "cleanup": "Stop button",
+      "pause": {
+        "reason": "pause",
+        "threadId": 1,
+        "frame": "main:5",
+        "counter": "counter\nLocals\n642297013",
+        "sequence": 14
+      },
+      "terminal": {
+        "id": "a23bd9b4-343c-4b37-a004-3bdf2a6d55aa",
+        "status": "STOPPED",
+        "sourceHash": "8695fb4942162b25f495d61cec462be5305f4d2c5b4ad181f79afa95f57fbe05",
+        "error": null
+      }
+    },
+    {
+      "language": "Python",
+      "file": "lifecycle1793657743834.py",
+      "id": "7cb69b81-4359-456e-a00a-f03611efdff5",
+      "sourceHash": "55fc59f4a86f0287e3e0e76041ebbded44ebd1e04454f0aafe5c54bccce4565f",
+      "sourceTextSha256": "231eebe7d43079a193dff8e53d00ebcd25892cd8fcb175d82d1aaa7849e21389",
+      "cleanup": "Stop button",
+      "pause": {
+        "reason": "pause",
+        "threadId": 1,
+        "frame": "<module>:2",
+        "counter": "counter\nLocals · int\n51323766",
+        "sequence": 16
+      },
+      "terminal": {
+        "id": "7cb69b81-4359-456e-a00a-f03611efdff5",
+        "status": "STOPPED",
+        "sourceHash": "55fc59f4a86f0287e3e0e76041ebbded44ebd1e04454f0aafe5c54bccce4565f",
+        "error": null
+      }
+    },
+    {
+      "language": "Java",
+      "file": "Lifecycle1793657743834.java",
+      "id": "eafac74e-cc15-4fe5-a552-8e4ffa755603",
+      "sourceHash": "c349be6c37bf5795dba70c38e2412e3d3456ba51315555abbca5cdfb429f0c59",
+      "sourceTextSha256": "78ab8a46ebedd195a33aef308b93b64e32daf6a4d853ab679511c02683e842fc",
+      "cleanup": "Active page refresh/disconnect",
+      "pause": {
+        "reason": "pause",
+        "threadId": 1,
+        "frame": "Lifecycle1793657743834.main:7",
+        "counter": "counter\nLocals · long\n302761367",
+        "sequence": 7
+      },
+      "terminal": {
+        "id": "eafac74e-cc15-4fe5-a552-8e4ffa755603",
+        "status": "STOPPED",
+        "sourceHash": "c349be6c37bf5795dba70c38e2412e3d3456ba51315555abbca5cdfb429f0c59",
+        "error": null
+      },
+      "recovery": {
+        "sourceRestored": true,
+        "debuggerIdle": true,
+        "oldWorkerConfirmedStopped": true
+      }
+    }
+  ],
+  "startsAttempted": 3,
+  "mobile": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "card": {
+      "x": 36,
+      "y": 381.28125,
+      "width": 318,
+      "height": 212.78125
+    },
+    "link": {
+      "x": 59,
+      "y": 537.0625,
+      "width": 276,
+      "height": 38
+    }
+  },
+  "errors": []
+}

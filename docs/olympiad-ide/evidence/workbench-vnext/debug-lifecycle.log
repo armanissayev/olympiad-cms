@@ -1,0 +1,7 @@
+Started real lifecycle session C++ a23bd9b4-343c-4b37-a004-3bdf2a6d55aa
+Actual pause and confirmed worker termination passed C++
+Started real lifecycle session Python 7cb69b81-4359-456e-a00a-f03611efdff5
+Actual pause and confirmed worker termination passed Python
+Started real lifecycle session Java eafac74e-cc15-4fe5-a552-8e4ffa755603
+Actual pause and confirmed worker termination passed Java
+DEBUG_LIFECYCLE_PASSED

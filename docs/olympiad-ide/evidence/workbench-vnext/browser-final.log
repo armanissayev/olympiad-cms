@@ -1,0 +1,9 @@
+Visible CMS box and simplified panes verified
+Active-file switching real output verified
+Started actual debug C++ 23fb606a-3d32-48a3-a315-d7e723dba09a
+Real public debugger passed C++
+Started actual debug Python 12c0d347-f015-40f7-baa7-40ff670539e8
+Real public debugger passed Python
+Started actual debug Java 6d1dcaa7-ff07-44a4-833a-8f074ebe9191
+Real public debugger passed Java
+WORKBENCH_VNEXT_PASSED

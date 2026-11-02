@@ -1,0 +1,50 @@
+Visible CMS box and simplified panes verified
+Active-file switching real output verified
+Started actual debug C++ 3a32f0db-29a5-4025-91d2-03c196fa6e0e
+Real public debugger passed C++
+Started actual debug Python b08ab770-ab99-48d3-b7cc-eb22bb5d3dd5
+Page diagnostics {"url":"https://54.206.171.67/ide/","errors":[],"body":"Disposable native CMS Linux acceptance\nstaging-participant\nContest active · 40:58:16\ncppsum — Integer sum — C++\npysum — Integer sum — Python\nSubmit & official feedback\nCMS participant page\nO\nOlympiad IDE\nInteger sum — C++\nPython 3\nRun active file\nSynced\nRUN ACTIVE FILE\n\ndebug1793657301611.py\n\nPython 3\n\nRun always uses the file in the focused editor. Switch files to run a different solution.\n\nEnter input in STDIN File. Your program’s output appears in STDOUT File.\n\nDEBUG ACTIVE FILE\n\nIsolated debugger · stopped. Sessions expire after five minutes.\n\nStart debugging\nStop debugging\nContinue\nPause\nStep Over\nStep Into\nStep Out\nCaptured source · e23b95a57843\nBreakpoints\n\nClick the editor gutter to add or remove a breakpoint. Source and breakpoints are captured at Start. Later edits and relocated lines apply to the next session.\n\nRemove debug1793657301611.cpp:9\nRemove debug1793657301611.py:6\nCaptured breakpoint verification\nCall Stack\n<module>:6\n<module>:5\nVariables\nspecial variables\nLocals\nfunction variables\nLocals\na\nLocals · int\n2\nb\nLocals · int\n3\nspecial variables\nGlobals\nfunction variables\nGlobals\na\nGlobals · int\n2\nb\nGlobals · int\n3\nDebug output\nptvsddebugpy\nmain.cpp\nsolution.py\nactive1793657301611.py\ndebug1793657301611.cpp\ndebug1793657301611.py\n1\n2\n3\n4\n5\n6\n7\n8\ndef add(a,b):\n result=a+b\n return result\na=2\nb=3\nanswer=add(a,b)\nprint(answer)\nactive1793657301611.py · FINISHED\nSTDIN File\nInput for the next run\nSTDOUT File\nlocal\nSynced\nSynced\nEditor recording enabled · input, source changes and navigation · privacy & diagnostics\nLn 8, Col 1\nSpaces: 4\nUTF-8\nPython 3\nConnected"}
+ExpectError: expect(locator).toContainText(expected) failed
+
+Locator: getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: /a/ }).first()
+Expected substring: "2"
+Received string:    "special variablesLocals"
+Timeout: 10000ms
+
+Call log:
+  - Expect "toContainText" getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: /a/ }).first() with timeout 10000ms
+  - waiting for getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: /a/ }).first()
+    24 × locator resolved to <div class="debug-variable">…</div>
+       - unexpected value "special variablesLocals"
+
+    at captureRawStack (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright-core/lib/coreBundle.js:9282:17)
+    at callMatcherAsStep (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright/lib/matchers/expect.js:13316:57)
+    at Object.toContainText (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright/lib/matchers/expect.js:13308:23)
+    at /Users/isaevarman/Developer/cms/olympiad_ide/frontend/tools/verify-workbench-vnext.cjs:38:180 {
+  matcherResult: {
+    name: 'toContainText',
+    expected: '2',
+    message: 'expect(locator).toContainText(expected) failed\n' +
+      '\n' +
+      "Locator: getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: /a/ }).first()\n" +
+      'Expected substring: "2"\n' +
+      'Received string:    "special variablesLocals"\n' +
+      'Timeout: 10000ms\n' +
+      '\n' +
+      'Call log:\n' +
+      `  - Expect "toContainText" getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: /a/ }).first() with timeout 10000ms\n` +
+      "  - waiting for getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: /a/ }).first()\n" +
+      '    24 × locator resolved to <div class="debug-variable">…</div>\n' +
+      '       - unexpected value "special variablesLocals"\n',
+    pass: false,
+    actual: 'special variablesLocals',
+    log: [
+      `  - Expect "toContainText" getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: /a/ }).first() with timeout 10000ms`,
+      "  - waiting for getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: /a/ }).first()",
+      '    24 × locator resolved to <div class="debug-variable">…</div>',
+      '       - unexpected value "special variablesLocals"'
+    ],
+    timeout: 10000,
+    ariaSnapshot: '- button "special variables"\n- text: Locals\n- code'
+  }
+}

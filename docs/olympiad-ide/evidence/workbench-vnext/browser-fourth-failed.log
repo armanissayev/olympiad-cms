@@ -1,0 +1,48 @@
+Visible CMS box and simplified panes verified
+Active-file switching real output verified
+Real public debugger passed C++
+Page diagnostics {"url":"https://54.206.171.67/ide/","errors":[],"body":"Disposable native CMS Linux acceptance\nstaging-participant\nContest active · 40:59:56\ncppsum — Integer sum — C++\npysum — Integer sum — Python\nSubmit & official feedback\nCMS participant page\nO\nOlympiad IDE\nInteger sum — C++\nPython 3\nRun active file\nSynced\nRUN ACTIVE FILE\n\ndebug1793657161019.py\n\nPython 3\n\nRun always uses the file in the focused editor. Switch files to run a different solution.\n\nEnter input in STDIN File. Your program’s output appears in STDOUT File.\n\nDEBUG ACTIVE FILE\n\nIsolated debugger · finished. Sessions expire after five minutes.\n\nStart debugging\nStop debugging\nContinue\nPause\nStep Over\nStep Into\nStep Out\nCaptured source · 7eaaee37c70f\nBreakpoints\n\nClick the editor gutter to add or remove a breakpoint. Source and breakpoints are captured at Start. Later edits and relocated lines apply to the next session.\n\nRemove debug1793657161019.cpp:9\nRemove debug1793657161019.py:6\nCaptured breakpoint verification\nCall Stack\n\nStack frames appear when the real debugger pauses.\n\nVariables\n\nChoose a paused stack frame to inspect its variables.\n\nDebug output\nptvsddebugpyTraceback (most recent call last):\n  File \"/usr/lib/python3.14/runpy.py\", line 198, in _run_module_as_main\n    return _run_code(code, main_globals, None,\n                     \"__main__\", mod_spec)\n  File \"/usr/lib/python3.14/runpy.py\", line 88, in _run_code\n    exec(code, run_globals)\n    ~~~~^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/debugpy/launcher/../../debugpy/__main__.py\", line 71, in <module>\n    cli.main()\n    ~~~~~~~~^^\n  File \"/usr/lib/python3/dist-packages/debugpy/launcher/../../debugpy/../debugpy/server/cli.py\", line 508, in main\n    run()\n    ~~~^^\n  File \"/usr/lib/python3/dist-packages/debugpy/launcher/../../debugpy/../debugpy/server/cli.py\", line 358, in run_file\n    runpy.run_path(target, run_name=\"__main__\")\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py\", line 321, in run_path\n    return _run_module_code(code, init_globals, run_name,\n                            pkg_name=pkg_name, script_name=path_name)\n  File \"/usr/lib/python3/dist-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py\", line 133, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n              mod_name, mod_spec, pkg_name, script_name)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3/dist-packages/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py\", line 123, in _run_code\n    exec(code, run_globals)\n    ~~~~^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/share/olympiad-debug/python_entry.py\", line 5, in <module>\n    runpy.run_path(sys.argv[1],run_name='__main__')\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.14/runpy.py\", line 286, in run_path\n    code = _get_code_from_file(path_name)\n  File \"/usr/lib/python3.14/runpy.py\", line 259, in _get_code_from_file\n    code = compile(f.read(), fname, 'exec')\n  File \"/box/debug1793657161019.py\", line 3\n    return result\nIndentationError: unexpected indent\n\nmain.cpp\nsolution.py\nactive1793657161019.py\ndebug1793657161019.cpp\ndebug1793657161019.py\n1\n2\n3\n4\n5\n6\n7\n8\ndef add(a,b):\n     result=a+b\n      return result\n      a=2\n      b=3\n      answer=add(a,b)\n      print(answer)\n      \nactive1793657161019.py · FINISHED\nSTDIN File\nInput for the next run\nSTDOUT File\nlocal\nSynced\nSynced\nEditor recording enabled · input,"}
+ExpectError: expect(locator).toBeEnabled() failed
+
+Locator:  getByRole('region', { name: 'Interactive debugger' }).getByRole('button', { name: 'Step Into', exact: true })
+Expected: enabled
+Received: disabled
+Timeout:  60000ms
+
+Call log:
+  - Expect "toBeEnabled" getByRole('region', { name: 'Interactive debugger' }).getByRole('button', { name: 'Step Into', exact: true }) with timeout 60000ms
+  - waiting for getByRole('region', { name: 'Interactive debugger' }).getByRole('button', { name: 'Step Into', exact: true })
+    123 × locator resolved to <button disabled class="tool-button">Step Into</button>
+        - unexpected value "disabled"
+
+    at captureRawStack (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright-core/lib/coreBundle.js:9282:17)
+    at callMatcherAsStep (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright/lib/matchers/expect.js:13316:57)
+    at Object.toBeEnabled (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright/lib/matchers/expect.js:13308:23)
+    at /Users/isaevarman/Developer/cms/olympiad_ide/frontend/tools/verify-workbench-vnext.cjs:38:74 {
+  matcherResult: {
+    message: 'expect(locator).toBeEnabled() failed\n' +
+      '\n' +
+      "Locator:  getByRole('region', { name: 'Interactive debugger' }).getByRole('button', { name: 'Step Into', exact: true })\n" +
+      'Expected: enabled\n' +
+      'Received: disabled\n' +
+      'Timeout:  60000ms\n' +
+      '\n' +
+      'Call log:\n' +
+      `  - Expect "toBeEnabled" getByRole('region', { name: 'Interactive debugger' }).getByRole('button', { name: 'Step Into', exact: true }) with timeout 60000ms\n` +
+      "  - waiting for getByRole('region', { name: 'Interactive debugger' }).getByRole('button', { name: 'Step Into', exact: true })\n" +
+      '    123 × locator resolved to <button disabled class="tool-button">Step Into</button>\n' +
+      '        - unexpected value "disabled"\n',
+    pass: false,
+    actual: 'disabled',
+    name: 'toBeEnabled',
+    expected: 'enabled',
+    log: [
+      `  - Expect "toBeEnabled" getByRole('region', { name: 'Interactive debugger' }).getByRole('button', { name: 'Step Into', exact: true }) with timeout 60000ms`,
+      "  - waiting for getByRole('region', { name: 'Interactive debugger' }).getByRole('button', { name: 'Step Into', exact: true })",
+      '    123 × locator resolved to <button disabled class="tool-button">Step Into</button>',
+      '        - unexpected value "disabled"'
+    ],
+    timeout: 60000,
+    ariaSnapshot: '- button "Step Into" [disabled]'
+  }
+}

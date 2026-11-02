@@ -1,0 +1,161 @@
+Visible CMS box and simplified panes verified
+Active-file switching real output verified
+Started actual debug C++ 8bb1c3f4-50b6-401b-bfd0-0fb14febcbd0
+Real public debugger passed C++
+Started actual debug Python f591f16e-fe46-4f12-ab58-c45fdfdf3760
+Real public debugger passed Python
+Started actual debug Java c5e7ab14-5813-4a3b-bba2-60140dbd4840
+Real public debugger passed Java
+Page diagnostics {"url":"https://54.206.171.67/ide/","errors":[],"body":"Disposable native CMS Linux acceptance\nstaging-participant\nContest active · 40:56:14\ncppsum — Integer sum — C++\npysum — Integer sum — Python\nSubmit & official feedback\nCMS participant page\nO\nOlympiad IDE\nInteger sum — C++\nJava 17\nRun active file\nSynced\nmain.cpp\nsolution.py\nactive1793657395114.py\ndebug1793657395114.cpp\ndebug1793657395114.py\nDebugMain1793657395114.java\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\npublic class DebugMain1793657395114{\n static int add(int a,int b){\n  int result=a+b;\n  return result;\n }\n public static void main(String[]args){\n  int a=2;\n  int b=3;\n  int answer=add(a,b);\n  System.out.println(answer);\n }\n}\nactive1793657395114.py · FINISHED\nSTDIN File\nInput for the next run\nSTDOUT File\nlocal\nSynced\nSynced\nEditor recording enabled · input, source changes and navigation · privacy & diagnostics\nLn 13, Col 1\nSpaces: 4\nUTF-8\nJava 17\nConnected"}
+ExpectError: expect(locator).toContainText(expected) failed
+
+Locator: getByRole('region', { name: 'Interactive debugger' })
+Expected substring: "DebugMain1793657395114"
+Timeout: 5000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "toContainText" getByRole('region', { name: 'Interactive debugger' }) with timeout 5000ms
+  - waiting for getByRole('region', { name: 'Interactive debugger' })
+
+    at captureRawStack (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright-core/lib/coreBundle.js:9282:17)
+    at callMatcherAsStep (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright/lib/matchers/expect.js:13316:57)
+    at Object.toContainText (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright/lib/matchers/expect.js:13308:23)
+    at /Users/isaevarman/Developer/cms/olympiad_ide/frontend/tools/verify-workbench-vnext.cjs:46:233 {
+  matcherResult: {
+    name: 'toContainText',
+    expected: 'DebugMain1793657395114',
+    message: 'expect(locator).toContainText(expected) failed\n' +
+      '\n' +
+      "Locator: getByRole('region', { name: 'Interactive debugger' })\n" +
+      'Expected substring: "DebugMain1793657395114"\n' +
+      'Timeout: 5000ms\n' +
+      'Error: element(s) not found\n' +
+      '\n' +
+      'Call log:\n' +
+      `  - Expect "toContainText" getByRole('region', { name: 'Interactive debugger' }) with timeout 5000ms\n` +
+      "  - waiting for getByRole('region', { name: 'Interactive debugger' })\n",
+    pass: false,
+    actual: undefined,
+    log: [
+      `  - Expect "toContainText" getByRole('region', { name: 'Interactive debugger' }) with timeout 5000ms`,
+      "  - waiting for getByRole('region', { name: 'Interactive debugger' })"
+    ],
+    timeout: 5000,
+    ariaSnapshot: '- strong: Disposable native CMS Linux acceptance\n' +
+      '- text: staging-participant Contest active · 40:56:14\n' +
+      '- combobox "Contest task":\n' +
+      '  - option "cppsum — Integer sum — C++" [selected]\n' +
+      '  - option "pysum — Integer sum — Python"\n' +
+      '- button "Submit & official feedback"\n' +
+      '- link "CMS participant page":\n' +
+      '  - /url: https://54.206.171.67/\n' +
+      '- banner:\n' +
+      '  - text: Olympiad IDE Integer sum — C++ Java 17\n' +
+      '  - button "Run active file":\n' +
+      '    - img\n' +
+      '    - text: Run active file\n' +
+      '  - button "Debug active file":\n' +
+      '    - img\n' +
+      '  - button "Stop execution (Shift+F5)" [disabled]:\n' +
+      '    - img\n' +
+      '  - button "Toggle Split Editor":\n' +
+      '    - img\n' +
+      '  - button "Toggle bottom panel":\n' +
+      '    - img\n' +
+      `  - 'button "Synchronization: Synced"':\n` +
+      '    - img\n' +
+      '    - text: Synced\n' +
+      '  - button "Open Settings":\n' +
+      '    - img\n' +
+      '- main:\n' +
+      '  - navigation "Primary activity":\n' +
+      '    - button "Explorer":\n' +
+      '      - img\n' +
+      '    - button "Search":\n' +
+      '      - img\n' +
+      '    - button "Run and Debug":\n' +
+      '      - img\n' +
+      '    - button "History":\n' +
+      '      - img\n' +
+      '    - button "Settings":\n' +
+      '      - img\n' +
+      '  - tab "main.cpp Close main.cpp Move main.cpp to secondary group":\n' +
+      '    - text: main.cpp\n' +
+      '    - button "Close main.cpp":\n' +
+      '      - img\n' +
+      '    - button "Move main.cpp to secondary group":\n' +
+      '      - img\n' +
+      '  - tab "solution.py Close solution.py Move solution.py to secondary group":\n' +
+      '    - text: solution.py\n' +
+      '    - button "Close solution.py":\n' +
+      '      - img\n' +
+      '    - button "Move solution.py to secondary group":\n' +
+      '      - img\n' +
+      '  - tab "active1793657395114.py Close active1793657395114.py Move active1793657395114.py to secondary group":\n' +
+      '    - text: active1793657395114.py\n' +
+      '    - button "Close active1793657395114.py":\n' +
+      '      - img\n' +
+      '    - button "Move active1793657395114.py to secondary group":\n' +
+      '      - img\n' +
+      '  - tab "debug1793657395114.cpp Close debug1793657395114.cpp Move debug1793657395114.cpp to secondary group":\n' +
+      '    - text: debug1793657395114.cpp\n' +
+      '    - button "Close debug1793657395114.cpp":\n' +
+      '      - img\n' +
+      '    - button "Move debug1793657395114.cpp to secondary group":\n' +
+      '      - img\n' +
+      '  - tab "debug1793657395114.py Close debug1793657395114.py Move debug1793657395114.py to secondary group":\n' +
+      '    - text: debug1793657395114.py\n' +
+      '    - button "Close debug1793657395114.py":\n' +
+      '      - img\n' +
+      '    - button "Move debug1793657395114.py to secondary group":\n' +
+      '      - img\n' +
+      '  - tab "DebugMain1793657395114.java Close DebugMain1793657395114.java Move DebugMain1793657395114.java to secondary group" [selected]:\n' +
+      '    - text: DebugMain1793657395114.java\n' +
+      '    - button "Close DebugMain1793657395114.java":\n' +
+      '      - img\n' +
+      '    - button "Move DebugMain1793657395114.java to secondary group":\n' +
+      '      - img\n' +
+      '  - button "Split Editor":\n' +
+      '    - img\n' +
+      '  - code:\n' +
+      '    - textbox "Editor content": "} }"\n' +
+      '  - separator\n' +
+      '  - region "Program input and output":\n' +
+      '    - status:\n' +
+      '      - text: active1793657395114.py · FINISHED\n' +
+      '      - button "Hide input and output":\n' +
+      '        - img\n' +
+      '    - text: STDIN File Input for the next run\n' +
+      '    - textbox "STDIN File":\n' +
+      '      - /placeholder: Enter the input your program should read…\n' +
+      '    - region "Program output":\n' +
+      '      - text: STDOUT File\n' +
+      '      - button "Copy output":\n' +
+      '        - img\n' +
+      '      - button "Save stdout.txt":\n' +
+      '        - img\n' +
+      '      - button "Clear output":\n' +
+      '        - img\n' +
+      '      - textbox "STDOUT File":\n' +
+      '        - /placeholder: Program output will appear here.\n' +
+      '        - text: "22"\n' +
+      '- contentinfo:\n' +
+      '  - img\n' +
+      '  - text: local\n' +
+      `  - 'button "Synchronization: Synced"':\n` +
+      '    - img\n' +
+      '    - text: Synced\n' +
+      `  - 'button "Telemetry: Synced"':\n` +
+      '    - img\n' +
+      '    - text: Synced\n' +
+      '  - button "Editor recording enabled · input, source changes and navigation · privacy & diagnostics"\n' +
+      '  - text: "Ln 13, Col 1 Spaces: 4 UTF-8"\n' +
+      '  - img\n' +
+      '  - text: Java 17\n' +
+      '  - img\n' +
+      '  - text: Connected\n' +
+      '- alert\n' +
+      '- alert'
+  }
+}

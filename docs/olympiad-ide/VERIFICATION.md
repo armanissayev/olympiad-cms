@@ -1,10 +1,10 @@
 # Verification and acceptance status
 
-Updated 2 November 2026 after the authorized Linux staging rehearsal. **The disposable beta end-to-end workflow passed.** The same CMS participant used Monaco, real isolate Run/Stop, official C++/Python Submit and actual CMS judging/public scores, with receipt, outage and restored-database recovery. Live contest readiness remains conditional.
+Updated 3 November 2026. The current feature follow-up is recorded below; the 2 November rehearsal remains separately labeled. **The disposable beta end-to-end workflow passed.** The same CMS participant used Monaco, real isolate Run/Stop, official C++/Python Submit and actual CMS judging/public scores, with receipt, outage and restored-database recovery. Live contest readiness remains conditional.
 
 Read [LINUX_ACCEPTANCE](LINUX_ACCEPTANCE.md) for exact commands, versions, failures, the 12-requirement matrix, load figures, restore proof and release gates. Sanitized outputs are under [evidence/linux-staging](evidence/linux-staging/); reproducible commands/configuration/test sources are in the [staging guide](../../olympiad_ide/tools/linux_staging/README.md).
 
-## Current real Linux results
+## Initial 2 November Linux results
 
 | Check | Actual outcome |
 | --- | --- |
@@ -50,8 +50,26 @@ All 124 original source hashes still match SOURCE_IMPORT.json. Historical checks
 
 ## Remaining release gates
 
-The beta remains available through the private SSH tunnel. A live contest requires dependency/security/licence review, dedicated production execution isolation, timing calibration, production TLS/access/retention/backup policy, off-host recovery and representative sustained 300–350-editor/telemetry/compile/deadline stress tests. Short same-host measurements do not certify that capacity. No reboot, production rollout, merge, push or PR was performed.
+The beta is now available through trusted public HTTPS; its private SSH tunnel remains available. A live contest requires dependency/security/licence review, dedicated production execution isolation, timing calibration, production TLS/access/retention/backup policy, off-host recovery and representative sustained 300–350-editor/telemetry/compile/deadline stress tests. Short same-host measurements do not certify that capacity. No reboot, production rollout, merge, push or PR was performed.
 
 ## Public HTTPS follow-up — 3 November 2026
 
 [PUBLIC_HTTPS](PUBLIC_HTTPS.md) records the completed public-IP deployment. The real-worker native browser repeated all14checks with zero page errors through trusted public HTTPS, without a tunnel or TLS bypass. Public readiness200, CWS login, C++/Python actual judging, Run/Stop/recovery and renewal dry-run passed. All eight existing supervisor units are enabled at boot; tmux provides the persistent operations/log session. The original failed public asset load and its corrected proxy-buffer ownership are retained as evidence. No reboot test or new production capacity claim is made.
+
+## Current workbench and Phase 5/6 — 3 November 2026
+
+Deployed source `e9044e7b03032018b038a03c8fad2abf4d551bfa`. See [WORKBENCH_ACCEPTANCE](WORKBENCH_ACCEPTANCE.md) for commands, environment versions, the complete new requirement matrix and preserved failures.
+
+| Check | Actual final outcome |
+| --- | --- |
+| Linux CMS | 750 passed, 9 skipped, 28 subtests; new 4 entry-card tests included |
+| IDE PostgreSQL runtime | 87 passed on Linux and locally; cancelled-task cleanup regression failed before and passed after shielding |
+| Frontend | 113 passed; typecheck/lint/build passed; 13 history/15 debug focused checks overlap this count |
+| Original mandatory Linux Run suite | 26 passed, 7 deselected; approval unset; no prerequisite skipped |
+| Final debug-specific Linux suite | 10 passed, 5.05 s; both approval flags unset; 4 policy + 6 real isolation tests; no skips |
+| Real adapters | GDB/debugpy breakpoints/locals/steps/stdin-output passed; Java 8 real JDI checks passed |
+| Public main browser | CMS box, large STDIN/STDOUT, active-file switch, actual read only replay Play/Pause/seeking, 3 languages real debugging, persisted breakpoints and new official submission scored with public 25/25 and hidden feedback restricted; zero page errors |
+| Public lifecycle/mobile browser | 390×844 entry visible; real Pause + stack/locals in all 3 languages; C++/Python explicit Stop confirmed STOPPED; Java active refresh disconnect STOPPED + source recovery; exactly 3 sessions/zero errors |
+| Service/process checks | 9 task-owned units active+boot-enabled, tmux retained, both pip checks green; official CMS judge separate from Run/debug |
+
+Public links: https://54.206.171.67/ and https://54.206.171.67/ide/. [Sanitized evidence](evidence/workbench-vnext/) includes final JSON/logs/screenshots and earlier browser failures. The primary actual variable bug and backend disconnect cancellation failure were fixed and retested; harness paste/toggle/Step Out/selector mistakes are labeled separately. No GDB paging patch was applied. History recording discovery remains local-browser only. All 124 original source hashes match. Earlier 350 account measurements do not establish 350 concurrent editor/debugger capacity.

@@ -4,7 +4,7 @@
 
 The integration passed a real disposable Ubuntu 26.04.1 staging rehearsal on the explicitly authorized host, including all 26 Linux sandbox tests, actual CMS C++/Python judging, real-worker native browser recovery, separate service/database outages and matched database/application restoration. See [LINUX_ACCEPTANCE](LINUX_ACCEPTANCE.md) and the [staging procedure](../../olympiad_ide/tools/linux_staging/README.md) for exact commands, versions, corrected configuration and remaining limits. Earlier macOS/local evidence remains historical.
 
-The generic /opt/nginx/systemd templates below require adaptation and review for production. The tested staging layout uses separate official/custom execution accounts, ResourceService owners and restricted helper permissions. Dedicated production worker hosts and production sizing remain release gates. No production host, DNS or AWS networking was changed.
+The generic /opt/nginx/systemd templates below require adaptation and review for production. The tested staging layout uses separate official/custom execution accounts, ResourceService owners and restricted helper permissions. Dedicated production worker hosts and production sizing remain release gates. No production host or DNS was changed; the explicitly authorized staging80/443 follow-up is recorded below.
 
 ## Install and build
 
@@ -34,7 +34,7 @@ The native wheel contains service code, launchers and built /ide/ assets. The so
 
 ## Databases, accounts and secrets
 
-Use separate cms and olympiad_ide databases. Existing CMS configuration owns the CMS DB. IDE migrations use a separate schema-owner role, API uses an IDE DML-only role, and worker uses ide_worker with only execution-table privileges from deployment/worker-role.sql. No worker CMS credentials, source-test storage mount or RPC network access.
+Use separate cms and olympiad_ide databases. Existing CMS configuration owns the CMS DB. IDE migrations use a separate schema-owner role, API uses an IDE DML-only role, and the ordinary custom worker uses ide_worker with execution-table privileges from deployment/worker-role.sql. The separate debug controller also needs the additive f6 grants in DATA_MIGRATION.md; the earlier worker-role.sql alone does not grant debug access. No worker CMS credentials, source-test storage mount or RPC network access.
 
 Provision the database roles using your protected PostgreSQL administration workflow. Grant API SELECT/INSERT/UPDATE/DELETE on IDE application tables and necessary sequence usage; do not grant schema creation. Run Alembic as the schema owner and refresh grants for new tables. Revoke PUBLIC database/schema privileges where appropriate to your installation; ensure both API and worker can connect only to the intended database. Worker grants must be tested with the actual restricted role before deployment. Passwords belong in protected service environments/libpq files, never the repository.
 
@@ -92,7 +92,7 @@ sudo nginx -t
 sudo systemctl reload nginx
 ~~~
 
-The nginx.conf example belongs inside nginx's http block, uses real TLS certificate paths, forwards /ide/ to native and / to CWS, overwrites forwarding headers, strips client Authorization, and protects CMS cookies. It exposes no DB/RPC/private-runtime/admin route. Confirm Secure/HttpOnly/SameSite flags with an actual browser. Request-rate examples are per IP and need shared-NAT testing; they are not participant quota policy. Measure final-minute official traffic separately from background upload budgets before tuning.
+The nginx.conf example belongs inside nginx's http block, uses real TLS certificate paths, forwards /ide/ to native and / to CWS, overwrites forwarding headers, strips client Authorization, and protects CMS cookies. It exposes no generic private-runtime/DB/RPC/admin route. The sole direct ASGI exception is the exact UUID DAP WebSocket queue route described below, protected by a CMS-issued one-use capability. Confirm Secure/HttpOnly/SameSite flags with an actual browser. Request-rate examples are per IP and need shared-NAT testing; they are not participant quota policy. Measure final-minute official traffic separately from background upload budgets before tuning.
 
 Runtime is a Wants dependency, not a hard dependency that shuts CWS down. ResourceService bounds native restarts and stops retrying after the configured limit; repair the error and explicitly re-enable autorestart through CMS resource controls. Intentional stop disables autorestart before quit. Runtime systemd restart policy is separately bounded. Process groups are cleaned by their owning supervisors.
 
@@ -103,6 +103,34 @@ Install the retained worker only on an approved dedicated Linux host. Review oly
 The CMS-pinned isolate submodule is not automatically a certified IDE helper/toolchain combination. Verify compatibility rather than changing CMS's pin to suit IDE workers. Preserve WORKER_SANDBOX_APPROVED gating. Run the real worker suite before setting approval for service operation. Retained worker unit paths now target /opt/cms/olympiad_ide and its separate interpreter. Do not put the API's DB secret or assertion key on the worker.
 
 CMS judging Workers/EvaluationService/ScoringService/ProxyService retain upstream setup. For acceptance, import disposable standalone Batch C++/Python tasks with public sample and hidden judging data, enable the actual CMS language names, submit through native, and observe Worker evaluation, permitted feedback, CWS/Admin visibility and configured ranking updates. Test rejudge/token/dataset switches. Custom successful output is not evidence of CMS judging or an official score.
+
+## Phase6 debugger deployment
+
+The current workbench exposes Run active file, larger STDIN File/STDOUT File, diagnostics and the separate history/debug views. It no longer exposes an interactive Terminal, Problems/Test Cases tabs, saved run list or Run All. Existing baseline/evidence documents retain the earlier behavior as historical observations.
+
+Keep CMS's Python3.12 environment separate from the IDE runtime. On the tested Ubuntu host, distro GDB17.1 supplies native DAP, systemPython3.14.4 supplies debugpy1.8.19, and OpenJDK17 supplies JDI. C++ is compiled with a fixed `-g -O0` profile inside isolate; Python uses a trusted fixed-STDIN wrapper; the project-owned standalone Java adapter and all generated inner classes are installed root:root0644 under root-owned0755 `/usr/local/share/olympiad-debug`. Compile only trusted helper source during host installation. Participant code always compiles/executes inside isolate. Exact package provenance, Java helper commands and licensing limits are in [JAVA_DEBUGGER](JAVA_DEBUGGER.md).
+
+Apply IDE-only migration f5a001→f6a001 after a protected IDE backup and Alembic review/check, then grant the API DML and debug controller's narrow column/table access from [DATA_MIGRATION](DATA_MIGRATION.md). The three new tables are debug_sessions/debug_messages/debug_workers; no CMS migration is added. The one-time credential-free [provision-debug.py](../../olympiad_ide/tools/linux_staging/provision-debug.py) retains the staging helper/install/backup/migration/grants/environment/unit procedure. It requires a disposable marker and exact reviewed database name, refuses existing debug configuration and never approves/starts the worker. Its consolidation was syntax-checked, not rerun on a second host.
+
+Use a distinct `worker.app.debug_main` service with the non-root execution account, separate box600, PrivateNetwork and its own root-only debug.env. Do not add a native CMS launcher or change ResourceService child ownership. The controller needs no CMS DB/RPC credentials or assertion key. Both WORKER_SANDBOX_APPROVED and DEBUG_SANDBOX_APPROVED must equal1 before it advertises capacity. Review the unchanged26mandatory Run prerequisites, the debug suite and all three actual language probes before recording separate debug approval. Do not enable either approval merely to collect tests.
+
+The initial actual debug prerequisite run passed8cases/5.13s. The final deployed-source run passed10cases/5.05s, both approval variables unset, no skips; its4policy checks and6real Linux cases are distinct from the26Run cases. The actual command used by the reviewed update is:
+
+```sh
+cd /opt/cms-ide-stage/source/olympiad_ide
+sudo runuser -u ideworkerstage -- env -u WORKER_SANDBOX_APPROVED -u DEBUG_SANDBOX_APPROVED \
+ PYTHONPATH=backend:. PATH=/usr/local/bin:/usr/bin:/bin RUN_LINUX_DEBUG_TESTS=1 \
+ /opt/cms-ide-stage/runtime-venv/bin/python -m pytest worker/tests/test_debugger.py -vv -p no:cacheprovider
+# Separate actual language probes use reserved610/611/650 boxes; do not collide with live sessions.
+```
+
+See [Phase6 architecture](../../olympiad_ide/docs/PHASE6_ARCHITECTURE.md) for security limits, exact language probes, grants and the initial approval/start commands. `update-workbench.sh` is a separate reviewed update path: it requires an existing DEBUG_SANDBOX_REVIEW and approval, stops only owned staging supervisors, reruns all10cases with approvals unset, installs CMS/runtime independently with umask022, checks both environments and starts the original owners. It retains approval; it does not grant initial approval or apply a missing migration. Run the staging update inside tmux as described in [PUBLIC_HTTPS](PUBLIC_HTTPS.md).
+
+Native REST requests, including debug session creation and ticket renewal, still pass CMS cookie/XSRF/principal/task/phase authorization. Because the pinned native WSGI stack cannot upgrade WebSockets, nginx has one exact canonical-UUID route `/ide/api/debug/sessions/{UUID}/dap` to the private ASGI queue broker. Use the reviewed nginx template or staging `install_debug_ws.py`: reject query strings, overwrite forwarding/upgrade headers, strip Authorization, disable buffering and allow330seconds proxy read time. Keep the private runtime listener on loopback; expose no generic ASGI or adapter endpoint. Set Uvicorn `--ws-max-size 32768 --ws-max-queue 4`, as in the retained runtime unit.
+
+The browser authenticates that socket using a30second one-use token obtained through native CMS; only a hash is stored, and authorization refreshes every20seconds through CMS. Tokens must never enter URLs/logs. The server enforces exact Origin, source-bound controls, five-minute session expiry, quotas and cancellation; workers run real adapters/debuggees in fresh isolate with debug-specific limits. No direct debugger daemon is public. See [SECURITY](SECURITY.md) for the full boundary and avoid widening the path allowlist to make a failing adapter work.
+
+Final deployment source is `e9044e7b03032018b038a03c8fad2abf4d551bfa`. Both Python pip checks passed, owned services were active and systemctl reported no failed units after deployment. These operational checks and direct adapter prerequisites do not alone establish public-browser Pause/Stop or representative debugger capacity. Final public acceptance is recorded separately in [WORKBENCH_ACCEPTANCE](WORKBENCH_ACCEPTANCE.md) and [final prerequisite evidence](evidence/workbench-vnext/debug-security-final.log).
 
 ## Diagnostics and failure behavior
 
@@ -124,7 +152,7 @@ Schedule existing telemetry retention maintenance using the IDE role and documen
 
 Complete Linux and load gates, rehearse both-database restore, verify role/network restrictions, and confirm CWS fallback before a live contest. Deploy disabled first, build/migrate/health-check, then enable during a controlled maintenance window. Back up identity/configuration and source storage with the databases.
 
-To roll back, disable native config and intentionally stop it through ResourceService, remove /ide ingress routing, and stop independent runtime/custom workers as appropriate. Preserve all new tables, code/source archives and local browser data. Ordinary CWS continues; its fallback submissions have no invented IDE correlation. See DATA_MIGRATION.md for restored-ID caveats.
+To roll back, disable native config and intentionally stop it through ResourceService, remove /ide ingress routing, and stop independent runtime/custom/debug workers as appropriate, including the exact DAP WebSocket ingress route. Preserve all new tables, code/source archives and local browser data. Ordinary CWS continues; its fallback submissions have no invented IDE correlation. See DATA_MIGRATION.md for restored-ID caveats.
 
 ## Public staging access
 

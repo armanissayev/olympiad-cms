@@ -1,0 +1,12 @@
+Page diagnostics {"url":"https://54.206.171.67/ide/","errors":[],"body":"Disposable native CMS Linux acceptance\nstaging-participant\nContest active · 41:17:19\ncppsum — Integer sum — C++\npysum — Integer sum — Python\nSubmit & official feedback\nCMS participant page\nO\nOlympiad IDE\nInteger sum — C++\nC++20\nRun active file\nSynced\nmain.cpp\nsolution.py\n1\n2\n3\n#include <iostream>\nint main(){long long a,b;std::cin>>a>>b;std::cout<<a+b<<\"\\n\";}\nsrc/main.cpp · FINISHED\nSTDIN File\nInput for the next run\nSTDOUT File\nlocal\nSynced\nSynced\nEditor recording enabled · input, source changes and navigation · privacy & diagnostics\nLn 3, Col 1\nSpaces: 4\nUTF-8\nC++20\nConnected"}
+locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('button', { name: 'New File', exact: true })[22m
+
+    at newFile (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/tools/verify-workbench-vnext.cjs:21:208)
+    at async /Users/isaevarman/Developer/cms/olympiad_ide/frontend/tools/verify-workbench-vnext.cjs:23:38 {
+  log: [
+    "  - waiting for getByRole('button', { name: 'New File', exact: true })"
+  ],
+  name: 'TimeoutError'
+}

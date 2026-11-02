@@ -1,0 +1,13 @@
+
+> olympiad-ide@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 /Users/isaevarman/Developer/cms/olympiad_ide/frontend
+
+
+ Test Files  14 passed (14)
+      Tests  113 passed (113)
+   Start at  03:10:36
+   Duration  4.03s (transform 2.38s, setup 1.18s, import 3.45s, tests 6.09s, environment 10.28s)
+

@@ -27,9 +27,27 @@ cd /opt/cms/olympiad_ide/backend
 /opt/olympiad-runtime/bin/alembic check
 ~~~
 
-DATABASE_URL must be loaded securely for that command, never copied from the CMS database configuration. Existing chain9773627aa90c→f3a001→f4a001 is preserved; f5a001 adds cms_principals, cms_workspace_bindings and cms_assertion_nonces. It leaves all old workspace/file/receipt/telemetry/job rows and UUIDs untouched. Offline SQL is a review artifact, not proof that an existing database is at the expected revision; inspect current first. No startup autogeneration or reset occurs.
+DATABASE_URL must be loaded securely for that command, never copied from the CMS database configuration. The linear chain9773627aa90c→f3a001→f4a001→f5a001→f6a001 is preserved. Revision f5a001 adds cms_principals, cms_workspace_bindings and cms_assertion_nonces; f6a001 adds only the three debugger tables described below. Existing workspace/file/receipt/telemetry/job rows and UUIDs remain untouched. Offline SQL is a review artifact, not proof that an existing database is at the expected revision; inspect current first. No startup autogeneration or reset occurs.
 
-Downgrade f5a001 refuses if any new table contains rows. Feature-disable rollback retains all mappings and historical receipts. API role receives DML only; schema owner runs migrations. Execution workers receive only the grants in olympiad_ide/deployment/worker-role.sql, no CMS access.
+Downgrades f5a001 and f6a001 each refuse if any table introduced by that revision contains rows. Feature-disable rollback retains all mappings and historical receipts. API role receives DML only; schema owner runs migrations. Ordinary execution workers receive the grants in olympiad_ide/deployment/worker-role.sql, with no CMS access. That file covers the pre-debug execution tables; the separate debug controller additionally requires the narrow f6 grants below.
+
+### f6 debugger data and role grants
+
+`f6a001` introduces `debug_sessions` (owned immutable source/configuration/STDIN capture, fixed expiry, worker lease/status, output counters and attachment-token hash/expiry), `debug_messages` (bounded per-session input/output DAP journal, unique direction/sequence) and `debug_workers` (worker heartbeat and supported languages). It creates no CMS table and changes neither CMS receipts nor official judging. Source snapshots, runtime values and DAP output are private participant data. Five-minute execution expiry does not delete these persisted records; debug retention/pruning and backup policy remain an operator responsibility. Breakpoint/history UI observations use existing telemetry storage; the new strict breakpoint event requires no additional migration.
+
+For the tested staging accounts, after the IDE owner applies f6a001:
+
+```sql
+GRANT SELECT,INSERT,UPDATE,DELETE ON debug_sessions,debug_messages,debug_workers TO ideapistage;
+GRANT SELECT ON debug_sessions,debug_messages,debug_workers TO ideworkerstage;
+GRANT UPDATE(status,lease_token,heartbeat,cancelled,output_bytes,last_event,error) ON debug_sessions TO ideworkerstage;
+GRANT INSERT ON debug_messages TO ideworkerstage;
+GRANT INSERT,UPDATE ON debug_workers TO ideworkerstage;
+```
+
+Adapt role names for another installation. The controller receives no ownership/snapshot/attachment-token updates or schema privileges. No account receives CMS authority through these grants. The API/migration/controller remain separate roles; the staging custom Run and debug units share the dedicated execution account, using separate processes and boxes.
+
+The actual f6 rollout first took protected custom-format dumps of the active restored IDE DB under `/var/lib/cms-ide-stage/backups/debug-rollout-20261103` (directory0700, dumps0600), then upgraded as idemigratestage and passed Alembic check. The first candidate archive contained AppleDouble metadata and failed during migration-module parsing before DDL; removing only candidate `._*` files allowed the recorded retry. CMS data was untouched. See [Phase6 architecture](../../olympiad_ide/docs/PHASE6_ARCHITECTURE.md) and the credential-free one-time [provisioning procedure](../../olympiad_ide/tools/linux_staging/provision-debug.py). The consolidated procedure was syntax-checked; it was not rerun on a second host.
 
 ## Legacy browser/server data
 
@@ -56,10 +74,10 @@ CMS's logical DumpExporter/Importer is different: it can remap numeric IDs. Test
 
 ## Completed Linux staging restoration
 
-On 2 November 2026, both ResourceService owners and runtime/custom worker/ranking writers were quiesced. PostgreSQL18.6 restored the task-owned CMS/IDE databases into new empty `cms_restore_21c7bd2d5bfortesting` and `ide_restore_d4008d5dedfortesting` databases. All 28 CMS/21 IDE tables, row fingerprints, schema/constraints/indexes/sequences, large-object bytes and 28 native source hashes matched. Exact IDs, 351 principals, 353 workspace mappings and Alembic `f5a001` were preserved. Originals remain retained. The application switched to the restored copies and the same participant recovered workspaces, receipts and judged responses. The real-worker browser and 350-account login/context checks passed afterward.
+On 2 November 2026, both ResourceService owners and runtime/custom worker/ranking writers were quiesced. PostgreSQL18.6 restored the task-owned CMS/IDE databases into new empty `cms_restore_21c7bd2d5bfortesting` and `ide_restore_d4008d5dedfortesting` databases. At the historical f5a001 revision, all28CMS/21IDE tables, row fingerprints, schema/constraints/indexes/sequences, large-object bytes and28native source hashes matched. The later f6a001 rollout adds three IDE tables to that21-table schema; those debug tables were not part of the earlier restore rehearsal. Exact IDs, 351 principals, 353 workspace mappings and Alembic `f5a001` were preserved. Originals remain retained. The application switched to the restored copies and the same participant recovered workspaces, receipts and judged responses. The real-worker browser and 350-account login/context checks passed afterward.
 
-This is an executed same-cluster logical PostgreSQL dump/restore. A physical basebackup, cross-database atomic snapshot and off-host disaster recovery were not tested. Protected configuration/ranking state was archived but not restored onto a second host. Exact commands/counts/limits are in [LINUX_ACCEPTANCE](LINUX_ACCEPTANCE.md) and [restore evidence](evidence/linux-staging/restore-application-results.json). Production recovery remains a separate gate.
+This is an executed same-cluster logical PostgreSQL dump/restore. A physical basebackup, cross-database atomic snapshot and off-host disaster recovery were not tested. Protected configuration/ranking state was archived but not restored onto a second host. Exact commands/counts/limits are in [LINUX_ACCEPTANCE](LINUX_ACCEPTANCE.md) and [restore evidence](evidence/linux-staging/restore-application-results.json). Production recovery remains a separate gate. A complete f6 backup/restore rehearsal including populated debug journals has not been performed. Quiesce the debug unit alongside other writers for a new consistent backup; after restoration inspect deadlines/leases before starting it. A restored source/journal is not a live VM checkpoint and must not be presented as resumed debugger state.
 
 ## Rollback
 
-Disable olympiad_ide_enabled, intentionally stop native service using ResourceService, remove its ingress route, and stop the independent runtime/worker units when no longer needed. CWS remains the fallback. Retain new tables, backups, installation UUID, user code, local storage and private key backups. Re-enabling restores the same scopes. Do not downgrade CMS dump-model readers over newly written version45 exports without an explicit conversion.
+Disable olympiad_ide_enabled, intentionally stop native service using ResourceService, remove its ingress route, and stop the independent runtime/custom/debug worker units when no longer needed; remove the exact DAP WebSocket route along with other IDE routing. CWS remains the fallback. Retain new tables, backups, installation UUID, user code, local storage and private key backups. Re-enabling restores the same scopes. Do not downgrade CMS dump-model readers over newly written version45 exports without an explicit conversion.

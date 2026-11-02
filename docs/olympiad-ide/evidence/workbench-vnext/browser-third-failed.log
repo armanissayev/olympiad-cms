@@ -1,0 +1,47 @@
+Visible CMS box and simplified panes verified
+Active-file switching real output verified
+Page diagnostics {"url":"https://54.206.171.67/ide/","errors":[],"body":"Disposable native CMS Linux acceptance\nstaging-participant\nContest active · 41:02:17\ncppsum — Integer sum — C++\npysum — Integer sum — Python\nSubmit & official feedback\nCMS participant page\nO\nOlympiad IDE\nInteger sum — C++\nC++20\nRun active file\nSynced\nRUN ACTIVE FILE\n\ndebug1793657067624.cpp\n\nC++20\n\nRun always uses the file in the focused editor. Switch files to run a different solution.\n\nEnter input in STDIN File. Your program’s output appears in STDOUT File.\n\nDEBUG ACTIVE FILE\n\nIsolated debugger · stopped. Sessions expire after five minutes.\n\nStart debugging\nStop debugging\nContinue\nPause\nStep Over\nStep Into\nStep Out\nCaptured source · 20c9c158e2e9\nBreakpoints\n\nClick the editor gutter to add or remove a breakpoint. Source and breakpoints are captured at Start. Later edits and relocated lines apply to the next session.\n\nRemove debug1793657067624.cpp:9\nCaptured breakpoint verification\nCall Stack\nmain:9\nVariables\na\nLocals\n2\nb\nLocals\n3\nanswer\nLocals\n0\n(return)\nReturn\n5\nDebug output\nNo source file named /box/debug1793657067624.cpp.\nBreakpoint 1 (-source /box/debug1793657067624.cpp -line 9) pending.\n\nmain.cpp\nsolution.py\nactive1793657067624.py\ndebug1793657067624.cpp\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n#include <iostream>\nint add(int a,int b){\n int result=a+b;\n  return result;\n  }\n  int main(){\n   int a=2;\n    int b=3;\n     int answer=add(a,b);\n      std::cout<<answer<<\"\\n\";\n       return 0;\n       }\n       \nactive1793657067624.py · FINISHED\nSTDIN File\nInput for the next run\nSTDOUT File\nlocal\nSynced\nSynced\nEditor recording enabled · input, source changes and navigation · privacy & diagnostics\nLn 13, Col 8\nSpaces: 4\nUTF-8\nC++20\nConnected"}
+ExpectError: expect(locator).toContainText(expected) failed
+
+Locator: getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'answer' })
+Expected substring: "5"
+Received string:    "answerLocals0"
+Timeout: 20000ms
+
+Call log:
+  - Expect "toContainText" getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'answer' }) with timeout 20000ms
+  - waiting for getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'answer' })
+    34 × locator resolved to <div class="debug-variable">…</div>
+       - unexpected value "answerLocals0"
+
+    at captureRawStack (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright-core/lib/coreBundle.js:9282:17)
+    at callMatcherAsStep (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright/lib/matchers/expect.js:13316:57)
+    at Object.toContainText (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright/lib/matchers/expect.js:13308:23)
+    at /Users/isaevarman/Developer/cms/olympiad_ide/frontend/tools/verify-workbench-vnext.cjs:41:230 {
+  matcherResult: {
+    name: 'toContainText',
+    expected: '5',
+    message: 'expect(locator).toContainText(expected) failed\n' +
+      '\n' +
+      "Locator: getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'answer' })\n" +
+      'Expected substring: "5"\n' +
+      'Received string:    "answerLocals0"\n' +
+      'Timeout: 20000ms\n' +
+      '\n' +
+      'Call log:\n' +
+      `  - Expect "toContainText" getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'answer' }) with timeout 20000ms\n` +
+      "  - waiting for getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'answer' })\n" +
+      '    34 × locator resolved to <div class="debug-variable">…</div>\n' +
+      '       - unexpected value "answerLocals0"\n',
+    pass: false,
+    actual: 'answerLocals0',
+    log: [
+      `  - Expect "toContainText" getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'answer' }) with timeout 20000ms`,
+      "  - waiting for getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'answer' })",
+      '    34 × locator resolved to <div class="debug-variable">…</div>',
+      '       - unexpected value "answerLocals0"'
+    ],
+    timeout: 20000,
+    ariaSnapshot: '- button "answer" [disabled]\n- text: Locals\n- code: "0"'
+  }
+}

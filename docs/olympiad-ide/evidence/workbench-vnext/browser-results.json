@@ -1,0 +1,64 @@
+{
+  "checks": [
+    "Prominent CMS entry and simple STDIN/STDOUT UI",
+    "Switching files runs only current source and never previous configuration",
+    "Actual local recording read-only replay, seeking and speed controls",
+    "Real C++/Python/Java breakpoint, stack, locals and stepping; persisted breakpoints",
+    "Official CMS submission still receives actual judging after debugger/history changes"
+  ],
+  "runs": [
+    {
+      "id": "74a1e4ba-dade-4c63-8a74-58692e9cfe08",
+      "entryPoint": "1b1d38b2-3302-4bba-87a0-4c02873ed61f",
+      "path": "run1793657629603.cpp",
+      "stdout": "5\n"
+    },
+    {
+      "id": "348f47c4-e174-4b8e-81a1-1728bfeb6d42",
+      "entryPoint": "410bf323-69a3-45b6-b7e6-14443c24b344",
+      "path": "active1793657629603.py",
+      "stdout": "22\n"
+    }
+  ],
+  "debug": [
+    {
+      "language": "C++",
+      "id": "23fb606a-3d32-48a3-a315-d7e723dba09a",
+      "sourceHash": "44c876f066d6f249efec7bd27aea812da80119d227984e13d21bdd14f6d46af0",
+      "breakpoint": true,
+      "locals": true,
+      "stepInto": true,
+      "stepOver": true,
+      "stepOut": true,
+      "continue": true
+    },
+    {
+      "language": "Python",
+      "id": "12c0d347-f015-40f7-baa7-40ff670539e8",
+      "sourceHash": "01e8c95855f9dcf97cb4da7caa48f7d7b700022f0ac544dde4c3396ea2064b72",
+      "breakpoint": true,
+      "locals": true,
+      "stepInto": true,
+      "stepOver": true,
+      "stepOut": true,
+      "continue": true
+    },
+    {
+      "language": "Java",
+      "id": "6d1dcaa7-ff07-44a4-833a-8f074ebe9191",
+      "sourceHash": "1036cb0527973ed0966c9496375513fcac733b345f3700c386005ee12f87d90d",
+      "breakpoint": true,
+      "locals": true,
+      "stepInto": true,
+      "stepOver": true,
+      "stepOut": true,
+      "continue": true
+    }
+  ],
+  "official": {
+    "id": "LUZDBPaLg68gZPI1EV4NG66GdHopusMWkIweBrzlukw.",
+    "realJudging": true
+  },
+  "errors": [],
+  "status": "passed"
+}

@@ -1,0 +1,176 @@
+Visible CMS box and simplified panes verified
+Active-file switching real output verified
+Page diagnostics {"url":"https://54.206.171.67/ide/","errors":[],"body":"Disposable native CMS Linux acceptance\nstaging-participant\nContest active · 41:15:37\ncppsum — Integer sum — C++\npysum — Integer sum — Python\nSubmit & official feedback\nCMS participant page\nO\nOlympiad IDE\nInteger sum — C++\nC++20\nRun active file\nSynced\nRUN ACTIVE FILE\n\ndebug1793656271680.cpp\n\nC++20\n\nRun always uses the file in the focused editor. Switch files to run a different solution.\n\nEnter input in STDIN File. Your program’s output appears in STDOUT File.\n\nDEBUG ACTIVE FILE\n\nIsolated debugger · stopped. Sessions expire after five minutes.\n\nStart debugging\nStop debugging\nContinue\nPause\nStep Over\nStep Into\nStep Out\n\nlist index out of range\n\nCaptured source · 6f45222dc54c\nBreakpoints\n\nClick the editor gutter to add or remove a breakpoint. Source and breakpoints are captured at Start. Later edits and relocated lines apply to the next session.\n\nRemove debug1793656271680.cpp:9\nCaptured breakpoint verification\nCall Stack\nadd:4\nmain:9\nVariables\na\n2\nb\n3\nDebug output\nNo source file named /box/debug1793656271680.cpp.\nBreakpoint 1 (-source /box/debug1793656271680.cpp -line 9) pending.\n\nmain.cpp\nsolution.py\nactive1793656271680.py\ndebug1793656271680.cpp\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n#include <iostream>\nint add(int a,int b){\n int result=a+b;\n  return result;\n  }\n  int main(){\n   int a=2;\n    int b=3;\n     int answer=add(a,b);\n      std::cout<<answer<<\"\\n\";\n       return 0;\n       }\n       \nactive1793656271680.py · FINISHED\nSTDIN File\nInput for the next run\nSTDOUT File\nlocal\nSynced\nSynced\nEditor recording enabled · input, source changes and navigation · privacy & diagnostics\nLn 13, Col 8\nSpaces: 4\nUTF-8\nC++20\nConnected"}
+ExpectError: expect(locator).toContainText(expected) failed
+
+Locator: getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'result' })
+Expected substring: "5"
+Timeout: 20000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "toContainText" getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'result' }) with timeout 20000ms
+  - waiting for getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'result' })
+
+    at captureRawStack (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright-core/lib/coreBundle.js:9282:17)
+    at callMatcherAsStep (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright/lib/matchers/expect.js:13316:57)
+    at Object.toContainText (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright/lib/matchers/expect.js:13308:23)
+    at /Users/isaevarman/Developer/cms/olympiad_ide/frontend/tools/verify-workbench-vnext.cjs:40:232 {
+  matcherResult: {
+    name: 'toContainText',
+    expected: '5',
+    message: 'expect(locator).toContainText(expected) failed\n' +
+      '\n' +
+      "Locator: getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'result' })\n" +
+      'Expected substring: "5"\n' +
+      'Timeout: 20000ms\n' +
+      'Error: element(s) not found\n' +
+      '\n' +
+      'Call log:\n' +
+      `  - Expect "toContainText" getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'result' }) with timeout 20000ms\n` +
+      "  - waiting for getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'result' })\n",
+    pass: false,
+    actual: undefined,
+    log: [
+      `  - Expect "toContainText" getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'result' }) with timeout 20000ms`,
+      "  - waiting for getByRole('region', { name: 'Interactive debugger' }).locator('.debug-variable').filter({ hasText: 'result' })"
+    ],
+    timeout: 20000,
+    ariaSnapshot: '- strong: Disposable native CMS Linux acceptance\n' +
+      '- text: staging-participant Contest active · 41:15:37\n' +
+      '- combobox "Contest task":\n' +
+      '  - option "cppsum — Integer sum — C++" [selected]\n' +
+      '  - option "pysum — Integer sum — Python"\n' +
+      '- button "Submit & official feedback"\n' +
+      '- link "CMS participant page":\n' +
+      '  - /url: https://54.206.171.67/\n' +
+      '- banner:\n' +
+      '  - text: Olympiad IDE Integer sum — C++ C++20\n' +
+      '  - button "Run active file":\n' +
+      '    - img\n' +
+      '    - text: Run active file\n' +
+      '  - button "Debug active file" [disabled]:\n' +
+      '    - img\n' +
+      '  - button "Stop execution (Shift+F5)" [disabled]:\n' +
+      '    - img\n' +
+      '  - button "Toggle Split Editor":\n' +
+      '    - img\n' +
+      '  - button "Toggle bottom panel":\n' +
+      '    - img\n' +
+      `  - 'button "Synchronization: Synced"':\n` +
+      '    - img\n' +
+      '    - text: Synced\n' +
+      '  - button "Open Settings":\n' +
+      '    - img\n' +
+      '- main:\n' +
+      '  - navigation "Primary activity":\n' +
+      '    - button "Explorer":\n' +
+      '      - img\n' +
+      '    - button "Search":\n' +
+      '      - img\n' +
+      '    - button "Run and Debug" [pressed]:\n' +
+      '      - img\n' +
+      '    - button "History":\n' +
+      '      - img\n' +
+      '    - button "Settings":\n' +
+      '      - img\n' +
+      '  - complementary:\n' +
+      '    - heading "RUN ACTIVE FILE" [level=2]\n' +
+      '    - paragraph: debug1793656271680.cpp\n' +
+      '    - paragraph: C++20\n' +
+      '    - paragraph: Run always uses the file in the focused editor. Switch files to run a different solution.\n' +
+      '    - paragraph: Enter input in STDIN File. Your program’s output appears in STDOUT File.\n' +
+      '    - region "Interactive debugger":\n' +
+      '      - heading "DEBUG ACTIVE FILE" [level=2]\n' +
+      '      - status: Isolated debugger · stopped. Sessions expire after five minutes.\n' +
+      '      - button "Start debugging" [disabled]\n' +
+      '      - button "Stop debugging"\n' +
+      '      - button "Continue"\n' +
+      '      - button "Pause" [disabled]\n' +
+      '      - button "Step Over"\n' +
+      '      - button "Step Into"\n' +
+      '      - button "Step Out"\n' +
+      '      - alert: list index out of range\n' +
+      '      - group: Captured source · 6f45222dc54c\n' +
+      '      - heading "Breakpoints" [level=3]\n' +
+      '      - paragraph: Click the editor gutter to add or remove a breakpoint. Source and breakpoints are captured at Start. Later edits and relocated lines apply to the next session.\n' +
+      '      - button "Remove debug1793656271680.cpp:9"\n' +
+      '      - group: Captured breakpoint verification\n' +
+      '      - heading "Call Stack" [level=3]\n' +
+      '      - button "add:4"\n' +
+      '      - button "main:9"\n' +
+      '      - heading "Variables" [level=3]\n' +
+      '      - button "a" [disabled]\n' +
+      '      - code: "2"\n' +
+      '      - button "b" [disabled]\n' +
+      '      - code: "3"\n' +
+      '      - heading "Debug output" [level=3]\n' +
+      '      - text: No source file named /box/debug1793656271680.cpp. Breakpoint 1 (-source /box/debug1793656271680.cpp -line 9) pending.\n' +
+      '  - separator\n' +
+      '  - tab "main.cpp Close main.cpp Move main.cpp to secondary group":\n' +
+      '    - text: main.cpp\n' +
+      '    - button "Close main.cpp":\n' +
+      '      - img\n' +
+      '    - button "Move main.cpp to secondary group":\n' +
+      '      - img\n' +
+      '  - tab "solution.py Close solution.py Move solution.py to secondary group":\n' +
+      '    - text: solution.py\n' +
+      '    - button "Close solution.py":\n' +
+      '      - img\n' +
+      '    - button "Move solution.py to secondary group":\n' +
+      '      - img\n' +
+      '  - tab "active1793656271680.py Close active1793656271680.py Move active1793656271680.py to secondary group":\n' +
+      '    - text: active1793656271680.py\n' +
+      '    - button "Close active1793656271680.py":\n' +
+      '      - img\n' +
+      '    - button "Move active1793656271680.py to secondary group":\n' +
+      '      - img\n' +
+      '  - tab "debug1793656271680.cpp Close debug1793656271680.cpp Move debug1793656271680.cpp to secondary group" [selected]:\n' +
+      '    - text: debug1793656271680.cpp\n' +
+      '    - button "Close debug1793656271680.cpp":\n' +
+      '      - img\n' +
+      '    - button "Move debug1793656271680.cpp to secondary group":\n' +
+      '      - img\n' +
+      '  - button "Split Editor":\n' +
+      '    - img\n' +
+      '  - code:\n' +
+      '    - textbox "Editor content": "return 0; }"\n' +
+      '  - separator\n' +
+      '  - region "Program input and output":\n' +
+      '    - status:\n' +
+      '      - text: active1793656271680.py · FINISHED\n' +
+      '      - button "Hide input and output":\n' +
+      '        - img\n' +
+      '    - text: STDIN File Input for the next run\n' +
+      '    - textbox "STDIN File":\n' +
+      '      - /placeholder: Enter the input your program should read…\n' +
+      '    - region "Program output":\n' +
+      '      - text: STDOUT File\n' +
+      '      - button "Copy output":\n' +
+      '        - img\n' +
+      '      - button "Save stdout.txt":\n' +
+      '        - img\n' +
+      '      - button "Clear output":\n' +
+      '        - img\n' +
+      '      - textbox "STDOUT File":\n' +
+      '        - /placeholder: Program output will appear here.\n' +
+      '        - text: "22"\n' +
+      '- contentinfo:\n' +
+      '  - img\n' +
+      '  - text: local\n' +
+      `  - 'button "Synchronization: Synced"':\n` +
+      '    - img\n' +
+      '    - text: Synced\n' +
+      `  - 'button "Telemetry: Synced"':\n` +
+      '    - img\n' +
+      '    - text: Synced\n' +
+      '  - button "Editor recording enabled · input, source changes and navigation · privacy & diagnostics"\n' +
+      '  - text: "Ln 13, Col 8 Spaces: 4 UTF-8"\n' +
+      '  - img\n' +
+      '  - text: C++20\n' +
+      '  - img\n' +
+      '  - text: Connected\n' +
+      '- alert\n' +
+      '- alert'
+  }
+}

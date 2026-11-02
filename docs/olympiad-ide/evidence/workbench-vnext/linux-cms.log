@@ -1,0 +1,120 @@
+........................................................................ [  9%]
+........................................................................ [ 18%]
+...................................s..s........s..s........s..s....s.... [ 28%]
+........................................................................ [ 37%]
+........................................................................ [ 47%]
+........................................................................ [ 56%]
+............................s........................................... [ 66%]
+..........................................s............................. [ 75%]
+........................................................................ [ 85%]
+...................................................... [ 92%]
+.........................................................      [100%]
+=============================== warnings summary ===============================
+../../../../opt/cms-ide-stage/source/cms/plugin.py:24
+  /opt/cms-ide-stage/source/cms/plugin.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+    import pkg_resources
+
+../../../../opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/sqlalchemy/sql/sqltypes.py:1902
+  /opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/sqlalchemy/sql/sqltypes.py:1902: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+    epoch = dt.datetime.utcfromtimestamp(0)
+
+../../../../opt/cms-ide-stage/source/cmscontrib/AddAdmin.py:26
+  /opt/cms-ide-stage/source/cmscontrib/AddAdmin.py:26: MonkeyPatchWarning: Monkey-patching ssl after ssl has already been imported may lead to errors, including RecursionError on Python 3.6. It may also silently lead to incorrect behaviour on Python 3.7. Please monkey-patch earlier. See https://github.com/gevent/gevent/issues/1016. Modules that had direct imports (NOT patched): ['anyio.streams.tls (/opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/anyio/streams/tls.py)']. 
+    gevent.monkey.patch_all()  # noqa
+
+cmstestsuite/unit_tests/cmscontrib/AddSubmissionTest.py: 25 warnings
+cmstestsuite/unit_tests/cmscontrib/DumpImporterTest.py: 11 warnings
+cmstestsuite/unit_tests/io/priorityqueue_test.py: 6 warnings
+cmstestsuite/unit_tests/server/contest/authentication_test.py: 18 warnings
+cmstestsuite/unit_tests/server/contest/overview_ide_test.py: 3 warnings
+cmstestsuite/unit_tests/server/olympiadide/receipt_dump_test.py: 6 warnings
+cmstestsuite/unit_tests/service/OlympiadIDEContextTest.py: 14 warnings
+  /opt/cms-ide-stage/source/cmscommon/datetime.py:48: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+    return datetime.utcfromtimestamp(timestamp)
+
+cmstestsuite/unit_tests/grading/scoring_test.py: 32 warnings
+cmstestsuite/unit_tests/io/priorityqueue_test.py: 8 warnings
+cmstestsuite/unit_tests/io/triggeredservice_test.py: 20 warnings
+cmstestsuite/unit_tests/server/contest/authentication_test.py: 20 warnings
+cmstestsuite/unit_tests/server/contest/communication_test.py: 8 warnings
+cmstestsuite/unit_tests/server/contest/overview_ide_test.py: 17 warnings
+cmstestsuite/unit_tests/server/contest/printing_test.py: 6 warnings
+cmstestsuite/unit_tests/server/contest/submission/check_test.py: 8 warnings
+cmstestsuite/unit_tests/server/contest/submission/utils_test.py: 4 warnings
+cmstestsuite/unit_tests/server/contest/submission/workflow_test.py: 36 warnings
+cmstestsuite/unit_tests/server/contest/tokening_test.py: 13 warnings
+cmstestsuite/unit_tests/service/OlympiadIDEContextTest.py: 36 warnings
+cmstestsuite/unit_tests/service/ProxyServiceTest.py: 10 warnings
+cmstestsuite/unit_tests/service/ScoringServiceTest.py: 4 warnings
+  /opt/cms-ide-stage/source/cmscommon/datetime.py:46: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return datetime.utcnow()
+
+cmstestsuite/unit_tests/server/contest/overview_ide_test.py::TestOverviewIDEEntry::test_authenticated_enabled_contest_has_visible_ide_entry_before_general_information
+cmstestsuite/unit_tests/server/contest/overview_ide_test.py::TestOverviewIDEEntry::test_disabled_feature_leaves_normal_contest_page_without_ide_entry
+cmstestsuite/unit_tests/server/contest/overview_ide_test.py::TestOverviewIDEEntry::test_multi_contest_page_does_not_link_to_another_single_contest_ide
+cmstestsuite/unit_tests/service/OlympiadIDEContextTest.py::ContextTest::test_cms_ip_autologin_is_supported_without_new_cookie_authority
+cmstestsuite/unit_tests/service/OlympiadIDEContextTest.py::ContextTest::test_manual_submission_refreshes_cookie_but_background_context_does_not
+cmstestsuite/unit_tests/service/OlympiadIDEContextTest.py::ContextTest::test_precontest_tasks_hidden_and_per_participant_extra_time_preserved
+cmstestsuite/unit_tests/service/OlympiadIDEContextTest.py::ContextTest::test_protected_request_needs_expected_identity_and_cms_xsrf
+cmstestsuite/unit_tests/service/OlympiadIDEContextTest.py::ContextTest::test_unsupported_task_type_keeps_context_available_with_cws_fallback
+  /opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/tornado/web.py:553: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    expires = datetime.datetime.utcnow() + datetime.timedelta(
+
+cmstestsuite/unit_tests/server/contest/overview_ide_test.py::TestOverviewIDEEntry::test_authenticated_enabled_contest_has_visible_ide_entry_before_general_information
+cmstestsuite/unit_tests/server/contest/overview_ide_test.py::TestOverviewIDEEntry::test_disabled_feature_leaves_normal_contest_page_without_ide_entry
+cmstestsuite/unit_tests/server/contest/overview_ide_test.py::TestOverviewIDEEntry::test_multi_contest_page_does_not_link_to_another_single_contest_ide
+  /opt/cms-ide-stage/source/cms/server/contest/templates/overview.html:245: DeprecationWarning: 'soft_unicode' has been renamed to 'soft_str'. The old name will be removed in MarkupSafe 2.1.
+    {% endif %}
+
+cmstestsuite/unit_tests/server/contest/overview_ide_test.py::TestOverviewIDEEntry::test_signed_out_visitor_gets_normal_login_without_advertising_workspace
+cmstestsuite/unit_tests/service/OlympiadIDEContextTest.py::ContextTest::test_cms_ip_autologin_is_supported_without_new_cookie_authority
+cmstestsuite/unit_tests/service/OlympiadIDEContextTest.py::ContextTest::test_context_reuses_cms_login_and_discloses_only_authorized_task_metadata
+cmstestsuite/unit_tests/service/OlympiadIDEContextTest.py::ContextTest::test_expired_or_revoked_cms_cookie_cannot_become_development_identity
+cmstestsuite/unit_tests/service/OlympiadIDEContextTest.py::ContextTest::test_expired_or_revoked_cms_cookie_cannot_become_development_identity
+cmstestsuite/unit_tests/service/OlympiadIDEContextTest.py::ContextTest::test_removed_hidden_or_ip_restricted_participation_is_rechecked
+cmstestsuite/unit_tests/service/OlympiadIDEContextTest.py::ContextTest::test_removed_hidden_or_ip_restricted_participation_is_rechecked
+  /opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/tornado/web.py:578: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    expires = datetime.datetime.utcnow() - datetime.timedelta(days=365)
+
+cmstestsuite/unit_tests/server/contest/submission/file_retrieval_test.py: 16 warnings
+cmstestsuite/unit_tests/server/olympiadide/admission_test.py: 6 warnings
+  /opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/gevent/os.py:431: DeprecationWarning: This process (pid=57750) is multi-threaded, use of fork() may lead to deadlocks in the child.
+    pid = fork()
+
+../../../../opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/_pytest/cacheprovider.py:487
+  /opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/_pytest/cacheprovider.py:487: PytestCacheWarning: could not create cache path /opt/cms-ide-stage/source/.pytest_cache/v/cache/nodeids: [Errno 13] Permission denied: '/opt/cms-ide-stage/source/pytest-cache-files-02yeq1r9'
+    config.cache.set("cache/nodeids", sorted(str(n) for n in self.cached_nodeids))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+750 passed, 9 skipped, 349 warnings, 28 subtests passed in 30.90s
+--- Logging error ---
+Traceback (most recent call last):
+  File "/opt/cms-ide-stage/python312/lib/python3.12/logging/__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+ValueError: I/O operation on closed file.
+Call stack:
+  File "/opt/cms-ide-stage/source/cms/io/triggeredservice.py", line 327, in _sweeper_loop
+    self._sweep()
+  File "/opt/cms-ide-stage/source/cms/io/triggeredservice.py", line 338, in _sweep
+    logger.info("Start looking for missing operations.")
+Message: 'Start looking for missing operations.'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "/opt/cms-ide-stage/python312/lib/python3.12/logging/__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+ValueError: I/O operation on closed file.
+Call stack:
+  File "/opt/cms-ide-stage/source/cms/io/triggeredservice.py", line 327, in _sweeper_loop
+    self._sweep()
+  File "/opt/cms-ide-stage/source/cms/io/triggeredservice.py", line 341, in _sweep
+    logger.info("Found %d missed operation(s) in %d ms.",
+Message: 'Found %d missed operation(s) in %d ms.'
+Arguments: (0, 0.001430511474609375)
+Exception ignored in: <function _removeHandlerRef at 0x7fd6537585e0>
+Traceback (most recent call last):
+  File "/opt/cms-ide-stage/python312/lib/python3.12/logging/__init__.py", line 884, in _removeHandlerRef
+  File "/opt/cms-ide-stage/python312/lib/python3.12/logging/__init__.py", line 241, in _acquireLock
+  File "/opt/cms-ide-stage/python312/lib/python3.12/threading.py", line 198, in acquire
+  File "/opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/gevent/thread.py", line 81, in get_ident
+RuntimeError: greenlet is being finalized

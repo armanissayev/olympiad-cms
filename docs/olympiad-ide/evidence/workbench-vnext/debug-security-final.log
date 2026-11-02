@@ -1,0 +1,19 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0 -- /opt/cms-ide-stage/runtime-venv/bin/python
+rootdir: /opt/cms-ide-stage/source
+configfile: pytest.ini
+plugins: anyio-4.15.1
+collecting ... collected 10 items
+
+worker/tests/test_debugger.py::test_debug_frames_are_incremental_and_bounded PASSED [ 10%]
+worker/tests/test_debugger.py::test_debug_frames_reject_reverse_requests_and_oversize PASSED [ 20%]
+worker/tests/test_debugger.py::test_real_debug_credentials_network_and_syscalls PASSED [ 30%]
+worker/tests/test_debugger.py::test_real_debug_cancellation_cleans_box PASSED [ 40%]
+worker/tests/test_debugger.py::test_real_debug_output_budget_cleans_box PASSED [ 50%]
+worker/tests/test_debugger.py::test_real_debug_quota_with_debug_process_limits PASSED [ 60%]
+worker/tests/test_debugger.py::test_real_debug_memory_is_cgroup_bounded PASSED [ 70%]
+worker/tests/test_debugger.py::test_real_debug_neighbor_files_hidden PASSED [ 80%]
+worker/tests/test_debugger.py::test_input_backpressure_is_nonblocking_and_resumes_after_drain PASSED [ 90%]
+worker/tests/test_debugger.py::test_pending_input_has_an_aggregate_limit_even_if_adapter_never_reads PASSED [100%]
+
+============================== 10 passed in 5.05s ==============================

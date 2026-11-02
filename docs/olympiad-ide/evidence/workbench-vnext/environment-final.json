@@ -1,0 +1,54 @@
+{
+  "deployedApplicationCommit": "e9044e7b03032018b038a03c8fad2abf4d551bfa",
+  "authorizedEc2Instance": "i-0ade1f8ddf0b0dad8",
+  "publicCms": "https://54.206.171.67/",
+  "publicIde": "https://54.206.171.67/ide/",
+  "activeAndBootEnabledUnits": [
+    "postgres",
+    "log",
+    "resource",
+    "judge",
+    "runtime",
+    "worker",
+    "debug",
+    "ranking",
+    "ingress"
+  ],
+  "systemctlFailedUnits": [],
+  "persistentTmux": "cms-staging-ops",
+  "publicTcpListeners": [
+    22,
+    80,
+    443
+  ],
+  "adminRuntimeRpcDbPrivate": true,
+  "uvicornWebSocketMaxSize": 32768,
+  "uvicornWebSocketMaxQueue": 4,
+  "linuxBackendTests": {
+    "passed": 87,
+    "exitCode": 0,
+    "isolatedSchemasDatabase": "ide_linux_staging",
+    "activeRestoredDatabaseUsedForTests": false
+  },
+  "linuxRunGate": {
+    "passed": 26,
+    "deselected": 7,
+    "skipped": 0
+  },
+  "linuxDebugGate": {
+    "passed": 10,
+    "skipped": 0,
+    "seconds": 5.05,
+    "approvalFlagsUnset": true
+  },
+  "frontendTests": 113,
+  "linuxCms": {
+    "passed": 750,
+    "skipped": 9,
+    "subtestsPassed": 28
+  },
+  "authoritativeOriginalSource": {
+    "checkedFiles": 124,
+    "changedFiles": []
+  }
+}

@@ -2,7 +2,7 @@
 include requirements-olympiad-ide.txt
 include requirements-olympiad-ide.lock
 include tools/build_olympiad_ide.py
-recursive-include docs/olympiad-ide *.md *.json *.log
+recursive-include docs/olympiad-ide *.md *.json *.log *.png
 include olympiad_ide/README.md olympiad_ide/SPEC.md
 include olympiad_ide/frontend/package.json olympiad_ide/frontend/package-lock.json
 include olympiad_ide/frontend/*.ts olympiad_ide/frontend/*.js olympiad_ide/frontend/index.html
