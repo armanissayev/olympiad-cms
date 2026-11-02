@@ -113,6 +113,20 @@ describe('resource persistence and conflict journal', () => {
     expect(useExecutionResources.getState().items[0]?.value).toEqual(value)
     expect(useExecutionResources.getState().error).toContain('Quota')
   })
+  it('refuses scope suspension when a failed resource exists only in memory even after a later preference write succeeds', async () => {
+    const failure = vi.spyOn(db.testCases, 'put').mockRejectedValue(new DOMException('Quota', 'QuotaExceededError'))
+    const value = testCase()
+    await expect(resources.save(value)).rejects.toThrow('Quota')
+    resources.select({ stdin: 'newer successfully saved preference' })
+    await resources.flush()
+    expect(await db.testCases.count()).toBe(0)
+    await expect(resources.suspend()).rejects.toThrow('Execution settings could not be saved')
+    expect(useExecutionResources.getState().items[0]?.value).toEqual(value)
+    failure.mockRestore()
+    await resources.save(value)
+    await expect(resources.suspend()).resolves.toBeUndefined()
+    expect((await db.testCases.get(value.id))?.value).toEqual(value)
+  })
   it('an already-sending operation is immutable and later edits append behind it', async () => {
     const value = testCase(); await resources.save(value)
     const first = (await db.executionResourceOperations.toArray())[0]!

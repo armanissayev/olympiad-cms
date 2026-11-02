@@ -36,7 +36,12 @@ export class ResourceController {
   }
   resume() { this.stopped = false; clearInterval(this.timer); this.timer = setInterval(() => void this.sync(), 3000); void this.sync() }
   stop() { this.stopped = true; clearInterval(this.timer) }
-  async suspend() { this.stop(); await this.tail; while (this.syncing) await new Promise(resolve => setTimeout(resolve, 10)); await this.tail }
+  async suspend() {
+    this.stop(); await this.tail
+    while (this.syncing) await new Promise(resolve => setTimeout(resolve, 10))
+    await this.tail
+    if (this.failedResources.size) throw new Error('Execution settings could not be saved. Keep this problem open to recover them.')
+  }
   async flush() { await this.tail }
   error(error: unknown) { useExecutionResources.setState({ error: error instanceof Error ? error.message : String(error) }) }
   select(preferences: Partial<Pick<ResourceState, 'activeConfigurationId' | 'selectedTestId' | 'stdin'>>) {

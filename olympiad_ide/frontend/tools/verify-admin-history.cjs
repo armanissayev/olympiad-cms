@@ -20,16 +20,17 @@ fs.mkdirSync(output,{recursive:true,mode:0o700});
  const browser=await chromium.launch({headless:true,...(process.env.PLAYWRIGHT_CHROMIUM_PATH?{executablePath:process.env.PLAYWRIGHT_CHROMIUM_PATH}:{}),args:[`--ignore-certificate-errors-spki-list=${pin}`]});
  const report={status:'running',privateAdmin:metadata.adminUrl,certificatePublicKeySha256:pin,participantUserId:String(metadata.acceptanceUserId),taskId:String(task.id),checks:[]},errors=[];
  let page;
- async function login(target,username,password){await target.goto(new URL('/login',target.url()).href);await target.evaluate(async credentials=>{const csrf=decodeURIComponent(document.cookie.split('; ').find(value=>value.startsWith('_xsrf='))?.slice(6)||'');const response=await fetch('/login',{method:'POST',credentials:'same-origin',body:new URLSearchParams({...credentials,_xsrf:csrf})});if(!response.ok)throw Error('Native login failed');},{username,password});}
+ async function login(target,username,password){const origin=new URL(target.url());if(origin.protocol!=='https:'||origin.hostname!=='localhost'||!['28443','28444'].includes(origin.port))throw Error('Private native login origin required');return target.evaluate(async credentials=>{const csrf=decodeURIComponent(document.cookie.split('; ').find(value=>value.startsWith('_xsrf='))?.slice(6)||'');const response=await fetch('/login',{method:'POST',credentials:'same-origin',body:new URLSearchParams({...credentials,_xsrf:csrf})});if(!response.ok)throw Error('Native login failed');return {status:response.status,url:response.url};},{username,password});}
  try{
   const route=metadata.adminUrl+'/contest/'+metadata.contestId+'/ide-history';
   const guest=await browser.newContext();const guestPage=await guest.newPage();await guestPage.goto(route);expect(new URL(guestPage.url()).pathname).toBe('/login');await guest.close();report.checks.push('Unauthenticated private Admin history redirects to CMS Admin login');
   const contestant=await browser.newContext();const contestantPage=await contestant.newPage();
   await contestantPage.goto('https://localhost:28443/');await login(contestantPage,metadata.username,metadata.password);
+  const participantContext=await contestantPage.evaluate(async()=>{const response=await fetch('/ide/api/context',{cache:'no-store'});return {status:response.status,body:await response.json()};});expect(participantContext.status).toBe(200);expect(String(participantContext.body.identity.userId)).toBe(String(metadata.acceptanceUserId));expect(participantContext.body.user.username).toBe(metadata.username);report.actualParticipantContextVerified=true;
   await contestantPage.goto(route);expect(new URL(contestantPage.url()).pathname).toBe('/login');await contestant.close();report.checks.push('Actual participant cookie does not authorize private Admin history');
   const context=await browser.newContext({viewport:{width:1440,height:1050}});page=await context.newPage();page.on('pageerror',error=>errors.push(error.message));
   let historyMutations=0;page.on('request',request=>{if(request.url().includes('/ide-history/api/')&&request.method()!=='GET')historyMutations++;});
-  await page.goto(metadata.adminUrl+'/');await login(page,metadata.adminUsername,metadata.adminPassword);await page.goto(route);
+  await page.goto(metadata.adminUrl+'/');const adminLogin=await login(page,metadata.adminUsername,metadata.adminPassword);expect(new URL(adminLogin.url).pathname).not.toBe('/login');await page.goto(route);
   await expect(page.getByRole('heading',{name:'Participant code history',exact:true})).toBeVisible();await expect(page.getByRole('link',{name:'Code history',exact:true})).toBeVisible();
   await page.getByRole('combobox',{name:'History participant',exact:true}).selectOption(String(metadata.acceptanceUserId));
   await page.getByRole('combobox',{name:'History problem',exact:true}).selectOption(String(task.id));
@@ -56,7 +57,7 @@ fs.mkdirSync(output,{recursive:true,mode:0o700});
   expect(selected).not.toBeNull();report.recording=selected;report.expectedParticipantSourceMatched=!!expected;
   const source=page.getByRole('textbox',{name:'Historical source',exact:true}),timeline=page.getByRole('slider',{name:'History timeline',exact:true});
   const before=await source.inputValue();await source.focus();await page.keyboard.type('should-not-edit-recorded-source');expect(await source.inputValue()).toBe(before);
-  await timeline.focus();await timeline.press('Home');await expect(timeline).toHaveValue('0');
+  await timeline.focus();await timeline.press('Home');await expect(timeline).toHaveValue('0');await expect(page.locator('#history-event')).toContainText('Event 0 /');
   await page.getByRole('button',{name:'Next event',exact:true}).click();await expect(timeline).toHaveValue('1');
   await page.getByRole('button',{name:'Previous event',exact:true}).click();await expect(timeline).toHaveValue('0');
   await page.getByRole('combobox',{name:'History speed',exact:true}).selectOption('2');
