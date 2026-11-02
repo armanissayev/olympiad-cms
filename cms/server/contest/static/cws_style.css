@@ -1049,3 +1049,35 @@ td.token_rules p:last-child {
     background-color: white;
     border: 1px solid #e5e5e5;
 }
+
+/* Prominent contest-scoped entry point, using the normal CMS login. */
+.olympiad-ide-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    box-sizing: border-box;
+    max-width: 100%;
+    margin: 0 0 28px;
+    padding: 24px;
+    border: 1px solid #b9d9ef;
+    border-left: 5px solid #0871b2;
+    border-radius: 6px;
+    background: #edf7ff;
+}
+.olympiad-ide-entry-copy { min-width: 0; }
+.olympiad-ide-entry h2 { margin: 0 0 8px; color: #16476b; }
+.olympiad-ide-entry p { margin: 0; font-size: 16px; line-height: 1.6; }
+.olympiad-ide-entry .btn { flex-shrink: 0; white-space: normal; }
+.olympiad-ide-entry .btn:focus { outline: 3px solid #16476b; outline-offset: 3px; }
+@media (max-width: 640px) {
+    /* Bootstrap 2's fixed-width columns otherwise push the entry off screen. */
+    #main.ide-overview-layout { position: relative; width: auto; margin: 0 16px; padding-top: 16px; }
+    .ide-overview-layout > .row { display: flex; flex-direction: column; margin-left: 0; }
+    .ide-overview-layout > .row > .span9,
+    .ide-overview-layout > .row > .span3 { float: none; width: auto; margin-left: 0; }
+    .ide-overview-layout > .row > .span9 { order: 0; }
+    .ide-overview-layout > .row > .span3 { order: 1; }
+    .olympiad-ide-entry { flex-direction: column; align-items: stretch; gap: 16px; padding: 18px; }
+    .olympiad-ide-entry .btn { box-sizing: border-box; width: 100%; }
+}

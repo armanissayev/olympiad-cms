@@ -44,11 +44,26 @@ describe('immutable source and explicit configuration', () => {
     config.includedFiles.push(other)
     expect((await captureSubmission(config, [testCase()])).files).toHaveLength(2)
   })
-  it('Python defaults include local modules and deleted configured identities fail explicitly', async () => {
+  it('resolves the active file each time and never saves or reuses an old run configuration', async () => {
+    const controller = new ExecutionController(db)
+    const old = defaultConfiguration()
+    useExecutionResources.setState({ items: [{ id: old.id, workspaceId: useWorkspaceStore.getState().workspace.id, revision: 1, localVersion: 1, value: old, deleted: false }], activeConfigurationId: old.id })
+    const other = useWorkspaceStore.getState().createFile(null, 'new-solution.cpp', 'int main(){return 7;}')
+    useWorkspaceStore.getState().openFile(other)
+    const active = controller.configuration()
+    expect(active.entryPoint).toBe(other)
+    expect(active.includedFiles).toEqual([other])
+    useWorkspaceStore.getState().openFile(seedFileIds.solution)
+    expect(controller.configuration().entryPoint).toBe(seedFileIds.solution)
+    expect(await db.runConfigurations.count()).toBe(0)
+    expect(useExecutionResources.getState().items).toHaveLength(1) // Existing data retained, no automatic run-list additions.
+    controller.stop()
+  })
+  it('Python captures only the active source file and deleted entry identities fail explicitly', async () => {
     useWorkspaceStore.getState().createFile(null, 'helper.py', 'x=1')
     useWorkspaceStore.getState().openFile(seedFileIds.solution)
     const config = defaultConfiguration()
-    expect(config.language).toBe('python3'); expect(config.includedFiles).toHaveLength(2)
+    expect(config.language).toBe('python3'); expect(config.includedFiles).toEqual([seedFileIds.solution])
     useWorkspaceStore.getState().deleteNode(config.entryPoint)
     await expect(captureSubmission(config, [testCase()])).rejects.toThrow('deleted')
   })

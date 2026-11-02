@@ -139,7 +139,7 @@ export const initialData = (): WorkspaceData => {
     explorerVisible: true,
     explorerSize: 19,
     bottomPanelVisible: true,
-    bottomPanelSize: 25,
+    bottomPanelSize: 38,
     bottomPanelView: 'terminal',
     zenMode: false,
   }

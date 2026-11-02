@@ -181,6 +181,12 @@ class ContestHandler(BaseHandler):
         ret["printing_enabled"] = (config.printer is not None)
         ret["questions_enabled"] = self.contest.allow_questions
         ret["testing_enabled"] = self.contest.allow_user_tests
+        # Native IDE currently serves one explicit contest. Never advertise
+        # another contest's workspace from a multi-contest CWS instance.
+        ret["olympiad_ide_url"] = (
+            "/ide/" if config.olympiad_ide_enabled
+            and self.service.contest_id == self.contest.id
+            and self.service.contest_id is not None else None)
 
         if self.current_user is not None:
             participation = self.current_user

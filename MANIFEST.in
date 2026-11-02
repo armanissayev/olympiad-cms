@@ -35,3 +35,6 @@ include olympiad_ide/.gitignore
 # CMS test directories are not all Python packages; include regression sources explicitly.
 recursive-include cmstestsuite *.py
 include config/cms.conf.sample .gitignore
+
+# Standalone Java JDI DAP adapter is compiled only on the isolated debug host.
+recursive-include olympiad_ide/worker/adapters *.java *.py

@@ -151,6 +151,15 @@ def check_workspace_binding(db, claims, path, method, body):
         workspace = suffix.split("/")[2 if suffix.startswith("sync/") else 1]
     elif suffix == "executions" and method == "POST" or suffix == "telemetry/sessions" and method == "POST":
         workspace = payload.get("workspaceId")
+    elif suffix == "debug/sessions" and method == "POST":
+        submission=payload.get("submission",{})
+        workspace=submission.get("workspaceId") if isinstance(submission,dict) else None
+        if workspace is None:raise ScopeError("Invalid debug workspace")
+    elif suffix.startswith("debug/sessions/"):
+        from .debug_models import DebugSession
+        row=db.get(DebugSession,suffix.split("/")[2])
+        if row is None or row.owner_id!=claims["principal"]:raise ScopeError("Debug session unavailable")
+        workspace=row.workspace_id
     elif suffix.startswith("executions/"):
         row = db.get(ExecutionJob, suffix.split("/")[1])
         if row is None or row.owner_id != claims["principal"]:

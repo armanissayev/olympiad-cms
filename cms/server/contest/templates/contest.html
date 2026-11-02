@@ -155,7 +155,7 @@ $(document).ready(function () {
             {% trans %}Time left:{% endtrans %}
         </div>
         <!-- End -->
-        <div id="main" class="container">
+        <div id="main" class="container{% if olympiad_ide_url and page == "overview" %} ide-overview-layout{% endif %}">
             <div class="row">
                 <div class="span3">
                     <h3 id="server_time_box">

@@ -11,6 +11,16 @@
     <h1>{% trans %}Overview{% endtrans %}</h1>
 </div>
 
+{% if olympiad_ide_url %}
+<section class="olympiad-ide-entry" aria-labelledby="olympiad-ide-entry-title">
+    <div class="olympiad-ide-entry-copy">
+        <h2 id="olympiad-ide-entry-title">{% trans %}Olympiad IDE{% endtrans %}</h2>
+        <p>{% trans %}Edit your solutions and run them with your own input. Your CMS login is already connected.{% endtrans %}</p>
+    </div>
+    <a class="btn btn-primary btn-large" href="{{ olympiad_ide_url }}">{% trans %}Open Olympiad IDE{% endtrans %}</a>
+</section>
+{% endif %}
+
 <h2>{% trans %}General information{% endtrans %}</h2>
 <div class="row">
     <div class="{% if contest.per_user_time is not none %}span5{% else %}span9{% endif %}">

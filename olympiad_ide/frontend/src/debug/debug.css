@@ -1,0 +1,14 @@
+.debug-panel { padding: 14px; color: var(--fg); font-size: 12px; overflow-wrap: anywhere; }
+.debug-panel h2 { font-size: 11px; letter-spacing: .1em; font-weight: 700; margin: 0 0 12px; }
+.debug-panel h3 { font-size: 12px; font-weight: 600; border-top: 1px solid var(--border); padding-top: 14px; margin: 16px 0 8px; }
+.debug-panel p { line-height: 1.6; color: var(--muted); margin: 8px 0; }
+.debug-controls, .debug-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.debug-list { flex-direction: column; align-items: stretch; }
+.debug-list button { justify-content: flex-start; white-space: normal; text-align: left; }
+.debug-panel .debug-error { padding: 10px; color: #f48771; border: 1px solid #f4877160; background: #f4877110; }
+.debug-variable { display: grid; grid-template-columns: auto 1fr; gap: 5px 8px; align-items: center; margin: 8px 0; }
+.debug-variable small { color: var(--muted); }
+.debug-variable code { grid-column: 1 / -1; white-space: pre-wrap; padding: 6px; border: 1px solid var(--border); }
+.debug-snapshot { margin: 12px 0; padding: 8px; border: 1px solid var(--border); line-height: 1.6; }
+.debug-snapshot code { display: block; font-size: 10px; word-break: break-all; }
+.debug-output { white-space: pre-wrap; max-height: 260px; overflow: auto; border: 1px solid var(--border); padding: 8px; font: 11px/1.6 monospace; }

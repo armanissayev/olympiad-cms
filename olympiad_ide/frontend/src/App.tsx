@@ -14,8 +14,16 @@ import { persistence } from './persistence/controller'
 import { executions } from './execution/controller'
 import { CMSWorkbench } from './cms/CMSWorkbench'
 import { cmsEnabled } from './cms/session'
+import { debugging } from './debug/controller'
 
 export default function App() {
+  const workspaceId = useWorkspaceStore(state => state.workspace.id)
+  useEffect(() => { void debugging.loadBreakpoints() }, [workspaceId])
+  useEffect(() => {
+    const stopDebugging = () => { void debugging.stop() }
+    window.addEventListener('pagehide', stopDebugging)
+    return () => window.removeEventListener('pagehide', stopDebugging)
+  }, [])
   const theme = useWorkspaceStore((state) => state.settings.theme)
   const nodes = useWorkspaceStore((state) => state.nodes)
   const explorerVisible = useWorkspaceStore((state) => state.explorerVisible)
@@ -106,8 +114,8 @@ export default function App() {
         void executions.run()
       } else if (event.key === 'F5') {
         event.preventDefault()
-        if (event.shiftKey) void executions.cancel()
-        else setNotice('Debugging requires the DAP worker planned for Phase 6.')
+        if (event.shiftKey) { void executions.cancel(); void debugging.stop() }
+        else { useWorkspaceStore.getState().setActiveView('run'); void debugging.start() }
       } else if (event.key === 'Escape') {
         setQuickOpen(false)
       }
@@ -116,15 +124,11 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [pendingChord])
 
-  const unavailable = (feature: string) => {
-    const phase = feature === 'Debugging' ? 'Phase 6' : 'Phase 4'
-    setNotice(`${feature} requires backend isolation and is intentionally unavailable until ${phase}.`)
-  }
 
   return (
     <div className={`app-shell ${cmsEnabled ? 'cms' : ''} ${zenMode ? 'zen' : ''}`}>
       <CMSWorkbench />
-      {!zenMode && <Toolbar onUnavailable={unavailable} />}
+      {!zenMode && <Toolbar />}
       <main className="workbench">
         {!zenMode && <ActivityBar />}
         <div className="min-w-0 flex-1">
@@ -157,7 +161,7 @@ export default function App() {
                 {bottomPanelVisible && !zenMode && (
                   <>
                     <PanelResizeHandle className="bottom-resize-handle" />
-                    <Panel defaultSize={bottomPanelSize} minSize={12} maxSize={55}>
+                    <Panel defaultSize={Math.max(32, bottomPanelSize)} minSize={26} maxSize={55}>
                       <BottomPanel />
                     </Panel>
                   </>

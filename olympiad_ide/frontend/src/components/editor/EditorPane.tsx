@@ -6,6 +6,7 @@ import { modelRegistry, modelUri, monacoThemeName } from '../../editor/monaco'
 import { editorViewStateKey, useWorkspaceStore } from '../../store/workspaceStore'
 import type { EditorGroupId, EditorViewState } from '../../types/workspace'
 import { TabBar } from './TabBar'
+import { debugging, useDebugStore } from '../../debug/controller'
 import { attachPaneTelemetry } from '../../telemetry/navigationTracker'
 
 interface EditorPaneProps {
@@ -62,6 +63,42 @@ export function EditorPane({ groupId }: EditorPaneProps) {
       monaco.editor.setModelLanguage(adopted, currentFile.language)
     }
 
+    const decorations = instance.createDecorationsCollection()
+    const redrawDebug = () => {
+      const current = activeFileRef.current
+      if (!current) { decorations.clear(); return }
+      const state = useDebugStore.getState()
+      const points = state.breakpoints[current] ?? []
+      const items: editor.IModelDeltaDecoration[] = points.map(line => ({
+        range: new monaco.Range(line, 1, line, 1),
+        options: { isWholeLine: true, glyphMarginClassName: 'debug-breakpoint-glyph', glyphMarginHoverMessage: { value: 'Breakpoint (click to remove)' }, stickiness: monaco.editor.TrackedRangeStickiness.NeverGrowsWhenTypingAtEdges },
+      }))
+      if (state.location?.fileId === current) items.push({ range: new monaco.Range(state.location.line, 1, state.location.line, 1), options: { isWholeLine: true, className: 'debug-current-line', glyphMarginClassName: 'debug-current-glyph' } })
+      decorations.set(items)
+    }
+    const debugSubscription = useDebugStore.subscribe(redrawDebug)
+    const debugModel = instance.onDidChangeModel(redrawDebug)
+    const gutter = instance.onMouseDown(event => {
+      const current = activeFileRef.current
+      if (current && event.target.type === monaco.editor.MouseTargetType.GUTTER_GLYPH_MARGIN && event.target.position) void debugging.toggleBreakpoint(current, event.target.position.lineNumber)
+    })
+    const relocate = instance.onDidChangeModelContent(event => {
+      const current = activeFileRef.current
+      if (!current) return
+      const lines = useDebugStore.getState().breakpoints[current] ?? []
+      if (!lines.length) return
+      const shifted = lines.map(line => {
+        let next = line
+        for (const change of event.changes) {
+          const start = change.range.startLineNumber, end = change.range.endLineNumber
+          if (line > end) next += change.text.split('\n').length - 1 - (end - start)
+          else if (line >= start) next = start
+        }
+        return Math.max(1, Math.min(instance.getModel()?.getLineCount() ?? 1, next))
+      })
+      if (shifted.some((line, i) => line !== lines[i])) void debugging.relocateBreakpoints(current, [...new Set(shifted)].sort((a, b) => a - b))
+    })
+    redrawDebug()
     const cursorDisposable = instance.onDidChangeCursorPosition(() => {
       const current = activeFileRef.current
       if (current) captureViewState(instance, current)
@@ -78,6 +115,7 @@ export function EditorPane({ groupId }: EditorPaneProps) {
       instance.setScrollPosition({ scrollTop: initialView.scrollTop, scrollLeft: initialView.scrollLeft })
     }
     instance.onDidDispose(() => {
+      decorations.clear(); debugSubscription(); debugModel.dispose(); gutter.dispose(); relocate.dispose()
       cursorDisposable.dispose()
       scrollDisposable.dispose()
       focusDisposable.dispose()
@@ -109,6 +147,7 @@ export function EditorPane({ groupId }: EditorPaneProps) {
           loading={<div className="editor-loading">Loading Monaco…</div>}
           options={{
             automaticLayout: true,
+            glyphMargin: true,
             fontSize: settings.fontSize,
             fontFamily: settings.fontFamily,
             tabSize: settings.tabSize,

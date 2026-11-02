@@ -6,6 +6,7 @@ from app import models  # noqa: F401
 from app import telemetry_models  # noqa: F401
 from app import execution_models  # noqa: F401
 from app import cms_identity_models  # noqa: F401
+from app import debug_models  # noqa: F401
 
 config = context.config
 target_metadata = Base.metadata

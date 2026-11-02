@@ -1,3 +1,4 @@
+import { debugging } from '../debug/controller'
 import { useEffect, useState } from 'react'
 import { database } from '../persistence/database'
 import { persistence } from '../persistence/controller'
@@ -62,7 +63,7 @@ export function CMSWorkbench() {
   const canSubmit = !!task?.supported && !session.paused
   const perform = async (operation: () => Promise<void>) => { setBusy(true); setError(null); try { await operation() } catch (e) { message(e) } finally { setBusy(false) } }
   const switchTask = (id: number) => perform(async () => {
-    await persistence.flush(); await executionResources.flush(); await telemetry.complete('task-switch')
+    await debugging.stop(); await persistence.flush(); await executionResources.flush(); await telemetry.complete('task-switch')
     telemetrySync.stop(); persistence.stop(); executions.stop(); telemetry.stop()
     selectTask(id); location.reload()
   })
@@ -81,7 +82,7 @@ export function CMSWorkbench() {
     {open && <aside className="cms-panel" aria-label="Official CMS submissions">
       <div className="cms-panel-heading"><h2>Official CMS submissions</h2><button onClick={() => setOpen(false)} aria-label="Close CMS panel">×</button></div>
       <p>Custom Run tests use the IDE worker. Submit sends the reviewed source to CMS for official judging. Stop affects custom Run only.</p>
-      <nav className="cms-links"><a href={safeCMSLink(context.links.announcements)} target="_blank" rel="noreferrer">Announcements</a><a href={safeCMSLink(context.links.clarifications)} target="_blank" rel="noreferrer">Clarifications</a><form action={safeCMSLink(context.links.logout)} method="post" onSubmit={event => { event.preventDefault(); const form = event.currentTarget; void perform(async () => { await persistence.flush(); await executionResources.flush(); await telemetry.flush(); form.submit() }) }}><input type="hidden" name="_xsrf" value={context.csrfToken} /><button type="submit" disabled={busy}>CMS logout</button></form></nav>
+      <nav className="cms-links"><a href={safeCMSLink(context.links.announcements)} target="_blank" rel="noreferrer">Announcements</a><a href={safeCMSLink(context.links.clarifications)} target="_blank" rel="noreferrer">Clarifications</a><form action={safeCMSLink(context.links.logout)} method="post" onSubmit={event => { event.preventDefault(); const form = event.currentTarget; void perform(async () => { await persistence.flush(); await executionResources.flush(); await telemetry.flush(); await debugging.stop(); form.submit() }) }}><input type="hidden" name="_xsrf" value={context.csrfToken} /><button type="submit" disabled={busy}>CMS logout</button></form></nav>
       {task && <>
         <h3>{task.name} — {task.title}</h3>
         <nav className="cms-links"><a href={safeCMSLink(task.statementUrl)} target="_blank" rel="noreferrer">Task in CMS</a>{task.statements.map(item => <a key={item.language} href={safeCMSLink(item.url)} target="_blank" rel="noreferrer">Statement {item.language}</a>)}{task.attachments.map(item => <a key={item.name} href={safeCMSLink(item.url)} target="_blank" rel="noreferrer">{item.name}</a>)}</nav>

@@ -19,6 +19,11 @@ from .base import IDEAPIHandler
 UUID_PATH = r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
 # Each entry is a method set, exact suffix expression and allowed query keys.
 ROUTES = [
+    ({"GET"}, r"debug/capacity", set()),
+    ({"POST"}, r"debug/sessions", set()),
+    ({"GET"}, r"debug/sessions/" + UUID_PATH, set()),
+    ({"POST"}, r"debug/sessions/" + UUID_PATH + r"/(stop|messages|attach)", set()),
+    ({"GET"}, r"debug/sessions/" + UUID_PATH + r"/events", {"after"}),
     ({"POST"}, r"session", set()),
     ({"GET", "POST"}, r"workspaces", set()),
     ({"GET", "PATCH", "DELETE"}, r"workspaces/" + UUID_PATH, set()),
@@ -99,7 +104,7 @@ class RuntimeGateway(IDEAPIHandler):
             self.set_status(403)
             self.finish({"error": {"code": "task_unavailable", "message": "Task is not currently available"}})
             return
-        if method == "POST" and suffix == "executions":
+        if method == "POST" and suffix in ("executions", "debug/sessions"):
             from .admission import task_capability
             supported, _reason = task_capability(task)
             parameters = task.active_dataset.task_type_parameters if task.active_dataset else None

@@ -27,15 +27,12 @@ export class ExecutionController {
   stop() { clearInterval(this.timer); this.stream?.close(); executionResources.stop() }
   error(error: unknown) { useExecution.setState({ error: error instanceof Error ? error.message : String(error) }) }
   configuration(): RunConfiguration {
-    const state = useExecutionResources.getState()
-    const selected = state.items.find(r => r.id === state.activeConfigurationId && !r.deleted)?.value
-    if (selected?.kind === 'configuration') return structuredClone(selected)
-    const created = defaultConfiguration()
-    void executionResources.save(created).catch(error => executionResources.error(error))
-    executionResources.select({ activeConfigurationId: created.id })
-    return created
+    // Always resolve the focused editor at click time. Legacy saved configurations
+    // remain recoverable in storage but never choose a different entry file.
+    return defaultConfiguration()
   }
-  async run(testId?: string, all = false, fixedStdin = false) {
+
+  async run() {
     if (useExecution.getState().submitting) return
     useExecution.setState({ submitting: true, error: null })
     try {
@@ -43,17 +40,14 @@ export class ExecutionController {
       if (cmsEnabled && useExecution.getState().workers === 0) throw new Error('No approved IDE worker is available. Official CMS submission remains available.')
       if (!navigator.onLine) throw new Error('Run requires an online backend and a verified Linux worker')
       const configuration = this.configuration(), state = useExecutionResources.getState()
-      const saved = state.items.filter(r => !r.deleted && r.value.kind === 'test').map(r => r.value as TestCase)
-      const selected = saved.find(t => t.id === (testId ?? configuration.defaultTestId ?? state.selectedTestId))
-      const tests = all ? saved : !fixedStdin && selected ? [selected] : [{ kind: 'test' as const, id: crypto.randomUUID(), name: 'Standard Run', stdin: state.stdin, expectedStdout: null }]
-      if (!tests.length) throw new Error('Create a test case before Run All')
+      const tests: TestCase[] = [{ kind: 'test', id: crypto.randomUUID(), name: 'Standard input', stdin: state.stdin, expectedStdout: null }]
       const submission = await captureSubmission(configuration, tests)
       // Capture is finished before any network operation. A later edit cannot alter this payload.
       await this.db.executionSubmissions.add({ ...submission, acknowledged: false })
       void telemetry.checkpoint('execution-snapshot').catch(() => undefined)
       await this.retryPending()
       useWorkspaceStore.getState().setBottomPanelVisible(true)
-      useWorkspaceStore.getState().setBottomPanelView(all || testId ? 'tests' : 'terminal')
+      useWorkspaceStore.getState().setBottomPanelView('terminal')
     } catch (error) { this.error(error) }
     finally { useExecution.setState({ submitting: false }) }
   }

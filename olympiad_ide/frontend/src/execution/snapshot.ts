@@ -5,10 +5,10 @@ import type { RunConfiguration, Submission, TestCase } from './types'
 
 export function defaultConfiguration(): RunConfiguration {
   const state = useWorkspaceStore.getState(), file = state.nodes[state.groups[state.activeGroupId].activeFileId ?? '']
-  if (file?.type !== 'file' || file.language === 'plaintext') throw new Error('Select a C++, Python or Java entry file, or create a Run Configuration.')
+  if (file?.type !== 'file' || file.language === 'plaintext') throw new Error('Open a C++, Python or Java file to run it.')
   const language = file.language === 'cpp' ? 'cpp20' : file.language === 'python' ? 'python3' : 'java17'
-  const includedFiles = language === 'python3' ? Object.values(state.nodes).filter(n => n.type === 'file' && n.language === 'python').map(n => n.id) : [file.id]
-  const packageName = file.language === 'java' ? /\bpackage\s+([\w.]+)\s*;/.exec(file.content)?.[1] : undefined
+  const includedFiles = [file.id]
+  const packageName = file.language === 'java' ? /\bpackage\s+([\w.]+)\s*;/.exec(modelRegistry.get(file.id)?.getValue() ?? file.content)?.[1] : undefined
   return { kind: 'configuration', id: crypto.randomUUID(), name: `Run ${file.name}`, language, entryPoint: file.id, includedFiles, compilerProfile: 'release', mainClass: language === 'java17' ? `${packageName ? packageName + '.' : ''}${file.name.replace(/\.java$/, '')}` : null, defaultTestId: null }
 }
 

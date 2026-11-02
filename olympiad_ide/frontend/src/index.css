@@ -835,3 +835,23 @@ button:disabled { opacity: .5; cursor: default; }
 .test-buffers textarea { height: 65px; resize: vertical; font-family: monospace; }
 .test-result { border-top: 1px solid var(--border); padding: 5px 0; }
 .test-result pre, .compiler-diagnostics { white-space: pre-wrap; overflow-wrap: anywhere; padding: 6px; margin: 0; }
+
+/* Simple, spacious input/output files replace the terminal and execution tabs. */
+.io-panel { display:flex; flex-direction:column; min-height:0; }
+.io-run-status { display:flex; align-items:center; gap:12px; padding:7px 12px; min-height:34px; border-bottom:1px solid var(--border); font-size:12px; }
+.io-run-status > span { flex:1; overflow-wrap:anywhere; }
+.io-file-panes { display:grid; grid-template-columns:1fr 1fr; flex:1; min-height:0; }
+.io-file-pane { display:flex; flex-direction:column; min-width:0; min-height:0; padding:10px 12px; gap:8px; }
+.io-file-pane + .io-file-pane { border-left:1px solid var(--border); }
+.io-file-heading { display:flex; justify-content:space-between; align-items:center; min-height:24px; font-size:13px; font-weight:600; color:var(--fg-strong); }
+.io-file-heading small { color:var(--muted); font-size:11px; font-weight:400; margin-left:10px; }
+.io-file-pane textarea { flex:1; min-height:90px; width:100%; resize:none; background:var(--editor-bg); color:var(--fg); padding:12px; border:1px solid var(--border-strong); border-radius:4px; font-family:var(--font-mono,monospace); font-size:14px; line-height:1.6; white-space:pre; overflow:auto; }
+.io-output-actions { display:flex; gap:10px; }
+.io-output-actions button { color:var(--muted); }
+.io-diagnostics { max-height:45%; overflow:auto; color:#f48771; font-size:12px; }
+.io-diagnostics pre { white-space:pre-wrap; overflow-wrap:anywhere; }
+@media(max-width:700px) { .io-file-panes { grid-template-columns:1fr; overflow:auto; } .io-file-pane { min-height:160px; } .io-file-pane + .io-file-pane { border-left:0; border-top:1px solid var(--border); } }
+
+.debug-breakpoint-glyph { background:radial-gradient(circle,#ef5350 0 5px,transparent 6px); cursor:pointer; }
+.debug-current-line { background:rgba(230,185,55,.18); }
+.debug-current-glyph { background:linear-gradient(45deg,transparent 32%,#e9c046 33% 67%,transparent 68%); }

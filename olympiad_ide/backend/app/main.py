@@ -210,6 +210,8 @@ def create_app(engine=None) -> FastAPI:
     install_routes(app, db_session, identity)
     from .execution_api import install_execution_routes
     install_execution_routes(app, db_session, identity)
+    from .debug_api import install_debug_routes
+    install_debug_routes(app, db_session, identity)
     return app
 
 
