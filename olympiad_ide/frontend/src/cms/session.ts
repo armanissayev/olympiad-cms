@@ -83,3 +83,12 @@ export function selectTask(id: number) {
   localStorage.setItem(`olympiad-cms-task:${context.identity.principalId}`, String(id))
   sessionStorage.setItem(cacheKey, JSON.stringify({ context: { ...context, csrfToken: '' }, taskId: id }))
 }
+
+/** Restore a local recovery locator without granting authority to a removed task. */
+export function restoreTaskRecovery(id: number | null) {
+  const { context } = useCMSSession.getState()
+  useCMSSession.setState({ taskId: id, paused: true, message: 'This problem is no longer available for online editing. Your code is preserved locally.' })
+  if (!context) return
+  if (id !== null) localStorage.setItem(`olympiad-cms-task:${context.identity.principalId}`, String(id))
+  sessionStorage.setItem(cacheKey, JSON.stringify({ context: { ...context, csrfToken: '' }, taskId: id }))
+}

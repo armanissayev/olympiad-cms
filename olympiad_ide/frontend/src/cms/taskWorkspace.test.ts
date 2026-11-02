@@ -114,3 +114,35 @@ it('refuses to change scope while stopping a debugger remains unconfirmed', asyn
   expect(modules.db.database).toBe(db); expect(modules.session.useCMSSession.getState().taskId).toBe(1)
   expect(modules.recording.telemetry.session.completedAt).toBeNull()
 })
+
+it('restores local source with remote operations paused if the old task disappears during a failed handoff', async () => {
+  const oldName = modules.db.database.name, oldId = modules.workspace.useWorkspaceStore.getState().workspace.id
+  debug.reset.mockImplementationOnce(async () => {
+    const current = modules.session.useCMSSession.getState().context!
+    modules.session.useCMSSession.setState({ context: { ...current, tasks: current.tasks.filter(task => task.id !== 1) } })
+    throw new Error('Handoff interrupted after roster change')
+  }).mockResolvedValue(undefined)
+  vi.mocked(modules.api.WorkspaceAPI.prototype.session).mockImplementation(async () => {
+    modules.session.trustedHeaders(true)
+    return { identityId: context().identity.principalId }
+  })
+  const remoteWhilePaused: string[] = []
+  vi.mocked(modules.api.WorkspaceAPI.prototype.request).mockImplementation(async path => {
+    if (modules.session.useCMSSession.getState().paused) remoteWhilePaused.push(path)
+    return [] as never
+  })
+  await expect(modules.switching.switchTaskWorkspace(2)).rejects.toThrow('Handoff interrupted after roster change')
+  expect(modules.db.database.name).toBe(oldName)
+  expect(modules.workspace.useWorkspaceStore.getState().workspace.id).toBe(oldId)
+  expect(modules.workspace.useWorkspaceStore.getState().nodes[modules.workspace.seedFileIds.main]).toMatchObject({ content: 'task-one-source' })
+  const restored = modules.session.useCMSSession.getState()
+  expect(restored).toMatchObject({ taskId: 1, paused: true, switching: false })
+  expect(restored.context?.tasks.map(task => task.id)).toEqual([2])
+  expect(restored.context?.identity.principalId).toBe(context().identity.principalId)
+  expect(() => modules.session.trustedHeaders(true)).toThrow('paused')
+  const recovery = JSON.parse(sessionStorage.getItem('olympiad-cms-recovery:/ide/')!)
+  expect(recovery.taskId).toBe(1); expect(recovery.context.csrfToken).toBe('')
+  expect(localStorage.getItem(`olympiad-cms-task:${context().identity.principalId}`)).toBe('1')
+  await new Promise(resolve => setTimeout(resolve, 20))
+  expect(remoteWhilePaused).toEqual([])
+})

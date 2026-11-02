@@ -2,6 +2,8 @@
 """Native CMS Admin authentication/permission/contest membership for code history."""
 import unittest
 import json
+import subprocess
+import sys
 from types import SimpleNamespace
 from uuid import uuid4
 from unittest.mock import patch, MagicMock
@@ -89,3 +91,16 @@ class TestAdminCodeHistory(DatabaseMixin,unittest.TestCase):
         with patch.object(config,'olympiad_ide_enabled',True),patch.object(config,'olympiad_ide_runtime_url','http://untrusted.example:8801'),patch('cms.server.admin.handlers.idehistory.requests.Session') as transport:
             self.assertEqual(self.get('/api/sessions?userId='+str(self.user.id)+'&taskId='+str(self.task.id)).status_code,503)
             transport.assert_not_called()
+
+    def test_disabled_ordinary_admin_import_does_not_require_optional_pyjwt(self):
+        script = """import importlib.abc,sys
+class NoJWT(importlib.abc.MetaPathFinder):
+ def find_spec(self,fullname,path=None,target=None):
+  if fullname=='jwt' or fullname.startswith('jwt.'):
+   raise ModuleNotFoundError('Optional PyJWT deliberately unavailable')
+sys.meta_path.insert(0,NoJWT())
+import cms.server.admin.handlers
+print('optional_admin_import_ok')
+"""
+        result=subprocess.run([sys.executable,'-c',script],capture_output=True,text=True)
+        self.assertEqual(result.returncode,0,result.stderr[-3000:]);self.assertIn('optional_admin_import_ok',result.stdout)

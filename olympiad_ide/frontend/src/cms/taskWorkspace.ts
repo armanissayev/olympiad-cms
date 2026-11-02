@@ -12,7 +12,7 @@ import { initialData, useWorkspaceStore, type WorkspaceData } from '../store/wor
 import { bindTelemetry, telemetry, TelemetryCollector, useTelemetryStatus } from '../telemetry/collector'
 import { bindTelemetrySync, telemetrySync, TelemetrySync } from '../telemetry/telemetrySync'
 import { drainSubmissionRequests } from './submissions'
-import { scopedDatabaseName, selectTask, useCMSSession } from './session'
+import { restoreTaskRecovery, scopedDatabaseName, selectTask, useCMSSession } from './session'
 
 const snapshot = (): WorkspaceData => {
   const state = useWorkspaceStore.getState(), document = toDocument(state)
@@ -78,8 +78,9 @@ export function switchTaskWorkspace(id: number): Promise<void> {
         // New-scope work must also drain before restoring the previous headers.
         await Promise.allSettled([persistence.suspend(), executions.suspend(), executionResources.suspend(), telemetrySync.suspend()])
         await telemetry.flush().catch(() => undefined); telemetry.stop()
-        if (previous.taskId !== null) selectTask(previous.taskId)
-        else useCMSSession.setState({ taskId: null })
+        const authorized = useCMSSession.getState().context?.tasks.some(task => task.id === previous.taskId)
+        if (previous.taskId !== null && authorized) selectTask(previous.taskId)
+        else restoreTaskRecovery(previous.taskId)
         modelRegistry.disposeAll(); bindScope(old.db); useWorkspaceStore.setState(original)
         await beginScope()
       } else {

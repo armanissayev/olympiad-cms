@@ -13,6 +13,7 @@ const unresolved = (intent: StoredIntent) => ['unknown', 'pending', 'confirmed']
 export function CMSWorkbench() {
   const session = useCMSSession(), task = currentTask(), nodes = useWorkspaceStore(state => state.nodes)
   const workspaceId = useWorkspaceStore(state => state.workspace.id)
+  const workspaceName = useWorkspaceStore(state => state.workspace.name)
   const [open, setOpen] = useState(false), [mapping, setMapping] = useState<Record<string, string>>({}), [chosenLanguage, setChosenLanguage] = useState('')
   const [intents, setIntents] = useState<StoredIntent[]>([]), [history, setHistory] = useState<OfficialHistory[]>([])
   const [feedback, setFeedback] = useState<ParticipantStatus | null>(null), [selected, setSelected] = useState<string | null>(null)
@@ -83,7 +84,7 @@ export function CMSWorkbench() {
     const result = await sendIntent(captured.intentId)
     await refreshLocal()
     if (result.state === 'admitted') {
-      setNotice(result.receipt?.official === false ? 'Practice submission received.' : 'Submission received. Waiting for judging…')
+      setNotice(result.receipt?.official === false ? 'Practice submission received.' : 'Submission received.')
       setSelected(result.receipt!.submissionId)
       const response = await listHistory(task.id); setHistory(response.submissions)
     } else if (result.state === 'rejected') setError('CMS could not accept this submission. Check the selected problem and file.')
@@ -94,7 +95,8 @@ export function CMSWorkbench() {
       <strong>{context.contest.description || context.contest.name}</strong><span>{context.user.username}</span>
       <span>{phases[context.actualPhase] ?? 'CMS phase'}{remaining ? ` · ${remaining}` : ''}</span>
       <label className="cms-problem-picker"><span className="sr-only">Problem</span><select aria-label="Contest task" value={session.taskId ?? ''} disabled={blocked || session.paused} onChange={event => void switchTask(Number(event.target.value))}>
-        {!context.tasks.length && <option value="">Problems unavailable</option>}{context.tasks.map(item => <option value={item.id} key={item.id}>{item.name} — {item.title}</option>)}
+        {session.taskId !== null && !context.tasks.some(item => item.id === session.taskId) && <option value={session.taskId}>Saved problem — {workspaceName}</option>}
+        {!context.tasks.length && session.taskId === null && <option value="">Problems unavailable</option>}{context.tasks.map(item => <option value={item.id} key={item.id}>{item.name} — {item.title}</option>)}
       </select></label>
       <a href={safeCMSLink(context.links.fallback)}>CMS participant page</a>
       <div className="cms-submit-region"><button className="cms-submit-launch" disabled={blocked} onClick={openSubmit}>Submit</button></div>
@@ -103,7 +105,7 @@ export function CMSWorkbench() {
     {open && <aside className="cms-panel cms-submit-panel" role="dialog" aria-label="Submit solution" onKeyDown={event => { if (event.key === 'Escape' && !blocked) setOpen(false) }}>
       <div className="cms-panel-heading"><h2>Submit solution</h2><button onClick={() => setOpen(false)} disabled={blocked} aria-label="Close submit dialog">×</button></div>
       <form onSubmit={event => { event.preventDefault(); void submit() }}>
-        <label>Problem<select aria-label="Submission problem" value={session.taskId ?? ''} disabled={blocked || session.paused} onChange={event => void switchTask(Number(event.target.value))}>{context.tasks.map(item => <option key={item.id} value={item.id}>{item.name} — {item.title}</option>)}</select></label>
+        <label>Problem<select aria-label="Submission problem" value={session.taskId ?? ''} disabled={blocked || session.paused} onChange={event => void switchTask(Number(event.target.value))}>{session.taskId !== null && !context.tasks.some(item => item.id === session.taskId) && <option value={session.taskId}>Saved problem — {workspaceName}</option>}{context.tasks.map(item => <option key={item.id} value={item.id}>{item.name} — {item.title}</option>)}</select></label>
         {task?.submissionFormat.map(filename => <label key={filename}>{task.submissionFormat.length === 1 ? 'File' : filename}<select aria-label={task.submissionFormat.length === 1 ? 'Submission file' : `Submission file for ${filename}`} value={mapping[filename] ?? ''} disabled={blocked} onChange={event => { setMapping({ ...mapping, [filename]: event.target.value }); setChosenLanguage(''); setNotice(null) }}><option value="">Choose a source file</option>{files.map(file => <option key={file.id} value={file.id}>{getNodePath(nodes, file.id)}</option>)}</select></label>)}
         {!language && source && task && <label>Language<select aria-label="Submission language" value={chosenLanguage} disabled={blocked} onChange={event => setChosenLanguage(event.target.value)}><option value="">Choose a language</option>{task.languages.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>}
         {language && task && <p className="cms-submission-language">{task.languages.find(item => item.id === language)?.name}</p>}

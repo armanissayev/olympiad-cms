@@ -8,7 +8,6 @@ import time
 from urllib.parse import urlencode, urlsplit
 from uuid import UUID, uuid4, uuid5, NAMESPACE_URL
 
-import jwt
 import requests
 from gevent import Timeout
 from gevent.lock import BoundedSemaphore
@@ -23,6 +22,7 @@ from .base import BaseHandler, require_permission
 
 
 def history_assertion(admin_id, contest_id, participation, task_id, method, path, query, key):
+    import jwt  # Optional IDE dependency; disabled ordinary Admin startup must not require it.
     now = int(time.time())
     installation = config.olympiad_ide_installation_id
     mapping = json.dumps([installation, str(participation.user_id), str(contest_id), str(participation.id)], separators=(",", ":"), ensure_ascii=True)
@@ -112,7 +112,7 @@ class IDEHistoryDataHandler(BaseHandler):
                         if len(data) > config.olympiad_ide_max_response_bytes: raise ValueError('History response exceeds limit')
                     json.loads(data)
                     self.set_status(response.status_code); self.set_header('Content-Type', 'application/json'); self.finish(bytes(data))
-        except (requests.RequestException, ValueError, OSError, UnicodeError, Timeout):
+        except (requests.RequestException, ValueError, OSError, UnicodeError, ImportError, Timeout):
             self.set_status(503); self.finish({'error': {'message': 'History storage is temporarily unavailable'}})
         finally:
             slots.release()

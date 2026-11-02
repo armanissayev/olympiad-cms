@@ -16,6 +16,7 @@
   }
   function path(nodes, node) { const names = [node.name]; let parent = node.parentId, guard = 0; while (parent && nodes[parent] && guard++ < 100) { names.unshift(nodes[parent].name); parent = nodes[parent].parentId; } return names.join('/'); }
   function renderSource() { const node = frame?.nodes[element('file').value]; element('source').value = node?.type === 'file' ? node.content : ''; }
+  function clearFrame() { frame=null; element('source').value=''; element('file').replaceChildren(); element('event').textContent=''; element('notices').textContent=''; }
   async function seek(sequence, playing = false) {
     if (!current || fetching) return;
     if (!playing) pause();
@@ -41,7 +42,7 @@
     finally { if (ticket === generation) fetching = false; }
   }
   async function load(more = false) {
-    pause(); generation++; current = ''; frame = null; fetching = false; element('player').hidden = true;
+    pause(); generation++; current = ''; clearFrame(); fetching = false; element('player').hidden = true;
     if (!element('participant').value || !element('task').value) { status('Choose a participant and problem.'); return; }
     const ticket = generation, params = query(); if (more && nextBefore) params.set('before', nextBefore);
     status('Loading uploaded recordings…');
@@ -54,8 +55,8 @@
   }
   element('load').addEventListener('click', () => void load());
   element('more').addEventListener('click', () => void load(true));
-  for (const id of ['participant','task']) element(id).addEventListener('change', () => { pause(); generation++; current = ''; frame = null; fetching = false; sessions=[]; nextBefore=null; element('player').hidden=true; element('more').hidden=true; options(element('session'), [{id:''}], () => 'Choose recording'); status('Choose Load recordings to view this selection.'); });
-  element('session').addEventListener('change', () => { pause(); generation++; fetching=false; current=element('session').value; frame=null; const session=sessions.find(row=>row.id===current); element('player').hidden=!session; if(session){element('timeline').max=String(session.lastSequence);element('timeline').value='0';void seek(0);} });
+  for (const id of ['participant','task']) element(id).addEventListener('change', () => { pause(); generation++; current = ''; clearFrame(); fetching = false; sessions=[]; nextBefore=null; element('player').hidden=true; element('more').hidden=true; options(element('session'), [{id:''}], () => 'Choose recording'); status('Choose Load recordings to view this selection.'); });
+  element('session').addEventListener('change', () => { pause(); generation++; fetching=false; current=element('session').value; clearFrame(); const session=sessions.find(row=>row.id===current); element('player').hidden=!session; if(session){element('timeline').max=String(session.lastSequence);element('timeline').value='0';void seek(0);} });
   element('timeline').addEventListener('input', () => { pause(); if(fetching){generation++;fetching=false;} void seek(Number(element('timeline').value)); });
   element('previous').addEventListener('click', () => void seek(Math.max(0,Number(element('timeline').value)-1)));
   element('next').addEventListener('click', () => void seek(Number(element('timeline').value)+1));
