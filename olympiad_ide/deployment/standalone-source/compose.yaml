@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: olympiad
+      POSTGRES_USER: olympiad
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-olympiad-local-dev}
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U olympiad -d olympiad']
+      interval: 3s
+      retries: 20
+  api:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://olympiad:${POSTGRES_PASSWORD:-olympiad-local-dev}@db:5432/olympiad
+      ALLOWED_ORIGINS: http://localhost:8080,http://127.0.0.1:8080,http://localhost:5173,http://127.0.0.1:5173
+      COOKIE_SECURE: 'false'
+      TELEMETRY_RETENTION_DAYS: ${TELEMETRY_RETENTION_DAYS:-30}
+      TELEMETRY_MAX_BATCH_BYTES: ${TELEMETRY_MAX_BATCH_BYTES:-8000000}
+      TELEMETRY_MAX_EVENT_BYTES: ${TELEMETRY_MAX_EVENT_BYTES:-4000000}
+      TELEMETRY_MAX_SESSION_BYTES: ${TELEMETRY_MAX_SESSION_BYTES:-100000000}
+      TELEMETRY_MAX_OWNER_BYTES: ${TELEMETRY_MAX_OWNER_BYTES:-1000000000}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - '127.0.0.1:8000:8000'
+  frontend:
+    build: .
+    depends_on:
+      - api
+    ports:
+      - '127.0.0.1:8080:80'
+volumes:
+  postgres-data:

@@ -53,6 +53,7 @@ PACKAGE_DATA = {
         "contest/templates/*.*",
         "contest/templates/macro/*.*",
     ],
+    "cms.server.olympiadide": ["static/*", "static/assets/*"],
     "cms.service": [
         "templates/printing/*.*",
     ],
@@ -127,6 +128,8 @@ setup(
         "scripts/cmsResourceService",
         "scripts/cmsChecker",
         "scripts/cmsContestWebServer",
+        "scripts/cmsOlympiadIDEService",
+        "scripts/cmsOlympiadIDEMigrate",
         "scripts/cmsAdminWebServer",
         "scripts/cmsProxyService",
         "scripts/cmsPrintingService",

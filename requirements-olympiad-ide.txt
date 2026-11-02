@@ -1,0 +1,4 @@
+# Optional native IDE gateway dependency; retain CMS requirements.txt unchanged.
+PyJWT==2.10.1
+# CMS v1.5.1 imports pkg_resources at runtime.
+setuptools==80.9.0

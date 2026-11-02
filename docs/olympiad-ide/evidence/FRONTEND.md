@@ -1,0 +1,48 @@
+# Frontend baseline audit — 2026-11-02
+
+Source: `/Users/isaevarman/Developer/olympiad-ide`. Current source tree has no `.git`; no branch, remote, commit SHA, or meaningful Git dirty-state comparison can be established from it. No `AGENTS.md` was found in this tree. Read README, SPEC and the Phase 2/3/4 architecture, plans and verification reports relevant to frontend work. The new user request supersedes SPEC's historical exclusion of CMS integration. No application source edits were made by this audit. Production build regenerated existing ignored/generated `dist/` output and TypeScript build metadata.
+
+## Fresh checks
+
+All commands below ran locally in the source root against the preinstalled `node_modules`, without dependency installation or remote access.
+
+| Command | Observed result |
+| --- | --- |
+| `node --version` | v23.10.0 |
+| `npm --version` | 10.9.2 |
+| `npm test` | 63 tests passed in 7 files; Vitest 4.1.12; duration 2.36 s |
+| `npm run lint` | exit 0, zero allowed warnings |
+| `npm run build` | exit 0; includes `tsc -b`; Vite 6.4.4; 2247 transformed modules; 6.11 s build |
+| `npm ls --depth=0` | exit 0, installed direct dependencies resolved |
+
+Build advisory: chunks exceed 500 kB (Monaco API chunk 2,285.83 kB; application/xterm chunk 850.44 kB before gzip). No new browser, real worker, CMS, PostgreSQL, or deployment result is claimed here. The current shell uses Node 23, whereas README requests Node 22 LTS or 24+; repeat clean installation/build on a supported selected runtime before release. README's `npm ci --legacy-peer-deps` is a historical installation command, not clean-install verification and not a justified permanent dependency-check bypass for the new integration.
+
+Installed direct versions include React/ReactDOM 18.3.1, Monaco 0.52.2, @monaco-editor/react 4.7.0, Zustand 5.0.15, Dexie 4.4.6, TypeScript 5.7.3, xterm 6.0.0/addon-fit 0.11.0, Playwright 1.64.1, Vite 6.4.4 and Vitest 4.1.12. `package-lock.json` exists. Versions above describe the observed installation, not an approved toolchain upgrade.
+
+Historical reports remain separate: Phase 2 reported 28 frontend/12 PostgreSQL/7 browser passes; Phase 3 reported 51/25/10; Phase 4 reported 63 frontend, 49 backend, 4 worker policy and 13 browser passes, plus 24 real Linux and one real-worker browser skips. Only the 63 frontend checks and lint/build were freshly repeated in this audit. Newer AWS reports exist but this audit did not contact AWS or reverify their claims.
+
+## Existing behavior verified in source and tests
+
+- `src/App.tsx`: React workbench using resizable horizontal/vertical panels, Explorer, settings, Quick Open, toolbar/status, terminal/tests, and keyboard shortcuts. Existing design should be extended rather than replaced.
+- `src/editor/modelRegistry.ts:modelUri` is `olympiad://workspace/<workspace UUID>/file/<file UUID>`; `MonacoModelRegistry.adopt` returns one model for duplicate file views. `src/components/editor/EditorPane.tsx` persists pane/file cursor and scroll state separately and passes stable URI to Monaco. Registry is currently keyed by file UUID alone; task switching must explicitly reconcile/dispose models or namespace registry keys when duplicate file IDs can exist in imported workspaces.
+- `src/persistence/database.ts:WorkspaceDatabase` is Dexie version 4, preserving v1 workspace/test metadata, v2 conflicts, v3 telemetry and v4 custom execution stores. `LocalRepository.commit` commits local workspace state and pending upload journal atomically; a sending operation is never compacted. `PersistenceController` separates local commit and upload/ack status, preserves conflicts, and reconciles model text in place with explicit document-origin labels.
+- `src/telemetry/collector.ts:trackModel` subscribes once per shared model; `navigationTracker.ts` captures keys only if the Monaco instance has text focus. Sessions use fresh UUIDs and monotonic origins. `eventQueue.ts` keeps an append-only local journal and explicit failure states. `telemetrySync.ts` uses immutable receipts, size-bounded batches/chunks, four batch turns per session, and jittered retry. `replayEngine.ts` preserves UTF-16 replay/hash contracts.
+- `src/execution/snapshot.ts:captureSubmission` captures live model text synchronously before awaiting hashing, clones configuration/tests, keeps stable file IDs/exact paths, and restricts source to selected manifest. It is a custom-run snapshot, not an official CMS submission contract. Its source hash covers files and custom configuration, not CMS identity, task, language ID, or CMS filename mapping.
+- `ExecutionController.run` durably inserts the custom snapshot in IndexedDB before transport. `retryPending` resends unchanged job ID/body and marks acknowledgement only after a returned job. Events deduplicate sequences and recover gaps. `ResourceController` has a separate local resource journal. `TerminalOutput.tsx` disables stdin and handles OSC 0/2/8/9/52/1337 to prevent title/link/notification/clipboard operations.
+- Current RUN telemetry observations correlate durable job/snapshot state and avoid inventing historical starts on reload. No official submission intent/admission/rejection event schema exists. Debug contracts and headless replay exist; a working visual timeline/DAP implementation was not found.
+
+Relevant passing test names include stable model URI/shared model reuse, independent cursor/scroll state, immediate local commits with autosave off, atomic journal rollback, immutable already-sending operations, explicit stale conflict handling, fresh session/clock on reload, UTF-16/randomized replay, exact pre-await snapshot capture, resource migration and stream duplicate/gap recovery. Browser test files cover real Monaco/persistence/telemetry/execution flows, but require running frontend/API/PostgreSQL and were not rerun by this agent.
+
+## Integration blockers / seams to change after CMS audit
+
+1. **Identity isolation:** `WorkspaceAPI.session()` POSTs `/api/v1/session` to establish development-cookie identity. `WorkspaceDatabase` defaults to the single origin-wide name `olympiad-ide`; `LocalRepository.initialize` reads global `metadata['activeWorkspace']`. Workspaces have an owner string but no CMS installation/contest/participation scope. `PersistenceController.synchronize` does not compare effective identity before sending and assigns the returned owner only at its end. Telemetry uploads all locally recorded sessions. Execution/resource retry queues are keyed by workspace UUID, with no immutable principal scope. CMS mode needs an authoritative session bootstrap, suspended uploads during expiry/account transitions, identity-bound local records/queues and server-enforced scope; do not merely replace a cookie name.
+2. **Workspace/task switching:** no task-aware picker or contest identity/phase exists. Telemetry store observation explicitly halts if workspace ID changes (`collector.ts:120`), so switching requires deliberate flush/stop/new-session lifecycle. Model registry, global controller singletons and preferences need coordinated switching. Preserve unuploaded work for prior identity.
+3. **Production subpath:** Vite has no `base`; `WorkspaceAPI.request` hardcodes `/api/v1`; execution EventSource hardcodes `/api/v1/executions/...`; service worker registers `/sw.js` without an explicit IDE scope. `build/offlineShell.ts` caches `/` plus root-prefixed bundle names and intercepts every same-origin navigation outside `/api/`, falling back to `/`. This is suitable only for its current dedicated origin. Under CMS it could intercept login/ranking/admin navigation. Configure real base path, scoped worker and exact static allowlist; verify Monaco workers and offline navigation at the deployed subpath. Current source does not cache dynamic API responses, and this property must be retained.
+4. **Origin migration:** `PersistencePanel.exportRecovery` exports current document, workspace metadata, conflict and old phase1 localStorage, but there is no validated origin-transfer import, ownership proof/adoption flow or whole-journal migration. Do not call that export a completed data migration.
+5. **Official submit:** no CMS task/language/file mapping, immutable official intent, confirmation/history/receipt state, or feedback adapter exists. Keep custom Run/Stop APIs distinct. Reuse live-model capture principles, add exact file-byte hashes separately, and make official admission independent of autosave/telemetry/custom capacity.
+6. **Polling/load:** custom execution refresh/retry runs every 2 s; resources every 3 s; telemetry normally every 2 s; persistence idle checks every 10 s. Existing guards/locks serialize parts of these flows, but no fresh 300–350-user capacity result exists. Avoid multiplying these costs with unbounded official feedback polling.
+7. **Deployment/installation:** existing nginx serves whole-origin SPA and proxies `/api/`; no native CMS registration/launcher/assets packaging exists. Frontend install is already separate from Python, but clean install and licences/provenance require verification after the target CMS revision is available.
+
+## Exact next step
+
+Obtain target CMS checkout and pinned revision (and Git-backed IDE origin if available). Audit actual CMS service/auth/submission/feedback code before selecting adapters. Create CMS feature branch/worktree and import only source plus dependency/build/test/docs manifests, excluding local secrets, participant data, databases, virtualenvs, node_modules and generated assets unless installation explicitly requires them. Preserve this audit as IDE-side evidence in the CMS baseline; do not claim native integration or release acceptance from these checks.

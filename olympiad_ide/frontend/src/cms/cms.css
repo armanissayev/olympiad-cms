@@ -1,0 +1,23 @@
+.app-shell.cms { grid-template-rows:auto 35px minmax(0,1fr) 22px; }
+.app-shell.cms.zen { grid-template-rows:auto minmax(0,1fr); }
+.cms-chrome { min-width:0; }
+.cms-bar { display:flex; align-items:center; gap:12px; min-height:36px; padding:5px 12px; background:var(--panel); border-bottom:1px solid var(--border); font-size:11px; flex-wrap:wrap; }
+.cms-bar select { max-width:260px; }
+.cms-bar a,.cms-panel a,.cms-auth-notice a { color:#7ab8f5; text-decoration:underline; }
+.cms-auth-notice { padding:8px 12px; background:#594215; color:#ffe5a6; font-size:12px; }
+.cms-auth-notice button { text-decoration:underline; margin-left:8px; }
+.cms-panel { position:absolute; top:76px; bottom:26px; right:10px; z-index:60; width:min(530px,calc(100vw - 20px)); overflow:auto; padding:16px; background:var(--bg,#1f1f1f); color:var(--fg,#ccc); border:1px solid var(--border,#444); box-shadow:0 8px 30px #0008; font-size:12px; }
+.cms-panel-heading { display:flex; align-items:center; justify-content:space-between; }
+.cms-panel h2 { font-size:15px; font-weight:600; }.cms-panel h3 { font-weight:600; margin:18px 0 7px; }
+.cms-panel p { line-height:1.5; margin:8px 0; }.cms-note { color:var(--muted,#999); }
+.cms-panel label { display:flex; flex-direction:column; gap:5px; margin:10px 0; }
+.cms-panel select,.cms-bar select { background:#252526; color:#ddd; padding:5px; border:1px solid #555; }
+.cms-panel button { border:1px solid #555; background:#303030; color:#eee; padding:5px 9px; margin:4px 5px 4px 0; }
+.cms-panel button:disabled { opacity:.45; cursor:not-allowed; }
+.cms-panel pre { white-space:pre-wrap; overflow-wrap:anywhere; max-height:240px; overflow:auto; background:#151515; padding:10px; color:#ddd; }
+.cms-links { display:flex; gap:12px; flex-wrap:wrap; }.cms-confirm { border:1px solid #537eaa; margin-top:12px; padding:8px; }
+.cms-hash { display:block; overflow-wrap:anywhere; font-size:10px; margin:6px 0; }
+.cms-history { display:flex; flex-direction:column; gap:5px; padding:10px 0; border-bottom:1px solid #444; }.cms-history small { color:#aaa; }.cms-error { color:#ffadad; }
+.cms-entry { max-width:640px; padding:40px; margin:12vh auto; font:14px/1.6 system-ui; color:#ddd; background:#202020; }
+
+.cms-history button { overflow-wrap:anywhere; text-align:left; }

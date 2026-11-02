@@ -45,13 +45,16 @@ except ImportError:
     import tornado.web as tornado_web
 from sqlalchemy.orm import joinedload
 
-from cms import config, FEEDBACK_LEVEL_FULL
-from cms.db import Submission, SubmissionResult
+from cms import config
+from cms.db import Submission
 from cms.grading.languagemanager import get_language
 from cms.grading.scoring import task_score
 from cms.server import multi_contest
 from cms.server.contest.submission import get_submission_count, \
-    UnacceptableSubmission, accept_submission
+    UnacceptableSubmission
+from cms.server.contest.submission.policy import accept_contest_submission
+from cms.server.contest.submission.feedback import (
+    STATUS_TEXT, add_task_scores, submission_status, submission_details)
 from cms.server.contest.tokening import \
     UnacceptableToken, TokenAlreadyPlayed, accept_token, tokens_available
 from cmscommon.crypto import encrypt_number
@@ -81,17 +84,13 @@ class SubmitHandler(ContestHandler):
         if task is None:
             raise tornado_web.HTTPError(404)
 
-        # Only set the official bit when the user can compete and we are not in
-        # analysis mode.
-        official = self.r_params["actual_phase"] == 0
-
         query_args = dict()
 
         try:
-            submission = accept_submission(
+            submission = accept_contest_submission(
                 self.sql_session, self.service.file_cacher, self.current_user,
                 task, self.timestamp, self.request.files,
-                self.get_argument("language", None), official)
+                self.get_argument("language", None))
             self.sql_session.commit()
         except UnacceptableSubmission as e:
             logger.info("Sent error: `%s' - `%s'", e.subject, e.formatted_text)
@@ -180,52 +179,11 @@ class TaskSubmissionsHandler(ContestHandler):
 
 
 class SubmissionStatusHandler(ContestHandler):
-
-    STATUS_TEXT = {
-        SubmissionResult.COMPILING: N_("Compiling..."),
-        SubmissionResult.COMPILATION_FAILED: N_("Compilation failed"),
-        SubmissionResult.EVALUATING: N_("Evaluating..."),
-        SubmissionResult.SCORING: N_("Scoring..."),
-        SubmissionResult.SCORED: N_("Evaluated"),
-    }
-
+    STATUS_TEXT = STATUS_TEXT
     refresh_cookie = False
 
     def add_task_score(self, participation, task, data):
-        """Add the task score information to the dict to be returned.
-
-        participation (Participation): user for which we want the score.
-        task (Task): task for which we want the score.
-        data (dict): where to put the data; all fields will start with "task",
-            followed by "public" if referring to the public scores, or
-            "tokened" if referring to the total score (always limited to
-            tokened submissions); for both public and tokened, the fields are:
-            "score" and "score_message"; in addition we have
-            "task_is_score_partial" as partial info is the same for both.
-
-        """
-        # Just to preload all information required to compute the task score.
-        self.sql_session.query(Submission)\
-            .filter(Submission.participation == participation)\
-            .filter(Submission.task == task)\
-            .options(joinedload(Submission.token))\
-            .options(joinedload(Submission.results))\
-            .all()
-        data["task_public_score"], public_score_is_partial = \
-            task_score(participation, task, public=True, rounded=True)
-        data["task_tokened_score"], tokened_score_is_partial = \
-            task_score(participation, task, only_tokened=True, rounded=True)
-        # These two should be the same, anyway.
-        data["task_score_is_partial"] = \
-            public_score_is_partial or tokened_score_is_partial
-
-        score_type = task.active_dataset.score_type_object
-        data["task_public_score_message"] = score_type.format_score(
-            data["task_public_score"], score_type.max_public_score, None,
-            task.score_precision, translation=self.translation)
-        data["task_tokened_score_message"] = score_type.format_score(
-            data["task_tokened_score"], score_type.max_score, None,
-            task.score_precision, translation=self.translation)
+        add_task_scores(self.sql_session, participation, task, data, self.translation)
 
     @tornado_web.authenticated
     @actual_phase_required(0, 3)
@@ -234,57 +192,14 @@ class SubmissionStatusHandler(ContestHandler):
         task = self.get_task(task_name)
         if task is None:
             raise tornado_web.HTTPError(404)
-
         submission = self.get_submission(task, submission_num)
         if submission is None:
             raise tornado_web.HTTPError(404)
-
-        sr = submission.get_result(task.active_dataset)
-
-        data = {}
-
-        if sr is None:
-            # implicit compiling state while result is not created
-            data["status"] = SubmissionResult.COMPILING
-        else:
-            data["status"] = sr.get_status()
-
-        data["status_text"] = self._(self.STATUS_TEXT[data["status"]])
-
-        # For terminal statuses we add the scores information to the payload.
-        if data["status"] == SubmissionResult.COMPILATION_FAILED \
-                or data["status"] == SubmissionResult.SCORED:
-            self.add_task_score(submission.participation, task, data)
-
-            score_type = task.active_dataset.score_type_object
-            if score_type.max_public_score > 0:
-                data["max_public_score"] = \
-                    round(score_type.max_public_score, task.score_precision)
-                if data["status"] == SubmissionResult.SCORED:
-                    data["public_score"] = \
-                        round(sr.public_score, task.score_precision)
-                    data["public_score_message"] = score_type.format_score(
-                        sr.public_score, score_type.max_public_score,
-                        sr.public_score_details, task.score_precision,
-                        translation=self.translation)
-            if score_type.max_public_score < score_type.max_score:
-                data["max_score"] = \
-                    round(score_type.max_score, task.score_precision)
-                if data["status"] == SubmissionResult.SCORED \
-                        and (submission.token is not None
-                            or self.r_params["actual_phase"] == 3):
-                    data["score"] = \
-                        round(sr.score, task.score_precision)
-                    data["score_message"] = score_type.format_score(
-                        sr.score, score_type.max_score,
-                        sr.score_details, task.score_precision,
-                        translation=self.translation)
-
-        self.write(data)
+        self.write(submission_status(self.sql_session, submission,
+                                     self.r_params["actual_phase"], self.translation))
 
 
 class SubmissionDetailsHandler(ContestHandler):
-
     refresh_cookie = False
 
     @tornado_web.authenticated
@@ -294,32 +209,11 @@ class SubmissionDetailsHandler(ContestHandler):
         task = self.get_task(task_name)
         if task is None:
             raise tornado_web.HTTPError(404)
-
         submission = self.get_submission(task, submission_num)
         if submission is None:
             raise tornado_web.HTTPError(404)
-
-        sr = submission.get_result(task.active_dataset)
-        score_type = task.active_dataset.score_type_object
-
-        details = None
-        if sr is not None and sr.scored():
-            # During analysis mode we show the full feedback regardless of
-            # what the task says.
-            is_analysis_mode = self.r_params["actual_phase"] == 3
-            if submission.tokened() or is_analysis_mode:
-                raw_details = sr.score_details
-            else:
-                raw_details = sr.public_score_details
-
-            if is_analysis_mode:
-                feedback_level = FEEDBACK_LEVEL_FULL
-            else:
-                feedback_level = task.feedback_level
-
-            details = score_type.get_html_details(
-                raw_details, feedback_level, translation=self.translation)
-
+        sr, details = submission_details(submission, self.r_params["actual_phase"],
+                                         self.translation)
         self.render("submission_details.html", sr=sr, details=details,
                     **self.r_params)
 

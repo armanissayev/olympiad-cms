@@ -21,6 +21,17 @@ explicitly build to be used in the 2012 International Olympiad in
 Informatics, held in September 2012 in Italy.
 
 
+Optional Olympiad IDE
+--------------------
+
+This branch adds an optional native CMS IDE with CMS participant authentication,
+immutable official submissions and the retained Monaco workbench. Start with the
+[deployment guide](docs/olympiad-ide/DEPLOYMENT.md) and
+[verification status](docs/olympiad-ide/VERIFICATION.md). It is disabled by default;
+ordinary CMS installation does not require Node. Linux worker/judging and
+participant-scale deployment gates remain open.
+
+
 Download
 --------
 

@@ -92,6 +92,11 @@ def accept_submission(sql_session, file_cacher, participation, task, timestamp,
     contest = participation.contest
     assert task.contest is contest
 
+    # Shared by CWS and native IDE shards: quota checks and insertion belong
+    # to one serialized participant transaction, not separate ingress counters.
+    from .policy import lock_submission_participation
+    lock_submission_participation(sql_session, participation)
+
     # Check whether the contestant is allowed to submit.
 
     if not check_max_number(sql_session, contest.max_submission_number,

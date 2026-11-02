@@ -34,9 +34,9 @@ from collections import defaultdict, deque
 from shlex import quote as shell_quote
 
 import psutil
-from gevent import subprocess
+from gevent import sleep, subprocess
 
-from cms import config, get_safe_shard, ServiceCoord
+from cms import ConfigError, config, get_safe_shard, ServiceCoord
 from cms.io import Service, rpc_method
 
 
@@ -92,7 +92,7 @@ class ProcessMatcher:
         for proc in psutil.process_iter():
             try:
                 yield proc.cmdline(), proc
-            except psutil.NoSuchProcess:
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
                 continue
 
     @staticmethod
@@ -179,6 +179,10 @@ class ResourceService(Service):
         self._prev_cpu_times = self._get_cpu_times()
         # Sorted list of ServiceCoord running in the same machine
         self._local_services = self._find_local_services()
+        if self.autorestart and contest_id is None and any(s.name == "OlympiadIDEService" for s in self._local_services):
+            raise ConfigError("ResourceService requires --autorestart ID when the single-contest Olympiad IDE is enabled")
+        self._ide_restart_attempts = defaultdict(deque)
+        self._ide_next_restart = {}
         if "ProxyService" in (s.name for s in self._local_services) and \
                 self.contest_id is None:
             logger.warning("Will not run ProxyService "
@@ -242,6 +246,19 @@ class ResourceService(Service):
             # If we still do not find it, there is no process, and we
             # have nothing to do.
             if proc is None or not proc.is_running():
+                if service.name == "OlympiadIDEService":
+                    now = time.monotonic()
+                    attempts = self._ide_restart_attempts[service]
+                    while attempts and attempts[0] < now - config.olympiad_ide_restart_window:
+                        attempts.popleft()
+                    if len(attempts) >= config.olympiad_ide_restart_limit:
+                        self._will_restart[service] = False
+                        logger.error("Olympiad IDE restart limit reached; autorestart disabled for %s. Repair the failure and explicitly re-enable it.", service)
+                        continue
+                    if now < self._ide_next_restart.get(service, 0):
+                        continue
+                    attempts.append(now)
+                    self._ide_next_restart[service] = now + min(60, 5 * 2 ** (len(attempts) - 1))
                 # We give contest_id even if the service doesn't need
                 # it, since it causes no trouble.
                 logger.info("Restarting (%s, %s)...",
@@ -278,7 +295,8 @@ class ResourceService(Service):
         local_machine = services[self._my_coord].ip
         local_services = [x
                           for x in services
-                          if services[x].ip == local_machine]
+                          if services[x].ip == local_machine
+                          and (x.name != "OlympiadIDEService" or config.olympiad_ide_enabled)]
         return sorted(local_services)
 
     @staticmethod
@@ -293,9 +311,9 @@ class ResourceService(Service):
                 "nice": cpu_times.nice,
                 "system": cpu_times.system,
                 "idle": cpu_times.idle,
-                "iowait": cpu_times.iowait,
-                "irq": cpu_times.irq,
-                "softirq": cpu_times.softirq}
+                "iowait": getattr(cpu_times, "iowait", 0.0),
+                "irq": getattr(cpu_times, "irq", 0.0),
+                "softirq": getattr(cpu_times, "softirq", 0.0)}
 
     def _store_resources(self, store=True):
         """Looks at the resources usage and store the data locally.
@@ -335,8 +353,8 @@ class ResourceService(Service):
         data["memory"] = {
             "ram_total": vmem.total / B_TO_MB,
             "ram_available": vmem.free / B_TO_MB,
-            "ram_cached": vmem.cached / B_TO_MB,
-            "ram_buffers": vmem.buffers / B_TO_MB,
+            "ram_cached": getattr(vmem, "cached", 0.0) / B_TO_MB,
+            "ram_buffers": getattr(vmem, "buffers", 0.0) / B_TO_MB,
             "ram_used": vmem.used / B_TO_MB,
             "swap_total": swap.total / B_TO_MB,
             "swap_available": swap.free / B_TO_MB,
@@ -435,8 +453,17 @@ class ResourceService(Service):
             logger.error("Unable to decode service shard.")
 
         remote_service = self.connect_to(ServiceCoord(name, shard))
+        if name == "OlympiadIDEService":
+            # connect_to starts a greenlet; its first RPC cannot be sent until
+            # the connection is established. Bound the admin request if down.
+            deadline = time.monotonic() + 3.0
+            while not remote_service.connected and time.monotonic() < deadline:
+                sleep(0.05)
+            if not remote_service.connected:
+                logger.warning("Cannot stop %s: RPC connection unavailable", service)
+                return False
         result = remote_service.quit(reason="Asked by ResourceService")
-        return result.get()
+        return result.get(timeout=5) if name == "OlympiadIDEService" else result.get()
 
     @rpc_method
     def toggle_autorestart(self, service):
@@ -469,6 +496,9 @@ class ResourceService(Service):
         service = ServiceCoord(name, shard)
 
         self._will_restart[service] = not self._will_restart[service]
+        if name == "OlympiadIDEService" and self._will_restart[service]:
+            self._ide_restart_attempts[service].clear()
+            self._ide_next_restart.pop(service, None)
         logger.info("Will restart %s,%s is now %s.",
                     service.name, service.shard, self._will_restart[service])
 

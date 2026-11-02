@@ -1,0 +1,33 @@
+# Optional IDE sources in the source distribution; never recursive dependency/state imports.
+include requirements-olympiad-ide.txt
+include requirements-olympiad-ide.lock
+include tools/build_olympiad_ide.py
+recursive-include docs/olympiad-ide *.md *.json
+include olympiad_ide/README.md olympiad_ide/SPEC.md
+include olympiad_ide/frontend/package.json olympiad_ide/frontend/package-lock.json
+include olympiad_ide/frontend/*.ts olympiad_ide/frontend/*.js olympiad_ide/frontend/index.html
+include olympiad_ide/frontend/tsconfig*.json
+recursive-include olympiad_ide/frontend/src *.ts *.tsx *.css
+recursive-include olympiad_ide/frontend/build *.ts
+recursive-include olympiad_ide/frontend/e2e *.ts
+include olympiad_ide/backend/pyproject.toml olympiad_ide/backend/alembic.ini olympiad_ide/backend/requirements.lock
+recursive-include olympiad_ide/backend/app *.py
+recursive-include olympiad_ide/backend/migrations *.py *.mako
+recursive-include olympiad_ide/backend/tests *.py
+include olympiad_ide/worker/__init__.py olympiad_ide/worker/Dockerfile olympiad_ide/worker/*.service
+recursive-include olympiad_ide/worker/app *.py
+recursive-include olympiad_ide/worker/tests *.py
+recursive-include olympiad_ide/tools *.py
+recursive-include olympiad_ide/deployment *.conf *.service *.example *.sql
+recursive-include olympiad_ide/docs *.md
+recursive-include cms/server/olympiadide/static *.js *.css *.html *.ttf *.woff *.woff2 *.svg *.png
+global-exclude *.pem *.key *.pyc .env .env.*
+
+include olympiad_ide/frontend/README.md
+recursive-include olympiad_ide/frontend/tools *.cjs *.mjs
+recursive-include olympiad_ide/tools *.md
+include cms/server/olympiadide/static/.build-manifest.json
+include olympiad_ide/frontend/.nvmrc
+include olympiad_ide/backend/Dockerfile
+include olympiad_ide/deployment/standalone-source/Dockerfile olympiad_ide/deployment/standalone-source/compose.yaml olympiad_ide/deployment/standalone-source/.dockerignore
+include olympiad_ide/.gitignore

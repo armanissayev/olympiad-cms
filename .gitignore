@@ -16,3 +16,21 @@ log/
 codecov/
 .dev/
 test_logs/
+
+# Optional IDE dependency/runtime state and generated production assets
+node_modules/
+.venv/
+*.pem
+*.key
+.env
+.env.*
+*.local
+.pytest_cache/
+test-results/
+playwright-report/
+__pycache__/
+cms/server/olympiadide/static/
+
+# Frontend build plugin is source, not generated build output.
+!olympiad_ide/frontend/build/
+!olympiad_ide/frontend/build/**

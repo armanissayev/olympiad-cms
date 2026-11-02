@@ -67,7 +67,7 @@ __all__ = [
     "UserTest", "UserTestFile", "UserTestManager", "UserTestResult",
     "UserTestExecutable",
     # printjob
-    "PrintJob",
+    "PrintJob", "OlympiadIDEReceipt",
     # init
     "init_db",
     # drop
@@ -81,7 +81,7 @@ __all__ = [
 
 # Instantiate or import these objects.
 
-version = 44
+version = 45
 
 engine = create_engine(config.database, echo=config.database_debug,
                        pool_timeout=60, pool_recycle=120)
@@ -104,6 +104,7 @@ from .submission import Submission, File, Token, SubmissionResult, \
 from .usertest import UserTest, UserTestFile, UserTestManager, \
     UserTestResult, UserTestExecutable
 from .printjob import PrintJob
+from .olympiadide import OlympiadIDEReceipt
 
 from .init import init_db
 from .drop import drop_db

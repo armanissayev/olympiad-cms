@@ -1,0 +1,757 @@
+{
+  "schemaVersion": 1,
+  "sourceRoot": "/Users/isaevarman/Developer/olympiad-ide",
+  "sourceGitCommit": null,
+  "sourceAuthority": "Owner-designated authoritative non-Git source; original left unchanged",
+  "upstreamCmsRepository": "https://github.com/cms-dev/cms",
+  "upstreamCmsTag": "v1.5.1",
+  "upstreamCmsCommit": "7c9fec8aa1a25ec93d624aebf815804dd93df9db",
+  "sourceAggregateSha256": "5836b0cdbcd812bdcd7f88ed42eeec08648dea62291080c05e35d94b822aa2a1",
+  "importedOn": "2026-11-02",
+  "files": [
+    {
+      "path": ".dockerignore",
+      "bytes": 103,
+      "sha256": "813ce340bf5c665e1342f082bf02ec5add6ac32e1926446b907a3391eee3512a",
+      "target": "olympiad_ide/deployment/standalone-source/.dockerignore"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 120,
+      "sha256": "2f9a0955ad787095fb8b8f5102f81bdc871db88910cf795a1efd696b673e5b1d",
+      "target": "olympiad_ide/.gitignore"
+    },
+    {
+      "path": "Dockerfile",
+      "bytes": 275,
+      "sha256": "af3e1dbc2d232f0aea4570d009e3acce7a2f03a2fc029d26423cd36e9d6d6ee5",
+      "target": "olympiad_ide/deployment/standalone-source/Dockerfile"
+    },
+    {
+      "path": "README.md",
+      "bytes": 10201,
+      "sha256": "53def3eae91c3e9a302ecec59f3c97241e8e6ff2ad74bf6f63cab4d5b623384a",
+      "target": "olympiad_ide/docs/SOURCE_README.md"
+    },
+    {
+      "path": "SPEC.md",
+      "bytes": 40813,
+      "sha256": "fbd78902dab5c5a718e43765f7ac2146a66f94b841509505981d7123ff1b6106",
+      "target": "olympiad_ide/SPEC.md"
+    },
+    {
+      "path": "backend/Dockerfile",
+      "bytes": 259,
+      "sha256": "5e7db0eefe688ac9f9739189f50de248183c49ab525ccd0720ec6a3f749d700c",
+      "target": "olympiad_ide/backend/Dockerfile"
+    },
+    {
+      "path": "backend/alembic.ini",
+      "bytes": 169,
+      "sha256": "dd845aced710ff18a59f83e1565bd3b83577cfc37d6a0234ffffa48e150f3f68",
+      "target": "olympiad_ide/backend/alembic.ini"
+    },
+    {
+      "path": "backend/app/__init__.py",
+      "bytes": 32,
+      "sha256": "930d22c97c5cf13d7f8019e815f6d55537c22438608993d9730604349157d360",
+      "target": "olympiad_ide/backend/app/__init__.py"
+    },
+    {
+      "path": "backend/app/database.py",
+      "bytes": 499,
+      "sha256": "27a88eac58b28fb2ed41e6c4f7527f8ec6a121cfdb78f28025847e5ffcb9327a",
+      "target": "olympiad_ide/backend/app/database.py"
+    },
+    {
+      "path": "backend/app/execution_api.py",
+      "bytes": 6976,
+      "sha256": "55282cbe831494a35c0a00bd3dc4a57c9379a641166a3805295c88062fdc17d0",
+      "target": "olympiad_ide/backend/app/execution_api.py"
+    },
+    {
+      "path": "backend/app/execution_models.py",
+      "bytes": 3795,
+      "sha256": "807328bbd4d9f9f5ad63f12eb9d40047ac0410e01fac1333518291bd93c5ab60",
+      "target": "olympiad_ide/backend/app/execution_models.py"
+    },
+    {
+      "path": "backend/app/execution_schema.py",
+      "bytes": 6733,
+      "sha256": "e4db0ee8cb3b06edc364eaee5c0804708306fdd46556dc073a57f48d408edc90",
+      "target": "olympiad_ide/backend/app/execution_schema.py"
+    },
+    {
+      "path": "backend/app/execution_service.py",
+      "bytes": 11421,
+      "sha256": "d74e78f2b5841c9320f2870a99cdf8646b002c79d8e382e86bc51c052b25ff01",
+      "target": "olympiad_ide/backend/app/execution_service.py"
+    },
+    {
+      "path": "backend/app/main.py",
+      "bytes": 8894,
+      "sha256": "f20cb07aa3e51df9f017aa34edf5d657993397f1359ff7afb17048d69cd81d90",
+      "target": "olympiad_ide/backend/app/main.py"
+    },
+    {
+      "path": "backend/app/models.py",
+      "bytes": 4685,
+      "sha256": "b673f01a4dca0c453a28546c07793f8b633beceeba89296e5b51567faf8eb2a6",
+      "target": "olympiad_ide/backend/app/models.py"
+    },
+    {
+      "path": "backend/app/schemas.py",
+      "bytes": 5749,
+      "sha256": "563d0e5f6924f92c96bef51d206926f5cfe4e54ccfb48bd564b2bf7463863553",
+      "target": "olympiad_ide/backend/app/schemas.py"
+    },
+    {
+      "path": "backend/app/service.py",
+      "bytes": 6978,
+      "sha256": "1aec93d8200d7c1c1e7d21cbbd4e8bfb1fa9c7efc087d0059195c22a0c9ee129",
+      "target": "olympiad_ide/backend/app/service.py"
+    },
+    {
+      "path": "backend/app/telemetry.py",
+      "bytes": 23623,
+      "sha256": "51e16667d609eddaf0001793b588104ffd9443e14440389271ec649a1f3fc990",
+      "target": "olympiad_ide/backend/app/telemetry.py"
+    },
+    {
+      "path": "backend/app/telemetry_maintenance.py",
+      "bytes": 609,
+      "sha256": "a01d10891ce3cbeb013dd85773185084d9fcb1395734c8f65ffbc2b19ffe70af",
+      "target": "olympiad_ide/backend/app/telemetry_maintenance.py"
+    },
+    {
+      "path": "backend/app/telemetry_models.py",
+      "bytes": 3702,
+      "sha256": "ffc655bb419a853b5e24168ae568de8c4a6cbe4704125fc7f8c599e9293298e2",
+      "target": "olympiad_ide/backend/app/telemetry_models.py"
+    },
+    {
+      "path": "backend/app/telemetry_schema.py",
+      "bytes": 6505,
+      "sha256": "ae047f82a0ad27a6fadf03152e3ce76d610bda5ba033f2698474b39eefebf20b",
+      "target": "olympiad_ide/backend/app/telemetry_schema.py"
+    },
+    {
+      "path": "backend/migrations/env.py",
+      "bytes": 777,
+      "sha256": "acc95cde8252d75a21523b3421de15cc5541243eef5fcce1e2e835efe92175a6",
+      "target": "olympiad_ide/backend/migrations/env.py"
+    },
+    {
+      "path": "backend/migrations/script.py.mako",
+      "bytes": 356,
+      "sha256": "e872497783a86c37adff84230ffe3893188aa3babe5b1f3da52f235470c79e26",
+      "target": "olympiad_ide/backend/migrations/script.py.mako"
+    },
+    {
+      "path": "backend/migrations/versions/9773627aa90c_phase2_durable_workspace_persistence.py",
+      "bytes": 6106,
+      "sha256": "ddbcd919c9e144878573ee67f4f2752f4b7d5addcfc749f6b313f40eafabd615",
+      "target": "olympiad_ide/backend/migrations/versions/9773627aa90c_phase2_durable_workspace_persistence.py"
+    },
+    {
+      "path": "backend/migrations/versions/f3a001_telemetry_journal.py",
+      "bytes": 4164,
+      "sha256": "4226bbfdc29086051691004627f5668567e148276b3fbe4517ec86ceab022fc7",
+      "target": "olympiad_ide/backend/migrations/versions/f3a001_telemetry_journal.py"
+    },
+    {
+      "path": "backend/migrations/versions/f4a001_execution.py",
+      "bytes": 4126,
+      "sha256": "021da34e8fd7a0b09d45ec240b0c42a9224c62a8488179677b91a9a5d1e053b7",
+      "target": "olympiad_ide/backend/migrations/versions/f4a001_execution.py"
+    },
+    {
+      "path": "backend/pyproject.toml",
+      "bytes": 559,
+      "sha256": "8964717ff3a00a4f5ae783748f33e6c532415102e6283bb3262ef23119d3bdc0",
+      "target": "olympiad_ide/backend/pyproject.toml"
+    },
+    {
+      "path": "backend/tests/conftest.py",
+      "bytes": 1882,
+      "sha256": "46c102100c4439f84c7c6add63d11be6a83c5a7e64a26df649921bb7003bc0ae",
+      "target": "olympiad_ide/backend/tests/conftest.py"
+    },
+    {
+      "path": "backend/tests/test_execution.py",
+      "bytes": 10849,
+      "sha256": "ae442f4b0c8c2c82b07aa4602ba0786aa36ba5ae0b386e77e1164b685e817ebf",
+      "target": "olympiad_ide/backend/tests/test_execution.py"
+    },
+    {
+      "path": "backend/tests/test_health.py",
+      "bytes": 267,
+      "sha256": "ae9168b446e73aff55ca1b5011f785a0811cda9ac2329291fb97c45f848a9de8",
+      "target": "olympiad_ide/backend/tests/test_health.py"
+    },
+    {
+      "path": "backend/tests/test_persistence.py",
+      "bytes": 8550,
+      "sha256": "4d9658052274b6ace7731cf0b6d8cb793c1b5dce7e2a1eb92cbadb8bc7531516",
+      "target": "olympiad_ide/backend/tests/test_persistence.py"
+    },
+    {
+      "path": "backend/tests/test_process_restart.py",
+      "bytes": 2888,
+      "sha256": "c6518d4fa0884f027ec3886e740f9a37c6c519da93b590bee385560e2a354604",
+      "target": "olympiad_ide/backend/tests/test_process_restart.py"
+    },
+    {
+      "path": "backend/tests/test_telemetry.py",
+      "bytes": 13282,
+      "sha256": "54d8e6c3b1b969d4b4b0dcaf3d144d41960d9fa1d276fa4a1b531422075036cc",
+      "target": "olympiad_ide/backend/tests/test_telemetry.py"
+    },
+    {
+      "path": "build/offlineShell.ts",
+      "bytes": 1521,
+      "sha256": "6892b577096fdc76ddcf0a2194d42b1855def2a76fd84ad0681b6a3e05f03782",
+      "target": "olympiad_ide/frontend/build/offlineShell.ts"
+    },
+    {
+      "path": "compose.yaml",
+      "bytes": 1276,
+      "sha256": "2e4bd532f856472c59eaee1ca6b0af7ac742699c1b6ca490cba6bb70d01b8a6a",
+      "target": "olympiad_ide/deployment/standalone-source/compose.yaml"
+    },
+    {
+      "path": "deployment/nginx.conf",
+      "bytes": 401,
+      "sha256": "e0cfbea05b98301f9dfab41197e0c5c82c81b0470b26ae43ffa3e88dd3afb200",
+      "target": "olympiad_ide/deployment/standalone-source/deployment/nginx.conf"
+    },
+    {
+      "path": "docs/PHASE2_ARCHITECTURE.md",
+      "bytes": 9275,
+      "sha256": "337b697cef54580daf28e38cdd2ab7e565b51acc3646c2adf70f24d22f569a0f",
+      "target": "olympiad_ide/docs/PHASE2_ARCHITECTURE.md"
+    },
+    {
+      "path": "docs/PHASE2_VERIFICATION.md",
+      "bytes": 4673,
+      "sha256": "8c3112485edfbad3fdbfc846a23cae7b50d2bd5833a470143335f02a9d2e5fac",
+      "target": "olympiad_ide/docs/PHASE2_VERIFICATION.md"
+    },
+    {
+      "path": "docs/PHASE3_ARCHITECTURE.md",
+      "bytes": 17058,
+      "sha256": "9fb655f5dc3a26deb7a26e1e8a6da1ee8416d9887ceddc96553ec50e0b8c7fca",
+      "target": "olympiad_ide/docs/PHASE3_ARCHITECTURE.md"
+    },
+    {
+      "path": "docs/PHASE3_VERIFICATION.md",
+      "bytes": 11657,
+      "sha256": "8abeb824b95160e1ef41aad61637eacb6886fcdfaf9c73f79da59b03a0671ba7",
+      "target": "olympiad_ide/docs/PHASE3_VERIFICATION.md"
+    },
+    {
+      "path": "docs/PHASE4_ARCHITECTURE.md",
+      "bytes": 19670,
+      "sha256": "e19adf54beac05bd134004bf4dc4b4bcf9470fb6b34b4a0d9043e3dfc9985830",
+      "target": "olympiad_ide/docs/PHASE4_ARCHITECTURE.md"
+    },
+    {
+      "path": "docs/PHASE4_PLAN.md",
+      "bytes": 3048,
+      "sha256": "c8404b5d982bbd06c25fdcd5832cddafa472485912166b77121c0d04617ce7d2",
+      "target": "olympiad_ide/docs/PHASE4_PLAN.md"
+    },
+    {
+      "path": "docs/PHASE4_VERIFICATION.md",
+      "bytes": 11329,
+      "sha256": "9f5c0e8387ebb742ef1288b873be6bc8414cd4f0a04570c8bd0534d72a05381c",
+      "target": "olympiad_ide/docs/PHASE4_VERIFICATION.md"
+    },
+    {
+      "path": "e2e/execution.spec.ts",
+      "bytes": 8823,
+      "sha256": "9d2181d4a22b46c1d5224acfe424b83eb3b34529bfe0b52d540fae938a5c82dd",
+      "target": "olympiad_ide/frontend/e2e/execution.spec.ts"
+    },
+    {
+      "path": "e2e/persistence.spec.ts",
+      "bytes": 9682,
+      "sha256": "1d2340d3d52f243b98958ad6eb2ad0f0e5a3f487f9840ad35d73f527200fee75",
+      "target": "olympiad_ide/frontend/e2e/persistence.spec.ts"
+    },
+    {
+      "path": "e2e/telemetry.spec.ts",
+      "bytes": 9416,
+      "sha256": "1457e343911d175c7e262d80dc65163172bc853db6e1cef0d747702c86c20b70",
+      "target": "olympiad_ide/frontend/e2e/telemetry.spec.ts"
+    },
+    {
+      "path": "eslint.config.js",
+      "bytes": 675,
+      "sha256": "9ce1a9a489372381041dc9440d2909f27cb11831c09ce959238325717872e710",
+      "target": "olympiad_ide/frontend/eslint.config.js"
+    },
+    {
+      "path": "index.html",
+      "bytes": 349,
+      "sha256": "3bb8f02e5d45b13edbf6756e080ac823b97ac456f684ee19c283157fffc7dd0d",
+      "target": "olympiad_ide/frontend/index.html"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 156870,
+      "sha256": "9cfc60955cbaa6c3f19e2a80959392df006ab40390055eaf3b79b527c668f30d",
+      "target": "olympiad_ide/frontend/package-lock.json"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1301,
+      "sha256": "00145bf5834656cb4bd8fa1776e1b5ac31ee94c28e4a2917621d90a69239dd72",
+      "target": "olympiad_ide/frontend/package.json"
+    },
+    {
+      "path": "playwright.config.ts",
+      "bytes": 447,
+      "sha256": "a663b3e3dadd61dbf51c36fca5a81580822b7f910ac39f52d24514f70447c9ad",
+      "target": "olympiad_ide/frontend/playwright.config.ts"
+    },
+    {
+      "path": "postcss.config.js",
+      "bytes": 69,
+      "sha256": "3fc8d1c13ad963bbf7da04d59024d38cc2ad14563b36afd71bc8b43c7148dd25",
+      "target": "olympiad_ide/frontend/postcss.config.js"
+    },
+    {
+      "path": "src/App.tsx",
+      "bytes": 6942,
+      "sha256": "3656e396f6bb79a4fa5cb724d97b2ce6645cc582b347656951a8a4638d370def",
+      "target": "olympiad_ide/frontend/src/App.tsx"
+    },
+    {
+      "path": "src/components/ActivityBar.tsx",
+      "bytes": 1834,
+      "sha256": "d004b2950e9fcb746373eda180b37695bdc7e2d65303f0796f16d0da045d340b",
+      "target": "olympiad_ide/frontend/src/components/ActivityBar.tsx"
+    },
+    {
+      "path": "src/components/BottomPanel.tsx",
+      "bytes": 4934,
+      "sha256": "84b35a48a09a95b169add9f39450ad2d581bf592dc75ae689db6eb9b3bfba2a1",
+      "target": "olympiad_ide/frontend/src/components/BottomPanel.tsx"
+    },
+    {
+      "path": "src/components/FileIcon.tsx",
+      "bytes": 954,
+      "sha256": "0ed9818544f42b836cf8a8e209f3cf712a917f93df42f9da88135c665fdb0cc9",
+      "target": "olympiad_ide/frontend/src/components/FileIcon.tsx"
+    },
+    {
+      "path": "src/components/PersistencePanel.tsx",
+      "bytes": 10328,
+      "sha256": "4d553014ec1f9cd4cf9f5d4f3d689f4c9af3d456fce78c606153cf93aa7c845c",
+      "target": "olympiad_ide/frontend/src/components/PersistencePanel.tsx"
+    },
+    {
+      "path": "src/components/QuickOpen.tsx",
+      "bytes": 2199,
+      "sha256": "52b2b05e300e84fc761cdaac5274dc65ae5604ced2e958515c9e34d211c1590c",
+      "target": "olympiad_ide/frontend/src/components/QuickOpen.tsx"
+    },
+    {
+      "path": "src/components/Sidebar.tsx",
+      "bytes": 839,
+      "sha256": "446d2ced9764057fa163f22c59b41553d65c3ea9f2c023cac1fc9c85dc759a45",
+      "target": "olympiad_ide/frontend/src/components/Sidebar.tsx"
+    },
+    {
+      "path": "src/components/StatusBar.tsx",
+      "bytes": 1727,
+      "sha256": "e7d2a3ece21e5afc9a431487598700a31464df444791eee24242d8f61f0feb49",
+      "target": "olympiad_ide/frontend/src/components/StatusBar.tsx"
+    },
+    {
+      "path": "src/components/TelemetryPanel.tsx",
+      "bytes": 3577,
+      "sha256": "12d1c72e761a96b7453ad5066ad453a8b5938dc1b71b7408cdd98f4912e7f078",
+      "target": "olympiad_ide/frontend/src/components/TelemetryPanel.tsx"
+    },
+    {
+      "path": "src/components/Toolbar.tsx",
+      "bytes": 4132,
+      "sha256": "9ed1e9ac4847ec877fb202a57d7428363b7bab01fd589449b4e3db04e7f650d0",
+      "target": "olympiad_ide/frontend/src/components/Toolbar.tsx"
+    },
+    {
+      "path": "src/components/editor/EditorArea.tsx",
+      "bytes": 904,
+      "sha256": "ea6fac16c3dd6833e967017d6801993e390e3c2fd5c29ec43081810d77439f13",
+      "target": "olympiad_ide/frontend/src/components/editor/EditorArea.tsx"
+    },
+    {
+      "path": "src/components/editor/EditorPane.tsx",
+      "bytes": 6365,
+      "sha256": "fa2fd1a624761e82f007cf154cb07ac722f04cd1bc59bad39f9ce617fad9e86c",
+      "target": "olympiad_ide/frontend/src/components/editor/EditorPane.tsx"
+    },
+    {
+      "path": "src/components/editor/TabBar.tsx",
+      "bytes": 3662,
+      "sha256": "af1c3a0f47ae4ade14c664510788ef9f05d55b6cc3a248641a824631635247b8",
+      "target": "olympiad_ide/frontend/src/components/editor/TabBar.tsx"
+    },
+    {
+      "path": "src/components/explorer/Explorer.tsx",
+      "bytes": 8109,
+      "sha256": "9f9273f16e58070dd55d4cc82b63f6a9782f06a7ec886409e74761a09f61f828",
+      "target": "olympiad_ide/frontend/src/components/explorer/Explorer.tsx"
+    },
+    {
+      "path": "src/components/sidebar/PhasePanel.tsx",
+      "bytes": 664,
+      "sha256": "ace090351b4c65e2ef83b2a2f9fc197bd9f7c5d81c5306cbb71833536db40754",
+      "target": "olympiad_ide/frontend/src/components/sidebar/PhasePanel.tsx"
+    },
+    {
+      "path": "src/components/sidebar/SearchPanel.tsx",
+      "bytes": 2823,
+      "sha256": "c0d5c8ed6efcb2ec71ede6d7549391537f3f207b9d458e1479747692c956321f",
+      "target": "olympiad_ide/frontend/src/components/sidebar/SearchPanel.tsx"
+    },
+    {
+      "path": "src/components/sidebar/SettingsPanel.tsx",
+      "bytes": 6094,
+      "sha256": "c3bafa1c0bd52e8a972be695266ef516b7ee6f58a5f12c23123cad7474dc4c81",
+      "target": "olympiad_ide/frontend/src/components/sidebar/SettingsPanel.tsx"
+    },
+    {
+      "path": "src/editor/modelRegistry.ts",
+      "bytes": 1759,
+      "sha256": "37996ec3a3f04e851a046de98f11bd3842710f47e340ccc5518f8d15626128e7",
+      "target": "olympiad_ide/frontend/src/editor/modelRegistry.ts"
+    },
+    {
+      "path": "src/editor/monaco.test.ts",
+      "bytes": 1658,
+      "sha256": "a9e8aa5124eff2f9397913e8f61b4a592aa08306343ae84ecb211882f72e0b4e",
+      "target": "olympiad_ide/frontend/src/editor/monaco.test.ts"
+    },
+    {
+      "path": "src/editor/monaco.ts",
+      "bytes": 2549,
+      "sha256": "766c9d6a2452c236a5ef795c719bb6de83056da6272d4796edd535d2910910d1",
+      "target": "olympiad_ide/frontend/src/editor/monaco.ts"
+    },
+    {
+      "path": "src/execution/RunPanel.tsx",
+      "bytes": 4717,
+      "sha256": "01f9af178afd3458c0f948bebe5db98931c7cf3b9fe7968f026729f127e42152",
+      "target": "olympiad_ide/frontend/src/execution/RunPanel.tsx"
+    },
+    {
+      "path": "src/execution/TerminalOutput.tsx",
+      "bytes": 2270,
+      "sha256": "7d21b30ce397e7ef6a61c88a29edb551c4313f06af435b9b6f8360e943033564",
+      "target": "olympiad_ide/frontend/src/execution/TerminalOutput.tsx"
+    },
+    {
+      "path": "src/execution/TestCasesPanel.tsx",
+      "bytes": 4050,
+      "sha256": "3e5bf8cadb07a57e43b76f5a4d1420506b05c42686da980908e8d5b73c52b141",
+      "target": "olympiad_ide/frontend/src/execution/TestCasesPanel.tsx"
+    },
+    {
+      "path": "src/execution/controller.ts",
+      "bytes": 9956,
+      "sha256": "9229821581abae0febacffbf62a1ceecc50d01cd75d7bce2e36db8d0d45bf98d",
+      "target": "olympiad_ide/frontend/src/execution/controller.ts"
+    },
+    {
+      "path": "src/execution/execution.test.ts",
+      "bytes": 10534,
+      "sha256": "079841867ea851fa4c1762c181a04f7ed3064dcde7f4226c4a7895f5d3377027",
+      "target": "olympiad_ide/frontend/src/execution/execution.test.ts"
+    },
+    {
+      "path": "src/execution/resources.ts",
+      "bytes": 8959,
+      "sha256": "cb760bd0082b964971389643ce2759c974ec689566ab2a5bb38a6d864b35b2f1",
+      "target": "olympiad_ide/frontend/src/execution/resources.ts"
+    },
+    {
+      "path": "src/execution/snapshot.ts",
+      "bytes": 2357,
+      "sha256": "d0f35d46d1a9a7a8c85b4b8de3b4695a33c8137a863c7062a58024c38a2fddb2",
+      "target": "olympiad_ide/frontend/src/execution/snapshot.ts"
+    },
+    {
+      "path": "src/execution/types.ts",
+      "bytes": 2705,
+      "sha256": "a6a6323105c411bf54b08515db1167c34183bab2054d3a36f09a48c9be9019f7",
+      "target": "olympiad_ide/frontend/src/execution/types.ts"
+    },
+    {
+      "path": "src/index.css",
+      "bytes": 18164,
+      "sha256": "791fd7552bbd487c1bad3d97c337f0b7b493a95b378138cf15c766874b6d4b9d",
+      "target": "olympiad_ide/frontend/src/index.css"
+    },
+    {
+      "path": "src/main.tsx",
+      "bytes": 1805,
+      "sha256": "d6cb50dc7fad6bf96d7c933651cd1500ab5a6a9c0bc32245c429c851eac5511b",
+      "target": "olympiad_ide/frontend/src/main.tsx"
+    },
+    {
+      "path": "src/persistence/api.test.ts",
+      "bytes": 748,
+      "sha256": "4e61b843271cc2eb661fa708d42816a3dbe91c6b4bf19460268df737f4f2ffda",
+      "target": "olympiad_ide/frontend/src/persistence/api.test.ts"
+    },
+    {
+      "path": "src/persistence/api.ts",
+      "bytes": 2173,
+      "sha256": "b8a49bb8a2c99a3de1da1f0d63e591340c3e8feef44442d92fe66445b4de55d4",
+      "target": "olympiad_ide/frontend/src/persistence/api.ts"
+    },
+    {
+      "path": "src/persistence/controller.test.ts",
+      "bytes": 5598,
+      "sha256": "e5144b3983cec3939846f80f8a16d3ca0aa2f8a8ddbf7392c1847a90d5f7437a",
+      "target": "olympiad_ide/frontend/src/persistence/controller.test.ts"
+    },
+    {
+      "path": "src/persistence/controller.ts",
+      "bytes": 15623,
+      "sha256": "861cdaa9a5bfddce7c07f7483edef1e5cbfa39368ccd54dbffc9d9eb0cf2b449",
+      "target": "olympiad_ide/frontend/src/persistence/controller.ts"
+    },
+    {
+      "path": "src/persistence/database.ts",
+      "bytes": 3605,
+      "sha256": "e3b7ad7ca217b26947196c35644cb6b7c1397761cde0a5aa6790e5e7e0651036",
+      "target": "olympiad_ide/frontend/src/persistence/database.ts"
+    },
+    {
+      "path": "src/persistence/migration.ts",
+      "bytes": 1701,
+      "sha256": "82195c4f2db9f7468ad7f25239ec70519cea61ca33778c0ce768d8e96dd5a3b0",
+      "target": "olympiad_ide/frontend/src/persistence/migration.ts"
+    },
+    {
+      "path": "src/persistence/offlineShell.ts",
+      "bytes": 350,
+      "sha256": "40d8952d35a14a2e80d4ff3d87e0c70ba1fa9fc7652dcfac322545a4076c789e",
+      "target": "olympiad_ide/frontend/src/persistence/offlineShell.ts"
+    },
+    {
+      "path": "src/persistence/repository.test.ts",
+      "bytes": 9473,
+      "sha256": "0474b8d7091455e0336f7b3c6d94e2d76db32e019f91d7fbeab72fe678134b4a",
+      "target": "olympiad_ide/frontend/src/persistence/repository.test.ts"
+    },
+    {
+      "path": "src/persistence/repository.ts",
+      "bytes": 14129,
+      "sha256": "7b35c2c935b8f84b9b4d05b3bfd8721e4a380b669e0583c1bfc88f267e257d22",
+      "target": "olympiad_ide/frontend/src/persistence/repository.ts"
+    },
+    {
+      "path": "src/persistence/status.ts",
+      "bytes": 565,
+      "sha256": "ac02a90a6e7d542a5544e418e143d956d31a1e5b3808fe3737548371c27eb08e",
+      "target": "olympiad_ide/frontend/src/persistence/status.ts"
+    },
+    {
+      "path": "src/persistence/types.ts",
+      "bytes": 2633,
+      "sha256": "bc5290088edccf1716ee88badd8da156d2ecb697f52b31643c9077a20a2d7ed9",
+      "target": "olympiad_ide/frontend/src/persistence/types.ts"
+    },
+    {
+      "path": "src/services/contracts.ts",
+      "bytes": 1243,
+      "sha256": "ec084ac40ec2846b13e5af51cc753248e38c9e3bec3050b6b3689e0473f6e0b9",
+      "target": "olympiad_ide/frontend/src/services/contracts.ts"
+    },
+    {
+      "path": "src/store/workspaceStore.test.ts",
+      "bytes": 6829,
+      "sha256": "b486f94ae445c1c64646cc5c28ca70d1edfeaadfd7a79991b4115795e8f4d563",
+      "target": "olympiad_ide/frontend/src/store/workspaceStore.test.ts"
+    },
+    {
+      "path": "src/store/workspaceStore.ts",
+      "bytes": 20282,
+      "sha256": "8ae9c638fc37401feec23f9bd18161dd599d5bbe15ce25282633e2f1bf0bb925",
+      "target": "olympiad_ide/frontend/src/store/workspaceStore.ts"
+    },
+    {
+      "path": "src/telemetry/collector.ts",
+      "bytes": 14388,
+      "sha256": "debea7edeb00bbeb23598cf8e52109048aed81eaca3adc035602bd27f1dea881",
+      "target": "olympiad_ide/frontend/src/telemetry/collector.ts"
+    },
+    {
+      "path": "src/telemetry/eventQueue.ts",
+      "bytes": 2524,
+      "sha256": "50c4717472e1eb0da75eb9b0d3c26e52740344f9c6736782303db05e0de01c26",
+      "target": "olympiad_ide/frontend/src/telemetry/eventQueue.ts"
+    },
+    {
+      "path": "src/telemetry/keyboardTracker.ts",
+      "bytes": 368,
+      "sha256": "d9ce5763b14f4c6aff0d93d4eb49647c897689aac464b36e17f7b6346a5004b3",
+      "target": "olympiad_ide/frontend/src/telemetry/keyboardTracker.ts"
+    },
+    {
+      "path": "src/telemetry/navigationTracker.ts",
+      "bytes": 2408,
+      "sha256": "a6bd7cbe475fa2069050e76cb1fab7d360d1c995c848a523a36c8cdd02491896",
+      "target": "olympiad_ide/frontend/src/telemetry/navigationTracker.ts"
+    },
+    {
+      "path": "src/telemetry/origin.ts",
+      "bytes": 353,
+      "sha256": "655d8d6ca2444bb6d6118d316f24122527e6dcf9930133805f41dbca425e8886",
+      "target": "olympiad_ide/frontend/src/telemetry/origin.ts"
+    },
+    {
+      "path": "src/telemetry/replayEngine.ts",
+      "bytes": 6228,
+      "sha256": "63c2631fc29e6017a9547eff293d6fb1de19f0c3bc2af1021e36f9537497fead",
+      "target": "olympiad_ide/frontend/src/telemetry/replayEngine.ts"
+    },
+    {
+      "path": "src/telemetry/telemetry.test.ts",
+      "bytes": 14087,
+      "sha256": "e30256cda320b8229a27996eb1e3ada9b9693088aa14bc219bede32b4bdd0c95",
+      "target": "olympiad_ide/frontend/src/telemetry/telemetry.test.ts"
+    },
+    {
+      "path": "src/telemetry/telemetrySync.ts",
+      "bytes": 8806,
+      "sha256": "5a5d4d280a840b8c666ecedd9008f5806e9864ee59bc68711a935300ee44fb63",
+      "target": "olympiad_ide/frontend/src/telemetry/telemetrySync.ts"
+    },
+    {
+      "path": "src/telemetry/types.ts",
+      "bytes": 4790,
+      "sha256": "a988d00ebc753f28f8918b7a398c333c5f2652b4d134166eeb503c38eec9f15c",
+      "target": "olympiad_ide/frontend/src/telemetry/types.ts"
+    },
+    {
+      "path": "src/test/setup.ts",
+      "bytes": 118,
+      "sha256": "f7d034869ad9421c34702aa1501e71073e835044b1fa8260d8e73f6f3f1a2204",
+      "target": "olympiad_ide/frontend/src/test/setup.ts"
+    },
+    {
+      "path": "src/types/workspace.ts",
+      "bytes": 2073,
+      "sha256": "165a30713789ca34f589341bd34e8bb5ed63bd4880f5113f93bf8084c76be04f",
+      "target": "olympiad_ide/frontend/src/types/workspace.ts"
+    },
+    {
+      "path": "src/vite-env.d.ts",
+      "bytes": 271,
+      "sha256": "e76cf6734a3ad387346ffa6f807281c51d6b75b6a8e90a51d617713324c89594",
+      "target": "olympiad_ide/frontend/src/vite-env.d.ts"
+    },
+    {
+      "path": "tailwind.config.ts",
+      "bytes": 386,
+      "sha256": "7a3eea4e17f8747fd992baf5cf073cee597ebe946fe8be8762e71b8216bc002e",
+      "target": "olympiad_ide/frontend/tailwind.config.ts"
+    },
+    {
+      "path": "tools/execution_load.py",
+      "bytes": 3648,
+      "sha256": "c7609564f433952e14d4ac79a32b6a9f1c7d72cce76c735779aea28acf71a6f7",
+      "target": "olympiad_ide/tools/execution_load.py"
+    },
+    {
+      "path": "tsconfig.app.json",
+      "bytes": 716,
+      "sha256": "7c5dae5473f335a1763960a113e2b73bc419bb269e88a9883465d59804759e4e",
+      "target": "olympiad_ide/frontend/tsconfig.app.json"
+    },
+    {
+      "path": "tsconfig.json",
+      "bytes": 119,
+      "sha256": "770b4140bbb581e2dfd9ea9946ffc9c75a1d86ba7d2db5f77c83e37cbdf9d808",
+      "target": "olympiad_ide/frontend/tsconfig.json"
+    },
+    {
+      "path": "tsconfig.node.json",
+      "bytes": 453,
+      "sha256": "49236b06affc086a479d77b2415bbc411b35f7e754ed7cc9cb5dd5628a51c6e3",
+      "target": "olympiad_ide/frontend/tsconfig.node.json"
+    },
+    {
+      "path": "vite.config.ts",
+      "bytes": 349,
+      "sha256": "ad54e3c94436425a1ce78e3059664944acf7b76c79fef83d9149468fa43f0b96",
+      "target": "olympiad_ide/frontend/vite.config.ts"
+    },
+    {
+      "path": "vitest.config.ts",
+      "bytes": 241,
+      "sha256": "3a9d48465bd13c8ac8d1f5fa1965229cfc3c935136a8cc7ba7852d29e7869db8",
+      "target": "olympiad_ide/frontend/vitest.config.ts"
+    },
+    {
+      "path": "worker/Dockerfile",
+      "bytes": 975,
+      "sha256": "e541ccac3ef61d2c5e524d5a1b4c6c6df1d174341797143e906652b5cdb9ed80",
+      "target": "olympiad_ide/worker/Dockerfile"
+    },
+    {
+      "path": "worker/__init__.py",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "target": "olympiad_ide/worker/__init__.py"
+    },
+    {
+      "path": "worker/app/__init__.py",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "target": "olympiad_ide/worker/app/__init__.py"
+    },
+    {
+      "path": "worker/app/executor.py",
+      "bytes": 3789,
+      "sha256": "e0dd90703074fd69bd32409e555bd47b11cfbf3dde9f3b3ccee3ea027f852bdf",
+      "target": "olympiad_ide/worker/app/executor.py"
+    },
+    {
+      "path": "worker/app/languages.py",
+      "bytes": 1663,
+      "sha256": "ad53192fb0ee8705bef581efbe6ba3ae6022e6bdd43c81b9fd975bb7d4b5529a",
+      "target": "olympiad_ide/worker/app/languages.py"
+    },
+    {
+      "path": "worker/app/main.py",
+      "bytes": 4832,
+      "sha256": "d79e6bf8650823a8fba368ac3b4b5dab2783a404664217dea1151c995eca5642",
+      "target": "olympiad_ide/worker/app/main.py"
+    },
+    {
+      "path": "worker/app/sandbox.py",
+      "bytes": 8760,
+      "sha256": "9a81d225ed4d9a51de6229f60dc4a6cb526295c773b5be5dd3533846d74688f0",
+      "target": "olympiad_ide/worker/app/sandbox.py"
+    },
+    {
+      "path": "worker/olympiad-worker.service",
+      "bytes": 627,
+      "sha256": "ac2bedbe2d3d57cff722c2ef5b50a2e93a2fcf8a03406f06d8a29b33778a6f3f",
+      "target": "olympiad_ide/worker/olympiad-worker.service"
+    },
+    {
+      "path": "worker/tests/test_worker.py",
+      "bytes": 9675,
+      "sha256": "85a0f3520baf7038057f5198e4cb032c6283b98294e6dc28d1c48b275d0970ae",
+      "target": "olympiad_ide/worker/tests/test_worker.py"
+    }
+  ]
+}

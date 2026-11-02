@@ -1,0 +1,1 @@
+"""Olympiad IDE API package."""

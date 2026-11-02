@@ -125,6 +125,10 @@ class Submission(Base):
         passive_deletes=True,
         back_populates="submission")
 
+    olympiad_ide_receipts = relationship(
+        "OlympiadIDEReceipt", cascade="all, delete-orphan",
+        passive_deletes=True, back_populates="submission")
+
     def get_result(self, dataset=None):
         """Return the result associated to a dataset.
 

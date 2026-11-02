@@ -1,0 +1,26 @@
+[Unit]
+Description=Private Olympiad IDE runtime
+After=network.target postgresql.service
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=olympiad-api
+Group=olympiad-api
+WorkingDirectory=/opt/cms/olympiad_ide/backend
+EnvironmentFile=/etc/cms/ide-runtime.env
+Environment=IDE_AUTH_MODE=cms
+ExecStart=/opt/olympiad-runtime/bin/uvicorn app.main:app --host 127.0.0.1 --port 8801 --workers 2 --limit-concurrency 64 --timeout-keep-alive 5
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillMode=control-group
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

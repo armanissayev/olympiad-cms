@@ -1,0 +1,133 @@
+{
+  "capacityClaim": "None. Only executed scenarios are measurements;350 participants remain untested unless explicitly measured here.",
+  "execution": "measured",
+  "finishedAt": "2026-11-02T11:35:20.198383+00:00",
+  "kind": "cms-progressive-load",
+  "metadata": {
+    "participantProgramExecutionsVerified": false,
+    "runner": {
+      "cpuCount": 8,
+      "machine": "arm64",
+      "python": "3.12.6",
+      "release": "25.5.0",
+      "system": "Darwin"
+    },
+    "serverHardware": {
+      "scope": "same disposable local macOS host; no isolated capacity claim"
+    },
+    "testSuiteCost": {
+      "participantCodeExecutions": 0,
+      "scenario": "password login and participant context only"
+    },
+    "toolchains": null
+  },
+  "scenarios": [
+    {
+      "attemptedOperations": 2,
+      "configured": {
+        "concurrency": 1,
+        "durationSeconds": 15,
+        "iterations": 2,
+        "name": "login_burst",
+        "participants": 1,
+        "rampSeconds": 0,
+        "ratePerSecond": 2,
+        "timeoutSeconds": 3
+      },
+      "databaseConnections": null,
+      "durationLimitReached": false,
+      "elapsedSeconds": 2.524,
+      "failedOperations": 0,
+      "httpErrors": {},
+      "httpLatencyMs": {
+        "max": 64.267,
+        "p50": 23.793,
+        "p95": 61.815,
+        "p99": 63.777
+      },
+      "httpRequests": 6,
+      "httpRequestsPerSecond": 2.377,
+      "httpStatuses": {
+        "200": 4,
+        "302": 2
+      },
+      "metricsNote": "Server/queue/storage metrics are not collected; collect separate trusted host/database measurements.",
+      "name": "login_burst",
+      "officialOutcomeUnknown": 0,
+      "operationLatencyMs": {
+        "max": 1464.319,
+        "p50": 1262.006,
+        "p95": 1444.088,
+        "p99": 1460.273
+      },
+      "operationsPerSecond": 0.792,
+      "participantsWithHttpRequests": 1,
+      "queueAgeSeconds": null,
+      "responseBytes": 13748,
+      "scheduledOperations": 2,
+      "serverCpuPercent": null,
+      "serverMemoryBytes": null,
+      "storageGrowthBytes": null
+    },
+    {
+      "attemptedOperations": 5,
+      "configured": {
+        "concurrency": 1,
+        "durationSeconds": 15,
+        "iterations": 5,
+        "name": "context_read",
+        "participants": 1,
+        "rampSeconds": 0,
+        "ratePerSecond": 2,
+        "timeoutSeconds": 3
+      },
+      "databaseConnections": null,
+      "durationLimitReached": false,
+      "elapsedSeconds": 2.028,
+      "failedOperations": 0,
+      "httpErrors": {},
+      "httpLatencyMs": {
+        "max": 24.155,
+        "p50": 21.995,
+        "p95": 23.939,
+        "p99": 24.112
+      },
+      "httpRequests": 5,
+      "httpRequestsPerSecond": 2.465,
+      "httpStatuses": {
+        "200": 5
+      },
+      "metricsNote": "Server/queue/storage metrics are not collected; collect separate trusted host/database measurements.",
+      "name": "context_read",
+      "officialOutcomeUnknown": 0,
+      "operationLatencyMs": {
+        "max": 515.082,
+        "p50": 502.842,
+        "p95": 513.134,
+        "p99": 514.692
+      },
+      "operationsPerSecond": 2.465,
+      "participantsWithHttpRequests": 1,
+      "queueAgeSeconds": null,
+      "responseBytes": 9595,
+      "scheduledOperations": 5,
+      "serverCpuPercent": null,
+      "serverMemoryBytes": null,
+      "storageGrowthBytes": null
+    }
+  ],
+  "schemaVersion": 1,
+  "startedAt": "2026-11-02T11:35:15.645497+00:00",
+  "target": {
+    "contestId": 1,
+    "contestName": "ide-smoke",
+    "installationId": "a16c5a1f-4bdb-4a77-8610-382aebf366e5",
+    "origin": "https://localhost:18443",
+    "targetId": "933d34ed-0b39-455f-b38a-df45b4e24a67"
+  },
+  "validation": {
+    "maximumDurationSeconds": 30,
+    "maximumHttpRequests": 27,
+    "participants": 1
+  }
+}

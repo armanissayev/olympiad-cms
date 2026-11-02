@@ -1,0 +1,140 @@
+{
+  "crossDatabaseAtomicity": false,
+  "databases": [
+    {
+      "alembicVersions": null,
+      "allRowFingerprintsEqual": true,
+      "cmsDatabaseVersionTable": false,
+      "cmsModelDumpVersion": 45,
+      "columnsConstraintsIndexesSequencesEqual": true,
+      "commands": [
+        {
+          "command": "/opt/homebrew/opt/postgresql@14/bin/createdb -h 127.0.0.1 -p 55459 -U isaevarman --no-password --maintenance-db=cmsidesmokefinalfortesting --template=template0 cms_restore_4b3437a4ecfortesting",
+          "exitCode": 0,
+          "seconds": 0.155
+        },
+        {
+          "command": "/opt/homebrew/opt/postgresql@14/bin/pg_dump -h 127.0.0.1 -p 55459 -U isaevarman --no-password --format=custom --snapshot=00000004-00001751-1 --file=/private/tmp/cms-native-restore-tzgu778p/cmsidesmokefinalfortesting.dump cmsidesmokefinalfortesting",
+          "exitCode": 0,
+          "seconds": 0.174
+        },
+        {
+          "command": "/opt/homebrew/opt/postgresql@14/bin/pg_restore -h 127.0.0.1 -p 55459 -U isaevarman --no-password --exit-on-error --single-transaction --dbname=cms_restore_4b3437a4ecfortesting /private/tmp/cms-native-restore-tzgu778p/cmsidesmokefinalfortesting.dump",
+          "exitCode": 0,
+          "seconds": 0.147
+        }
+      ],
+      "dumpBytes": 107477,
+      "dumpMode": "0o600",
+      "dumpSHA256": "5d7f66cadeae4c2644f6bfabacda8ad02c34690109051dc1dd6d6ed39346542b",
+      "exactCMSFileBytesCompared": 3,
+      "largeObjectBytesEqual": true,
+      "largeObjectsCompared": 2,
+      "principalMappingsCompared": null,
+      "source": "cmsidesmokefinalfortesting",
+      "status": "passed",
+      "tableCounts": {
+        "admins": 0,
+        "announcements": 0,
+        "attachments": 0,
+        "contests": 1,
+        "datasets": 1,
+        "evaluations": 0,
+        "executables": 0,
+        "files": 3,
+        "fsobjects": 2,
+        "managers": 0,
+        "messages": 0,
+        "olympiad_ide_receipts": 3,
+        "participations": 1,
+        "printjobs": 0,
+        "questions": 0,
+        "statements": 0,
+        "submission_results": 0,
+        "submissions": 3,
+        "tasks": 1,
+        "teams": 0,
+        "testcases": 0,
+        "tokens": 0,
+        "user_test_executables": 0,
+        "user_test_files": 0,
+        "user_test_managers": 0,
+        "user_test_results": 0,
+        "user_tests": 0,
+        "users": 1
+      },
+      "tablesCompared": 28,
+      "target": "cms_restore_4b3437a4ecfortesting",
+      "workspaceTaskMappingsCompared": null
+    },
+    {
+      "alembicVersions": [
+        "f5a001"
+      ],
+      "allRowFingerprintsEqual": true,
+      "cmsDatabaseVersionTable": null,
+      "cmsModelDumpVersion": null,
+      "columnsConstraintsIndexesSequencesEqual": true,
+      "commands": [
+        {
+          "command": "/opt/homebrew/opt/postgresql@14/bin/createdb -h 127.0.0.1 -p 55459 -U isaevarman --no-password --maintenance-db=ideruntime --template=template0 ide_restore_e8a3c39271fortesting",
+          "exitCode": 0,
+          "seconds": 0.117
+        },
+        {
+          "command": "/opt/homebrew/opt/postgresql@14/bin/pg_dump -h 127.0.0.1 -p 55459 -U isaevarman --no-password --format=custom --snapshot=00000004-00001753-1 --file=/private/tmp/cms-native-restore-tzgu778p/ideruntime.dump ideruntime",
+          "exitCode": 0,
+          "seconds": 0.137
+        },
+        {
+          "command": "/opt/homebrew/opt/postgresql@14/bin/pg_restore -h 127.0.0.1 -p 55459 -U isaevarman --no-password --exit-on-error --single-transaction --dbname=ide_restore_e8a3c39271fortesting /private/tmp/cms-native-restore-tzgu778p/ideruntime.dump",
+          "exitCode": 0,
+          "seconds": 0.088
+        }
+      ],
+      "dumpBytes": 51121,
+      "dumpMode": "0o600",
+      "dumpSHA256": "c795ec9c25f90ef6ff685bdfb31ae92fea0899c884fcd7a9410282e00e31a744",
+      "exactCMSFileBytesCompared": null,
+      "largeObjectBytesEqual": true,
+      "largeObjectsCompared": 0,
+      "principalMappingsCompared": 1,
+      "source": "ideruntime",
+      "status": "passed",
+      "tableCounts": {
+        "alembic_version": 1,
+        "cms_assertion_nonces": 3,
+        "cms_principals": 1,
+        "cms_workspace_bindings": 5,
+        "development_identities": 1,
+        "execution_events": 0,
+        "execution_jobs": 0,
+        "execution_resource_receipts": 0,
+        "execution_resources": 0,
+        "execution_snapshots": 0,
+        "execution_workers": 0,
+        "file_nodes": 11,
+        "recovery_snapshots": 9,
+        "synchronization_operations": 7,
+        "telemetry_batches": 0,
+        "telemetry_checkpoints": 1,
+        "telemetry_events": 0,
+        "telemetry_sessions": 1,
+        "workspace_revisions": 7,
+        "workspace_settings": 5,
+        "workspaces": 5
+      },
+      "tablesCompared": 21,
+      "target": "ide_restore_e8a3c39271fortesting",
+      "workspaceTaskMappingsCompared": 5
+    }
+  ],
+  "directory": "/private/tmp/cms-native-restore-tzgu778p",
+  "host": "127.0.0.1",
+  "kind": "local-postgresql-restore-rehearsal",
+  "port": 55459,
+  "postgresTools": "14.15 Homebrew",
+  "productionReadinessClaim": false,
+  "sourceDataPrinted": false,
+  "status": "passed"
+}

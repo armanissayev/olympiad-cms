@@ -144,6 +144,25 @@ class Config:
         # [1] http://freedesktop.org/wiki/Software/shared-mime-info
         self.shared_mime_info_prefix = "/usr"
 
+        # Optional native Olympiad IDE; normal CMS installs need no Node/ASGI.
+        self.olympiad_ide_enabled = False
+        self.olympiad_ide_installation_id = ""
+        self.olympiad_ide_listen_address = ["127.0.0.1"]
+        self.olympiad_ide_listen_port = [8891]
+        self.olympiad_ide_assets_path = None
+        self.olympiad_ide_runtime_url = "http://127.0.0.1:8801"
+        self.olympiad_ide_signing_key_file = ""
+        self.olympiad_ide_request_timeout = 8
+        self.olympiad_ide_max_body_bytes = 9_000_000
+        self.olympiad_ide_max_response_bytes = 12_000_000
+        self.olympiad_ide_max_runtime_requests = 16
+        self.olympiad_ide_max_http_connections = 128
+        self.olympiad_ide_trusted_proxy_addresses = ["127.0.0.1", "::1"]
+        self.olympiad_ide_num_proxies = 1
+        self.olympiad_ide_cws_base_path = "/"
+        self.olympiad_ide_restart_limit = 5
+        self.olympiad_ide_restart_window = 300
+
         # AdminWebServer.
         self.admin_listen_address = ""
         self.admin_listen_port = 8889
@@ -234,6 +253,8 @@ class Config:
         # Put core and test services in async_config, ignoring those
         # whose name begins with "_".
         for service in data["core_services"]:
+            if service == "OlympiadIDEService" and data.get("olympiad_ide_enabled", False) is not True:
+                continue
             if service.startswith("_"):
                 continue
             for shard_number, shard in \

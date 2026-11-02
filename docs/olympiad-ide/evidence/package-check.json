@@ -1,0 +1,12 @@
+{
+  "exactAssetHashes": 13,
+  "sourceImportTargetsVerified": 124,
+  "requiredNewSourcesVerified": 15,
+  "forbiddenEntries": 0,
+  "symlinks": 0,
+  "cleanInstall": "passed",
+  "pipCheck": "passed",
+  "launcherHelp": "passed",
+  "explicitContestRejection": "passed",
+  "wheelShebangNormalization": "expected Python wheel behavior"
+}

@@ -1,0 +1,20 @@
+[Unit]
+Description=Olympiad isolated execution worker (trusted controller)
+After=network-online.target isolate.service
+Requires=isolate.service
+
+[Service]
+User=olympiad
+Group=olympiad
+WorkingDirectory=/opt/cms/olympiad_ide
+EnvironmentFile=/etc/olympiad/worker.env
+Environment=PYTHONPATH=/opt/cms/olympiad_ide/backend:/opt/cms/olympiad_ide
+ExecStart=/opt/olympiad-runtime/bin/python -m worker.app.main
+Restart=on-failure
+RestartSec=3
+UMask=0022
+# isolate is a narrow setuid helper. NoNewPrivileges=yes would disable that helper.
+# Do not add API/database secrets or unrelated workloads to this dedicated VM.
+
+[Install]
+WantedBy=multi-user.target
