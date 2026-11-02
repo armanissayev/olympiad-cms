@@ -26,12 +26,12 @@ export class PersistenceController {
     this.uploadDelayMs = uploadDelayMs
   }
 
-  start(): Promise<void> {
-    this.startPromise ??= this.initialize()
+  start(observe = true): Promise<void> {
+    this.startPromise ??= this.initialize(observe)
     return this.startPromise
   }
 
-  private async initialize() {
+  private async initialize(observe: boolean) {
     try {
       if (cmsEnabled) {
         const context = useCMSSession.getState().context!
@@ -50,6 +50,14 @@ export class PersistenceController {
       this.saveError(error)
       usePersistenceStatus.setState({ ready: true })
     }
+    if (observe) this.resume()
+  }
+
+  /** Resume the current in-memory branch without rehydrating over unsaved edits. */
+  resume() {
+    this.stopped = false
+    this.unsubscribe?.()
+    clearInterval(this.snapshotTimer)
     this.unsubscribe = useWorkspaceStore.subscribe((state, previous) => {
       if (this.applying) return
       const currentDocument = toDocument(state)
@@ -210,6 +218,7 @@ export class PersistenceController {
       operation = (await this.repository.pending(id))[0]
     }
     await this.tail
+    if (this.stopped) return
     if (await this.repository.db.conflicts.get(id)) return
     if ((await this.repository.pending(id)).length || usePersistenceStatus.getState().localPending) return
     const loaded = await this.repository.load(id)
@@ -325,6 +334,13 @@ export class PersistenceController {
     await this.syncNow(true)
   }
 
+  async suspend() {
+    this.stop()
+    await this.flush()
+    while (this.syncing) await new Promise(resolve => setTimeout(resolve, 10))
+    await this.tail
+  }
+
   stop() {
     this.stopped = true
     this.unsubscribe?.()
@@ -334,5 +350,6 @@ export class PersistenceController {
   }
 }
 
-export const persistence = new PersistenceController()
+export let persistence = new PersistenceController()
+export function bindPersistence(next: PersistenceController) { persistence = next }
 import { withDocumentOrigin } from '../telemetry/origin'

@@ -197,4 +197,5 @@ export class TelemetryCollector {
   }
   stop() { this.subscriptions.forEach(dispose => dispose()); this.models.forEach(model => model.dispose()); this.queue?.dispose(); clearInterval(this.checkpointTimer); this.releaseTabLock?.() }
 }
-export const telemetry = new TelemetryCollector()
+export let telemetry = new TelemetryCollector()
+export function bindTelemetry(next: TelemetryCollector) { telemetry = next }

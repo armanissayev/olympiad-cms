@@ -28,7 +28,7 @@ document.addEventListener('visibilitychange', () => {
 })
 window.addEventListener('beforeunload', (event) => {
   // Async work is already enqueued; this warning does not promise unload-time durability.
-  if (usePersistenceStatus.getState().localPending || usePersistenceStatus.getState().error || telemetry.queue.pending.length || telemetry.session.error) {
+  if (usePersistenceStatus.getState().localPending || usePersistenceStatus.getState().error || telemetry.queue?.pending.length || telemetry.session?.error) {
     event.preventDefault()
     event.returnValue = ''
   }

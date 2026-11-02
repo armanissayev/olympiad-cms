@@ -1,6 +1,6 @@
 {% macro rows(url, contest_url, translation, xsrf_form_html,
               actual_phase, task, submissions,
-              can_use_tokens, can_play_token, can_play_token_now,
+              can_use_tokens, can_play_token, can_play_token_now, tokens_info,
               submissions_download_allowed, official) -%}
 {#
 Render a submission table with all (un)official submissions passed.
@@ -18,6 +18,7 @@ can_play_token (bool): if can_use_tokens is true, whether the user has a
     token to play (possibly after waiting some time).
 can_play_token_now (bool): if can_play_tokens is true, whether the user
     does not need to wait before playing a token.
+tokens_info (tuple): current availability, next generation and minimum-interval deadline.
 submissions_download_allowed (boolean): whether to allow users to download
     their submissions.
 official (boolean): whether to display only the official (true) or unofficial
@@ -100,6 +101,7 @@ official (boolean): whether to display only the official (true) or unofficial
                     can_use_tokens,
                     can_play_token,
                     can_play_token_now,
+                    tokens_info,
                     submissions_download_allowed) }}
             {% endif %}
         {% endfor %}
@@ -110,7 +112,7 @@ official (boolean): whether to display only the official (true) or unofficial
 
 {% macro row(url, contest_url, translation, xsrf_form_html,
              actual_phase, s, s_num, show_date,
-             can_use_tokens, can_play_token, can_play_token_now,
+             can_use_tokens, can_play_token, can_play_token_now, tokens_info,
              submissions_download_allowed) -%}
 {#
 Render a row in a submission table.
@@ -129,6 +131,7 @@ can_play_token (bool): if can_use_tokens is true, whether the user has a
     token to play (possibly after waiting some time).
 can_play_token_now (bool): if can_play_tokens is true, whether the user
     does not need to wait before playing a token.
+tokens_info (tuple): current availability, next generation and minimum-interval deadline.
 submissions_download_allowed (bool): whether to allow users to download
     their submissions.
 #}

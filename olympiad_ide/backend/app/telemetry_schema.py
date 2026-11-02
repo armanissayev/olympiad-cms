@@ -148,7 +148,9 @@ class RunFinish(Strict):
 class CMSSubmissionObservation(Strict):
     intentId: UUID
     snapshotId: UUID
-    taskId: str = Field(min_length=1, max_length=128)
+    # CMS IDs are numeric in the native browser. Preserve legacy string observations
+    # and the original wire value so already queued batch hashes remain valid.
+    taskId: Annotated[str, Field(min_length=1, max_length=128, strict=True)] | Annotated[int, Field(ge=1, le=2**53-1, strict=True)]
     language: str = Field(min_length=1, max_length=128)
     submissionId: str | None = Field(default=None, max_length=128)
     receivedAt: ISOTime | None = None

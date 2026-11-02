@@ -15,8 +15,8 @@ export interface Frame { id: number; name: string; line: number; fileId?: string
 export interface Variable { name: string; value: string; type?: string; variablesReference: number; scope?: string }
 type Status = 'idle' | 'starting' | 'running' | 'stopped' | 'stopping' | 'finished' | 'failed'
 interface BreakpointVerification { adapterId?: number; fileId: string; requestedLine: number; line: number; verified: boolean; message: string }
-interface State { navigation: { fileId: string; line: number; nonce: number; groupId: EditorGroupId } | null; verifiedBreakpoints: BreakpointVerification[]; session: DebugSession | null; status: Status; location: { fileId: string; line: number } | null; breakpoints: Record<string, number[]>; frames: Frame[]; variables: Variable[]; error: string | null; output: string; commandBusy: boolean; inspectionBusy: boolean }
-const empty = (): State => ({ navigation: null, verifiedBreakpoints: [], session: null, status: 'idle', location: null, breakpoints: {}, frames: [], variables: [], error: null, output: '', commandBusy: false, inspectionBusy: false })
+interface State { breakpointsBusy: boolean; breakpointNotice: string | null; navigation: { fileId: string; line: number; nonce: number; groupId: EditorGroupId } | null; verifiedBreakpoints: BreakpointVerification[]; session: DebugSession | null; status: Status; location: { fileId: string; line: number } | null; breakpoints: Record<string, number[]>; frames: Frame[]; variables: Variable[]; error: string | null; output: string; commandBusy: boolean; inspectionBusy: boolean }
+const empty = (): State => ({ breakpointsBusy: false, breakpointNotice: null, navigation: null, verifiedBreakpoints: [], session: null, status: 'idle', location: null, breakpoints: {}, frames: [], variables: [], error: null, output: '', commandBusy: false, inspectionBusy: false })
 export const useDebugStore = create<State>(() => empty())
 const active = (status: string) => ['starting', 'running', 'stopped', 'stopping'].includes(status)
 const cleanLines = (lines: number[]) => [...new Set(lines.filter(line => Number.isSafeInteger(line) && line > 0 && line <= 1000000))].sort((a, b) => a - b).slice(0, 100)
@@ -26,6 +26,11 @@ interface Pending { command: string; resolve: (value: DAP) => void; reject: (err
 export class DebugController {
   private socket: WebSocket | null = null
   private refresh?: ReturnType<typeof setInterval>
+  private breakpointReady = false
+  private capturedSources = new Map<string, string>()
+  private appliedBreakpoints = new Map<string, string>()
+  private breakpointUpdates: Promise<void> = Promise.resolve()
+  private breakpointRevision = 0
   private seq = 0
   private threadId = 0
   private pending = new Map<number, Pending>()
@@ -55,11 +60,16 @@ export class DebugController {
   }
   private closeTransport() {
     clearInterval(this.refresh)
+    this.breakpointReady = false
     const socket = this.socket; this.socket = null
     if (socket) { socket.onopen = null; socket.onmessage = null; socket.onerror = null; socket.onclose = null; socket.close() }
     for (const value of this.pending.values()) { clearTimeout(value.timer); value.reject(new Error('Debug transport closed')) }
     this.pending.clear()
     if (this.initializedWaiter) { clearTimeout(this.initializedWaiter.timer); this.initializedWaiter.reject(new Error('Debug transport closed')); this.initializedWaiter = undefined }
+  }
+  retire() {
+    ++this.generation; this.scope = ''; this.closeTransport(); this.load = undefined
+    this.capturedSources.clear(); this.appliedBreakpoints.clear(); this.inspections.clear()
   }
   loadBreakpoints(): Promise<void> {
     const key = this.key()
@@ -92,6 +102,33 @@ export class DebugController {
     if (JSON.stringify(clean) === JSON.stringify(state.breakpoints[fileId] ?? [])) return
     useDebugStore.setState({ breakpoints: { ...state.breakpoints, [fileId]: clean } }); this.saveBreakpoints()
     if (telemetry.session) telemetry.record('DEBUG_BREAKPOINT_CHANGED', fileId, { debugId: active(state.status) ? state.session?.id ?? null : null, operation, lines: clean })
+    void this.updateBreakpoints(fileId)
+  }
+  private async applyBreakpoints(file: { id: string; path: string }, points: number[], generation: number) {
+    const response = await this.send('setBreakpoints', { source: { path: '/box/' + file.path }, breakpoints: points.map(line => ({ line })) })
+    if (!this.current(generation)) return
+    const confirmations = (response.breakpoints ?? []) as { id?: number; line?: number; verified?: boolean; message?: string }[]
+    this.appliedBreakpoints.set(file.id, JSON.stringify(points))
+    useDebugStore.setState(state => ({ verifiedBreakpoints: [...state.verifiedBreakpoints.filter(point => point.fileId !== file.id), ...points.map((line, index) => ({ adapterId: confirmations[index]?.id, fileId: file.id, requestedLine: line, line: confirmations[index]?.line ?? line, verified: confirmations[index]?.verified === true, message: confirmations[index]?.message ?? (confirmations[index]?.verified ? '' : 'Adapter has not verified this breakpoint') }))] }))
+  }
+  private updateBreakpoints(fileId: string): Promise<void> {
+    const state = useDebugStore.getState(), generation = this.generation
+    if (!this.breakpointReady || !['running', 'stopped'].includes(state.status)) return Promise.resolve()
+    const revision = ++this.breakpointRevision
+    useDebugStore.setState({ breakpointsBusy: true })
+    this.breakpointUpdates = this.breakpointUpdates.then(async () => {
+      if (!this.current(generation) || !this.breakpointReady) return
+      const current = useDebugStore.getState(), file = current.session?.files.find(file => file.id === fileId), node = useWorkspaceStore.getState().nodes[fileId]
+      if (!file) { useDebugStore.setState({ breakpointNotice: 'Debug this file to use its breakpoints.' }); return }
+      const source = node?.type === 'file' ? modelRegistry.get(fileId)?.getValue() ?? node.content : undefined
+      if (source !== this.capturedSources.get(fileId)) { useDebugStore.setState({ breakpointNotice: 'This file changed after debugging started. Restart debugging to use its updated breakpoints.' }); return }
+      const points = current.breakpoints[fileId] ?? []
+      if (JSON.stringify(points) !== this.appliedBreakpoints.get(fileId)) await this.applyBreakpoints(file, points, generation)
+      if (this.current(generation)) useDebugStore.setState({ breakpointNotice: null })
+    }).catch(error => { if (this.current(generation)) this.error(error) }).finally(() => {
+      if (this.current(generation) && this.breakpointRevision === revision) useDebugStore.setState({ breakpointsBusy: false })
+    })
+    return this.breakpointUpdates
   }
   goToBreakpoint(fileId: string, line: number) {
     const state = useWorkspaceStore.getState(), file = state.nodes[fileId]
@@ -123,12 +160,13 @@ export class DebugController {
     if (active(useDebugStore.getState().status)) return
     if (useDebugStore.getState().status === 'failed' && useDebugStore.getState().session) await this.stop()
     const generation = ++this.generation, workspace = useWorkspaceStore.getState().workspace.id
-    this.closeTransport(); this.seq = 0; this.threadId = 0; this.initialized = false
-    useDebugStore.setState({ navigation: null, verifiedBreakpoints: [], session: null, status: 'starting', error: null, location: null, frames: [], variables: [], output: '', commandBusy: false, inspectionBusy: false })
+    this.closeTransport(); this.capturedSources.clear(); this.appliedBreakpoints.clear(); this.breakpointUpdates = Promise.resolve(); this.breakpointRevision = 0; this.seq = 0; this.threadId = 0; this.initialized = false
+    useDebugStore.setState({ breakpointsBusy: false, breakpointNotice: null, navigation: null, verifiedBreakpoints: [], session: null, status: 'starting', error: null, location: null, frames: [], variables: [], output: '', commandBusy: false, inspectionBusy: false })
     let created: DebugSession | null = null
     try {
       const configuration = defaultConfiguration(), capturedBreakpoints = structuredClone(useDebugStore.getState().breakpoints)
       const submission = await captureSubmission(configuration, [{ kind: 'test', id: crypto.randomUUID(), name: 'Debug stdin', stdin: useExecutionResources.getState().stdin, expectedStdout: null }])
+      this.capturedSources = new Map(submission.files.map(file => [file.id, file.content]))
       await persistence.checkpoint(); await persistence.flush(); await this.api.session()
       if (!this.current(generation) || workspace !== submission.workspaceId) return
       created = await this.api.request<DebugSession>('/debug/sessions', { method: 'POST', body: JSON.stringify({ submission }) })
@@ -169,17 +207,16 @@ export class DebugController {
       await Promise.race([initialized, launched.then(() => initialized)])
       for (const file of session.files) {
         const points = capturedBreakpoints[file.id] ?? []
-        const response = await this.send('setBreakpoints', { source: { path: '/box/' + file.path }, breakpoints: points.map(line => ({ line })) })
+        await this.applyBreakpoints(file, points, generation)
         if (!this.current(generation)) return
-        const confirmations = (response.breakpoints ?? []) as { id?: number; line?: number; verified?: boolean; message?: string }[]
-        useDebugStore.setState(state => ({ verifiedBreakpoints: [...state.verifiedBreakpoints, ...points.map((line, index) => ({ adapterId: confirmations[index]?.id, fileId: file.id, requestedLine: line, line: confirmations[index]?.line ?? line, verified: confirmations[index]?.verified === true, message: confirmations[index]?.message ?? (confirmations[index]?.verified ? '' : 'Adapter has not verified this breakpoint') }))] }))
       }
       if (this.current(generation) && telemetry.session) telemetry.record('DEBUG_STARTED', null, { debugId: session.id })
       await this.send('configurationDone'); await launched
       if (this.current(generation) && useDebugStore.getState().status === 'starting') useDebugStore.setState({ status: 'running' })
+      if (this.current(generation)) { this.breakpointReady = true; for (const file of session.files) await this.updateBreakpoints(file.id) }
     } catch (error) {
       if (!this.current(generation)) return
-      this.error(error); this.closeTransport(); useDebugStore.setState({ status: 'failed', commandBusy: false, inspectionBusy: false, location: null })
+      this.error(error); this.closeTransport(); useDebugStore.setState({ status: 'failed', commandBusy: false, inspectionBusy: false, breakpointsBusy: false, location: null })
       if (created) void this.api.request(`/debug/sessions/${created.id}/stop`, { method: 'POST' }).catch(() => undefined)
     }
   }
@@ -209,7 +246,7 @@ export class DebugController {
         useDebugStore.setState({ session })
         if (['FAILED', 'EXPIRED', 'STOPPED', 'FINISHED'].includes(session.status)) {
           this.finished(session.id, session.status.toLowerCase())
-          useDebugStore.setState({ status: ['FAILED', 'EXPIRED'].includes(session.status) ? 'failed' : 'finished', commandBusy: false, inspectionBusy: false, location: null, frames: [], variables: [], ...(session.error ? { error: session.error } : {}) }); this.closeTransport()
+          useDebugStore.setState({ status: ['FAILED', 'EXPIRED'].includes(session.status) ? 'failed' : 'finished', commandBusy: false, inspectionBusy: false, breakpointsBusy: false, location: null, frames: [], variables: [], ...(session.error ? { error: session.error } : {}) }); this.closeTransport()
         }
       }
       return
@@ -229,8 +266,8 @@ export class DebugController {
       }) }))
     }
     if (message.event === 'output') useDebugStore.setState(state => ({ output: (state.output + String(body.output ?? '')).slice(-262144) }))
-    if (message.event === 'continued') useDebugStore.setState({ status: 'running', inspectionBusy: false, location: null, frames: [], variables: [] })
-    if (message.event === 'terminated' || message.event === 'exited') { const id = useDebugStore.getState().session?.id; if (id) this.finished(id, String(message.event)); useDebugStore.setState({ status: 'finished', commandBusy: false, inspectionBusy: false, location: null, frames: [], variables: [] }); return }
+    if (message.event === 'continued') useDebugStore.setState({ status: 'running', inspectionBusy: false, breakpointsBusy: false, location: null, frames: [], variables: [] })
+    if (message.event === 'terminated' || message.event === 'exited') { const id = useDebugStore.getState().session?.id; if (id) this.finished(id, String(message.event)); useDebugStore.setState({ status: 'finished', commandBusy: false, inspectionBusy: false, breakpointsBusy: false, location: null, frames: [], variables: [] }); return }
     if (message.event === 'stopped') {
       const stop = ++this.stoppedGeneration; this.threadId = Number(body.threadId)
       useDebugStore.setState({ status: 'stopped', commandBusy: false, inspectionBusy: true, error: null, location: null, frames: [], variables: [] })
@@ -313,7 +350,7 @@ export class DebugController {
     if (current.status === 'stopping') return
     const session = current.session, generation = ++this.generation
     this.closeTransport()
-    useDebugStore.setState({ status: session ? 'stopping' : 'idle', error: null, commandBusy: false, inspectionBusy: false, location: null, frames: [], variables: [] })
+    useDebugStore.setState({ status: session ? 'stopping' : 'idle', error: null, commandBusy: false, inspectionBusy: false, breakpointsBusy: false, location: null, frames: [], variables: [] })
     if (!session) return
     try {
       let result = await this.api.request<DebugSession>(`/debug/sessions/${session.id}/stop`, { method: 'POST', keepalive: true })
@@ -332,4 +369,15 @@ export class DebugController {
     }
   }
 }
-export const debugging = new DebugController()
+export let debugging = new DebugController()
+/** Rebind only after old task execution has reached an owned terminal state. */
+export function assertDebugStopped() {
+  const current = useDebugStore.getState()
+  if (active(current.status) || (current.status === 'failed' && current.session && !['FINISHED', 'STOPPED', 'FAILED', 'EXPIRED'].includes(current.session.status))) throw new Error('Stop the current debugger before switching problems.')
+}
+export async function resetDebugController(db: WorkspaceDatabase = database) {
+  assertDebugStopped()
+  debugging.retire()
+  debugging = new DebugController(db)
+  await debugging.loadBreakpoints()
+}

@@ -1,3 +1,4 @@
+import { cmsEnabled } from '../cms/session'
 import { useState } from 'react'
 import { Radio, X } from 'lucide-react'
 import { telemetry, useTelemetryStatus } from '../telemetry/collector'
@@ -13,6 +14,7 @@ export function TelemetryIndicator() {
     link.href = url; link.download = `olympiad-recording-${state.sessionId}.json`; link.click()
     setTimeout(() => URL.revokeObjectURL(url), 1000)
   }
+  if (cmsEnabled) return <span className="status-item participant-recording" title="Code editing activity is recorded for contest administration."><Radio size={13} />Editor activity recorded</span>
   return <>
     <button className="sync-indicator" aria-label={`Telemetry: ${state.status}`} onClick={() => setOpen(!open)}><Radio size={13} />{state.status}</button>
     <div className="telemetry-disclosure">

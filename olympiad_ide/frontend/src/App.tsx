@@ -13,12 +13,13 @@ import { PersistencePanel } from './components/PersistencePanel'
 import { persistence } from './persistence/controller'
 import { executions } from './execution/controller'
 import { CMSWorkbench } from './cms/CMSWorkbench'
-import { cmsEnabled } from './cms/session'
+import { cmsEnabled, useCMSSession } from './cms/session'
 import { debugging } from './debug/controller'
 
 export default function App() {
   const workspaceId = useWorkspaceStore(state => state.workspace.id)
-  useEffect(() => { void debugging.loadBreakpoints() }, [workspaceId])
+  const switchingTask = useCMSSession(state => state.switching)
+  useEffect(() => { if (!switchingTask) void debugging.loadBreakpoints() }, [workspaceId, switchingTask])
   useEffect(() => {
     const stopDebugging = () => { void debugging.stop() }
     window.addEventListener('pagehide', stopDebugging)
@@ -60,6 +61,7 @@ export default function App() {
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      if (useCMSSession.getState().switching) { event.preventDefault(); return }
       const mod = event.metaKey || event.ctrlKey
       const key = event.key.toLocaleLowerCase()
 
@@ -126,7 +128,7 @@ export default function App() {
 
 
   return (
-    <div className={`app-shell ${cmsEnabled ? 'cms' : ''} ${zenMode ? 'zen' : ''}`}>
+    <div className={`app-shell ${cmsEnabled ? 'cms' : ''} ${switchingTask ? 'cms-switching' : ''} ${zenMode ? 'zen' : ''}`}>
       <CMSWorkbench />
       {!zenMode && <Toolbar />}
       <main className="workbench">
@@ -156,7 +158,7 @@ export default function App() {
                 }}
               >
                 <Panel minSize={35}>
-                  <EditorArea />
+                  {switchingTask ? <div className="task-switch-progress" role="status">Opening problem…</div> : <EditorArea key={workspaceId} />}
                 </Panel>
                 {bottomPanelVisible && !zenMode && (
                   <>

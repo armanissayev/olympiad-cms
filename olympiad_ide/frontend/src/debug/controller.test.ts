@@ -246,3 +246,38 @@ it('navigates a breakpoint to its real live file and clamps stale lines without 
   controller.goToBreakpoint('missing-file', 3)
   expect(useDebugStore.getState().error).toContain('no longer available')
 })
+
+it('adds and removes breakpoints in the connected adapter while preserving the captured source', async () => {
+  await controller.start()
+  const captured = JSON.stringify(createBody)
+  controller.toggleBreakpoint(seedFileIds.main, 7)
+  await vi.waitFor(() => expect(socket.messages.filter(message => message.command === 'setBreakpoints')).toHaveLength(2))
+  await vi.waitFor(() => expect(useDebugStore.getState().breakpointsBusy).toBe(false))
+  expect(socket.messages.filter(message => message.command === 'setBreakpoints').at(-1)?.arguments).toEqual({ source: { path: '/box/src/main.cpp' }, breakpoints: [{ line: 7 }] })
+  controller.toggleBreakpoint(seedFileIds.main, 7)
+  await vi.waitFor(() => expect(socket.messages.filter(message => message.command === 'setBreakpoints')).toHaveLength(3))
+  expect(socket.messages.filter(message => message.command === 'setBreakpoints').at(-1)?.arguments?.breakpoints).toEqual([])
+  expect(JSON.stringify(createBody)).toBe(captured)
+})
+it('defers edited-source breakpoint changes explicitly instead of applying live line numbers to an older snapshot', async () => {
+  await controller.start()
+  useWorkspaceStore.getState().setFileContent(seedFileIds.main, '// changed after capture\nint main(){}')
+  controller.toggleBreakpoint(seedFileIds.main, 2)
+  await vi.waitFor(() => expect(useDebugStore.getState().breakpointNotice).toContain('Restart debugging'))
+  expect(socket.messages.filter(message => message.command === 'setBreakpoints')).toHaveLength(1)
+  expect(useDebugStore.getState().breakpoints[seedFileIds.main]).toEqual([2])
+})
+
+it('does not let a retired task controller publish delayed breakpoint loads into the next task', async () => {
+  let release!: (value: { key: string; value: string }) => void
+  const pending = new Promise<{ key: string; value: string }>(resolve => { release = resolve })
+  const read = vi.spyOn(db.metadata, 'get').mockReturnValueOnce(pending as ReturnType<typeof db.metadata.get>)
+  useWorkspaceStore.setState(state => ({ workspace: { ...state.workspace, id: crypto.randomUUID() } }))
+  const loading = controller.loadBreakpoints()
+  controller.retire()
+  useDebugStore.setState({ breakpoints: { [seedFileIds.main]: [4] } })
+  release({ key: 'old-task', value: JSON.stringify({ [seedFileIds.main]: [9] }) })
+  await loading
+  expect(useDebugStore.getState().breakpoints[seedFileIds.main]).toEqual([4])
+  read.mockRestore()
+})

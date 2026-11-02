@@ -217,15 +217,22 @@ class CMSIdentityMiddleware:
             if not message.get("more_body", False):
                 break
         try:
-            claims = validate_assertion(authorization[7:].decode("ascii"), self.settings, scope["method"], scope["path"], scope.get("query_string", b""), bytes(body))
-            identity = await run_in_threadpool(consume_assertion, self.factory, self.settings, claims, scope["path"], scope["method"], bytes(body))
+            if scope["path"].startswith("/api/v1/admin/"):
+                from .admin_history import validate_admin_assertion, consume_admin_assertion
+                claims = validate_admin_assertion(authorization[7:].decode("ascii"), self.settings, scope["method"], scope["path"], scope.get("query_string", b""), bytes(body))
+                identity = await run_in_threadpool(consume_admin_assertion, self.factory, self.settings, claims)
+                identity_state = "cms_admin_history"
+            else:
+                claims = validate_assertion(authorization[7:].decode("ascii"), self.settings, scope["method"], scope["path"], scope.get("query_string", b""), bytes(body))
+                identity = await run_in_threadpool(consume_assertion, self.factory, self.settings, claims, scope["path"], scope["method"], bytes(body))
+                identity_state = "cms_identity"
         except ScopeError as error:
             return await self.reject(scope, receive, send, error.status, error.code, error.message)
         except (AssertionError, UnicodeError):
             return await self.reject(scope, receive, send, 401, "cms_assertion_invalid", "CMS authentication required")
         except SQLAlchemyError:
             return await self.reject(scope, receive, send, 503, "identity_unavailable", "Identity storage temporarily unavailable")
-        scope.setdefault("state", {})["cms_identity"] = identity
+        scope.setdefault("state", {})[identity_state] = identity
         delivered = False
 
         async def replay_body():

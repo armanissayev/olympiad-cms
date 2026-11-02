@@ -316,13 +316,15 @@ def install_routes(app, db_session, identity):
                 'gaps': session.detected_gaps, 'lastCheckpoint': checkpoint, 'status': session.status, 'expiresAt': session.expires_at}
 
     @app.get('/api/v1/telemetry/sessions/{session_id}/events', response_class=TelemetryResponse)
-    def events(session_id: UUID, after: int = Query(0, ge=0), pageSize: int = Query(100, ge=1, le=500), owner=Depends(identity), db: Session = Depends(db_session)):
+    def events(session_id: UUID, request: Request, after: int = Query(0, ge=0), pageSize: int = Query(100, ge=1, le=500), owner=Depends(identity), db: Session = Depends(db_session)):
+        if request.app.state.auth_mode == 'cms': raise APIError(403, 'administrator_required', 'Code history is available to CMS administrators only')
         session = owned_session(db, session_id, owner.id)
         rows = list(db.scalars(select(TelemetryEvent).where(TelemetryEvent.session_id == session.id, TelemetryEvent.sequence > after).order_by(TelemetryEvent.sequence).limit(pageSize + 1)))
         return {'events': [{**row.envelope, 'serverTimestamp': row.server_timestamp} for row in rows[:pageSize]], 'nextAfter': rows[pageSize - 1].sequence if len(rows) > pageSize else None}
 
     @app.get('/api/v1/telemetry/sessions/{session_id}/checkpoints', response_class=TelemetryResponse)
-    def checkpoints(session_id: UUID, after: str | None = None, pageSize: int = Query(20, ge=1, le=100), owner=Depends(identity), db: Session = Depends(db_session)):
+    def checkpoints(session_id: UUID, request: Request, after: str | None = None, pageSize: int = Query(20, ge=1, le=100), owner=Depends(identity), db: Session = Depends(db_session)):
+        if request.app.state.auth_mode == 'cms': raise APIError(403, 'administrator_required', 'Code history is available to CMS administrators only')
         session = owned_session(db, session_id, owner.id)
         query = select(TelemetryCheckpoint).where(TelemetryCheckpoint.session_id == session.id)
         if after:

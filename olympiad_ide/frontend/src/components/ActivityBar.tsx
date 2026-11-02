@@ -1,4 +1,5 @@
 import { BugPlay, Files, History, Search, Settings } from 'lucide-react'
+import { cmsEnabled } from '../cms/session'
 import type { ActivityView } from '../types/workspace'
 import { useWorkspaceStore } from '../store/workspaceStore'
 
@@ -25,7 +26,7 @@ export function ActivityBar() {
   return (
     <nav className="activity-bar" aria-label="Primary activity">
       <div>
-        {entries.map(({ id, label, icon: Icon }) => (
+        {entries.filter(entry => !cmsEnabled || entry.id !== 'history').map(({ id, label, icon: Icon }) => (
           <button
             key={id}
             className={`activity-button ${activeView === id && explorerVisible ? 'active' : ''}`}

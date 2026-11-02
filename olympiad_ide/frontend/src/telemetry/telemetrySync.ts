@@ -13,6 +13,7 @@ export class TelemetrySync {
   constructor(readonly db: WorkspaceDatabase = database, readonly collector: TelemetryCollector = telemetry, readonly api = new WorkspaceAPI()) {}
   start() { this.stopped = false; this.schedule(0) }
   stop() { this.stopped = true; clearTimeout(this.timer) }
+  async suspend() { this.stop(); while (this.running) await new Promise(resolve => setTimeout(resolve, 10)) }
   private schedule(delay: number) { if (!this.stopped) { clearTimeout(this.timer); this.timer = setTimeout(() => void this.sync(), delay) } }
   async buildBatch(session: TelemetrySession): Promise<DurableBatch | null> {
     const pending = await this.db.telemetryBatches.where('sessionId').equals(session.id).filter(b => !b.acknowledged).sortBy('firstSequence')
@@ -73,12 +74,14 @@ export class TelemetrySync {
       useTelemetryStatus.setState({ retentionDays: policy.retentionDays })
       const sessions = await this.db.telemetrySessions.orderBy('startedAt').toArray()
       for (const session of sessions) {
+        if (this.stopped) break
         if (!session.registered) {
           await this.api.request('/telemetry/sessions', { method: 'POST', body: JSON.stringify({ id: session.id, workspaceId: session.workspaceId, startedAt: session.startedAt, initial: session.initial }) })
           await this.db.telemetrySessions.update(session.id, { registered: true, retentionDays: policy.retentionDays })
         }
         // Bound each turn; current and old offline sessions are all retried on subsequent turns.
         for (let turn = 0; turn < 4; turn++) {
+          if (this.stopped) break
           const latest = (await this.db.telemetrySessions.get(session.id))!
           const batch = await this.buildBatch(latest)
           if (!batch) break
@@ -114,4 +117,5 @@ export class TelemetrySync {
     }
   }
 }
-export const telemetrySync = new TelemetrySync()
+export let telemetrySync = new TelemetrySync()
+export function bindTelemetrySync(next: TelemetrySync) { telemetrySync = next }

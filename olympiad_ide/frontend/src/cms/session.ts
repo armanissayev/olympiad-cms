@@ -5,8 +5,8 @@ export const cmsEnabled = import.meta.env.VITE_CMS_MODE === 'true'
 export const appBase = import.meta.env.BASE_URL
 export const cmsURL = (path: string) => `${appBase}api/${path}`
 export const runtimeURL = (path: string) => cmsEnabled ? cmsURL(`runtime/v1${path}`) : `/api/v1${path}`
-interface SessionState { context: CMSContext | null; taskId: number | null; paused: boolean; message: string | null; receivedAt: number }
-export const useCMSSession = create<SessionState>(() => ({ context: null, taskId: null, paused: true, message: null, receivedAt: Date.now() }))
+interface SessionState { context: CMSContext | null; taskId: number | null; paused: boolean; message: string | null; receivedAt: number; switching: boolean }
+export const useCMSSession = create<SessionState>(() => ({ context: null, taskId: null, paused: true, message: null, receivedAt: Date.now(), switching: false }))
 const cacheKey = `olympiad-cms-recovery:${appBase}`
 export const currentTask = (): CMSTask | undefined => {
   const { context, taskId } = useCMSSession.getState()
@@ -79,6 +79,7 @@ export async function checkCMSContext(): Promise<void> {
 export function selectTask(id: number) {
   const { context } = useCMSSession.getState()
   if (!context?.tasks.some(task => task.id === id)) throw new Error('Task is not currently authorized')
+  useCMSSession.setState({ taskId: id })
   localStorage.setItem(`olympiad-cms-task:${context.identity.principalId}`, String(id))
   sessionStorage.setItem(cacheKey, JSON.stringify({ context: { ...context, csrfToken: '' }, taskId: id }))
 }

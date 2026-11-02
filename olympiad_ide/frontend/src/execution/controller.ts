@@ -16,15 +16,22 @@ export class ExecutionController {
   private timer?: ReturnType<typeof setInterval>
   private stream: EventSource | null = null
   private observing = false
+  private stopped = false
   private eventsTail: Promise<void> = Promise.resolve()
   private requestTail: Promise<void> = Promise.resolve()
   private correlationTail: Promise<void> = Promise.resolve()
   async start() {
     await executionResources.start()
+    this.resume()
     await this.refresh(true)
-    this.timer = setInterval(() => { void this.refresh(); void this.retryPending() }, 2000)
   }
-  stop() { clearInterval(this.timer); this.stream?.close(); executionResources.stop() }
+  resume() { this.stopped = false; clearInterval(this.timer); executionResources.resume(); this.timer = setInterval(() => { void this.refresh(); void this.retryPending() }, 2000) }
+  stop() { this.stopped = true; clearInterval(this.timer); this.stream?.close(); this.stream = null; executionResources.stop() }
+  async suspend() {
+    this.stop()
+    while (this.observing || useExecution.getState().submitting) await new Promise(resolve => setTimeout(resolve, 10))
+    await this.requestTail; await this.eventsTail; await this.correlationTail
+  }
   error(error: unknown) { useExecution.setState({ error: error instanceof Error ? error.message : String(error) }) }
   configuration(): RunConfiguration {
     // Always resolve the focused editor at click time. Legacy saved configurations
@@ -54,27 +61,31 @@ export class ExecutionController {
   retryPending(): Promise<void> {
     this.requestTail = this.requestTail.catch(() => undefined).then(async () => {
       try {
+        if (this.stopped) return
         await this.api.session()
         const pending = await this.db.executionSubmissions.where('workspaceId').equals(useWorkspaceStore.getState().workspace.id).filter(s => !s.acknowledged).toArray()
         for (const stored of pending) {
+          if (this.stopped) break
           const submission = { id: stored.id, workspaceId: stored.workspaceId, configuration: stored.configuration, files: stored.files, sourceHash: stored.sourceHash, tests: stored.tests }
           const job = await this.api.request<Job>('/executions', { method: 'POST', body: JSON.stringify(submission) })
           await this.db.executionSubmissions.update(job.id, { acknowledged: true })
-          await this.attach(job, false)
+          if (!this.stopped) await this.attach(job, false)
         }
       } catch (error) { this.error(error) }
     })
     return this.requestTail
   }
   async refresh(recovering = false) {
-    if (this.observing) return
+    if (this.stopped || this.observing) return
     this.observing = true
     try {
       await this.api.session()
       const capacity = await this.api.request<{ workers: number }>('/execution-capacity')
+      if (this.stopped) return
       useExecution.setState({ workers: capacity.workers })
       const id = useWorkspaceStore.getState().workspace.id
       const history = await this.api.request<Job[]>(`/workspaces/${id}/executions`)
+      if (this.stopped) return
       useExecution.setState({ history, error: null })
       const selected = useExecution.getState().job
       const current = history.find(j => j.id === selected?.id) ?? history.find(j => !terminalStatuses.has(j.status)) ?? history[0]
@@ -119,6 +130,7 @@ export class ExecutionController {
   }
   private async pollEvents(id: string) {
     for (let page = 0; page < 8; page++) {
+      if (this.stopped) break
       const after = useExecution.getState().events.at(-1)?.sequence ?? 0
       const result = await this.api.request<{ events: JobEvent[] }>(`/executions/${id}/events?after=${after}`)
       await this.acceptEvents(id, result.events)
@@ -143,4 +155,5 @@ export class ExecutionController {
     try { await this.attach(await this.api.request<Job>(`/executions/${job.id}/cancel`, { method: 'POST' }), false) } catch (error) { this.error(error) }
   }
 }
-export const executions = new ExecutionController()
+export let executions = new ExecutionController()
+export function bindExecutions(next: ExecutionController) { executions = next }

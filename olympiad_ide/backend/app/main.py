@@ -206,6 +206,8 @@ def create_app(engine=None) -> FastAPI:
                  "contentHash": s.content_hash, "revision": s.revision, "reason": s.reason,
                  "createdAt": s.created_at} for s in records]
 
+    from .admin_history import install_admin_history_routes
+    install_admin_history_routes(app, db_session)
     from .telemetry import install_routes
     install_routes(app, db_session, identity)
     from .execution_api import install_execution_routes

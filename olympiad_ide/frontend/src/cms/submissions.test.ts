@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
-import { database } from '../persistence/database'
+import { bindDatabase, database, WorkspaceDatabase } from '../persistence/database'
 import { initialData, seedFileIds, useWorkspaceStore } from '../store/workspaceStore'
 import { useCMSSession } from './session'
 import { captureOfficial, exactUTF8, hashBytes, persistIntent, reconcileIntent, sendIntent, verifyRecordedSource } from './submissions'
@@ -97,4 +97,21 @@ it('keeps identity-changed conflicts uncertain so the original participant can r
   expect((await sendIntent(intent.intentId)).state).toBe('unknown')
   expect((await sendIntent(intent.intentId)).state).toBe('admitted')
   expect(request.mock.calls.filter(([, init]) => (init as RequestInit).method === 'POST')).toHaveLength(1)
+})
+
+
+it('commits a delayed receipt to its captured database after another task database is bound', async () => {
+  const original = database, next = new WorkspaceDatabase('receipt-scope-' + crypto.randomUUID())
+  const intent = await capture(); await persistIntent(intent)
+  let resolve!: (response: Response) => void
+  const request = vi.fn(() => new Promise<Response>(done => { resolve = done })); vi.stubGlobal('fetch', request)
+  const recovering = reconcileIntent(intent)
+  await vi.waitFor(() => expect(request).toHaveBeenCalledOnce())
+  try {
+    bindDatabase(next)
+    resolve(new Response(JSON.stringify(receipt(intent))))
+    await recovering
+    expect((await original.officialSubmissionIntents.get(intent.intentId))?.state).toBe('admitted')
+    expect(await next.officialSubmissionIntents.count()).toBe(0)
+  } finally { bindDatabase(original); await next.delete() }
 })

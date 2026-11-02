@@ -1,4 +1,4 @@
-import { database } from '../persistence/database'
+import { database, type WorkspaceDatabase } from '../persistence/database'
 import { modelRegistry } from '../editor/modelRegistry'
 import { useWorkspaceStore } from '../store/workspaceStore'
 import { telemetry } from '../telemetry/collector'
@@ -7,7 +7,17 @@ import { cmsURL, pauseSession, trustedHeaders, useCMSSession } from './session'
 import type { CMSTask, OfficialHistory, OfficialIntent, OfficialReceipt, ParticipantStatus, StoredIntent } from './types'
 
 export class CMSError extends Error { constructor(readonly status: number, message: string, readonly code?: string) { super(message) } }
-export async function cmsRequest<T>(path: string, init?: RequestInit): Promise<T> {
+const pendingRequests = new Set<Promise<unknown>>()
+const reconciliations = new Set<Promise<StoredIntent>>()
+function tracked<T>(promise: Promise<T>, pending: Set<Promise<unknown>>): Promise<T> {
+  pending.add(promise)
+  void promise.then(() => pending.delete(promise), () => pending.delete(promise))
+  return promise
+}
+export function cmsRequest<T>(path: string, init?: RequestInit): Promise<T> {
+  return tracked(requestCMS<T>(path, init), pendingRequests)
+}
+async function requestCMS<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(cmsURL(path), { ...init, credentials: 'same-origin', cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(15000), headers: { 'Content-Type': 'application/json', ...init?.headers, ...trustedHeaders() } })
   if (!response.ok) {
     const body = await response.json().catch(() => ({})) as { error?: { message?: string; code?: string } | string; message?: string; code?: string }
@@ -61,11 +71,11 @@ export async function captureOfficial(task: CMSTask, language: string, mapping: 
 export async function verifyRecordedSource(body: OfficialIntent, hashes: Record<string, string>): Promise<NonNullable<StoredIntent['correlation']>> {
   if (!body.telemetry) return { state: 'unknown', reason: 'No telemetry boundary was available at capture.' }
   try {
-    const boundary = body.telemetry
-    const session = await database.telemetrySessions.get(boundary.sessionId)
+    const store = database, boundary = body.telemetry
+    const session = await store.telemetrySessions.get(boundary.sessionId)
     if (!session || session.workspaceId !== body.workspaceId || session.integrity !== 'Complete') return { state: 'unknown', reason: 'The durable recording is missing, interrupted or belongs to another workspace.' }
     await verifyCheckpoint(session.initial.nodes, session.initial)
-    const events = boundary.sequence === 0 ? [] : await database.telemetryEvents.where('[sessionId+sequence]').between([boundary.sessionId, 1], [boundary.sessionId, boundary.sequence], true, true).sortBy('sequence')
+    const events = boundary.sequence === 0 ? [] : await store.telemetryEvents.where('[sessionId+sequence]').between([boundary.sessionId, 1], [boundary.sessionId, boundary.sequence], true, true).sortBy('sequence')
     const nodes = replay(session.initial.nodes, events, boundary.sequence)
     for (const file of body.files) {
       const recorded = nodes[file.fileId]
@@ -78,31 +88,38 @@ export async function verifyRecordedSource(body: OfficialIntent, hashes: Record<
 }
 export async function persistIntent(intent: StoredIntent): Promise<void> {
   if (intent.principalId !== useCMSSession.getState().context?.identity.principalId) throw new Error('The captured intent belongs to another CMS identity')
-  const existing = await database.officialSubmissionIntents.get(intent.intentId)
+  const store = database
+  const existing = await store.officialSubmissionIntents.get(intent.intentId)
   if (existing && JSON.stringify(existing.body) !== JSON.stringify(intent.body)) throw new Error('An immutable intent cannot be changed. Capture a new submission.')
   if (!existing) {
-    await database.officialSubmissionIntents.add(structuredClone(intent))
+    await store.officialSubmissionIntents.add(structuredClone(intent))
     observe('CMS_SUBMISSION_INTENT', intent)
   }
 }
 function observe(event: 'CMS_SUBMISSION_INTENT' | 'CMS_SUBMISSION_ADMITTED' | 'CMS_SUBMISSION_REJECTED', intent: StoredIntent) {
-  if (!telemetry.session) return
+  if (!telemetry.session || telemetry.session.workspaceId !== intent.body.workspaceId) return
   try { telemetry.record(event, null, { intentId: intent.intentId, snapshotId: intent.body.snapshotId, taskId: intent.taskId, language: intent.body.language, ...(intent.receipt ? { submissionId: intent.receipt.submissionId, receivedAt: intent.receipt.receivedAt } : {}) }) }
   catch (error) { telemetry.fail(error) }
 }
 const inFlight = new Map<string, Promise<StoredIntent>>()
-async function saveReceipt(intent: StoredIntent, receipt: OfficialReceipt): Promise<StoredIntent> {
+async function saveReceipt(intent: StoredIntent, receipt: OfficialReceipt, store: WorkspaceDatabase): Promise<StoredIntent> {
   if (receipt.schemaVersion !== 1 || receipt.state !== 'admitted' || receipt.intentId !== intent.intentId || receipt.taskId !== intent.taskId ||
       receipt.language !== intent.body.language || receipt.workspaceId !== intent.body.workspaceId || receipt.snapshotId !== intent.body.snapshotId ||
       !receipt.submissionId || !Number.isFinite(Date.parse(receipt.receivedAt)) || receipt.files.length !== intent.body.files.length ||
       receipt.files.some(file => { const captured = intent.body.files.find(source => source.filename === file.filename); return !captured || captured.fileId !== file.fileId || captured.sourceFilename !== file.sourceFilename || exactUTF8(captured.content).length !== file.size || intent.hashes[file.filename] !== file.sha256 })) throw new Error('CMS returned a receipt that does not match the captured source; outcome remains unknown.')
   const saved: StoredIntent = { ...intent, state: 'admitted', receipt, error: undefined }
-  await database.officialSubmissionIntents.put(saved)
+  await store.officialSubmissionIntents.put(saved)
   return saved
 }
-export async function reconcileIntent(intent: StoredIntent): Promise<StoredIntent> {
+export function reconcileIntent(intent: StoredIntent): Promise<StoredIntent> {
+  const promise = recoverIntent(intent, database)
+  reconciliations.add(promise)
+  void promise.then(() => reconciliations.delete(promise), () => reconciliations.delete(promise))
+  return promise
+}
+async function recoverIntent(intent: StoredIntent, store: WorkspaceDatabase): Promise<StoredIntent> {
   if (intent.principalId !== useCMSSession.getState().context?.identity.principalId) throw new Error('Intent belongs to another CMS participant; retained locally without upload')
-  try { return await saveReceipt(intent, await cmsRequest<OfficialReceipt>(`submissions/${encodeURIComponent(intent.intentId)}`)) }
+  try { return await saveReceipt(intent, await cmsRequest<OfficialReceipt>(`submissions/${encodeURIComponent(intent.intentId)}`), store) }
   catch (error) {
     if (error instanceof CMSError && error.status === 404) return intent
     throw error
@@ -111,8 +128,9 @@ export async function reconcileIntent(intent: StoredIntent): Promise<StoredInten
 export function sendIntent(intentId: string): Promise<StoredIntent> {
   const active = inFlight.get(intentId)
   if (active) return active
+  const store = database
   const promise = (async () => {
-    let intent = await database.officialSubmissionIntents.get(intentId)
+    let intent = await store.officialSubmissionIntents.get(intentId)
     if (!intent) throw new Error('Durable submission intent is missing')
     if (intent.state === 'admitted' || intent.state === 'rejected') return intent
     if (intent.principalId !== useCMSSession.getState().context?.identity.principalId) throw new Error('Intent belongs to another CMS identity')
@@ -120,18 +138,18 @@ export function sendIntent(intentId: string): Promise<StoredIntent> {
     try {
       // Resolve a lost acknowledgement before retransmission, including after the deadline.
       if (intent.state === 'pending' || intent.state === 'unknown') {
-        intent = await reconcileIntent(intent)
+        intent = await recoverIntent(intent, store)
         if (intent.state === 'admitted') return intent
       }
       intent = { ...intent, state: 'pending', error: undefined }
-      await database.officialSubmissionIntents.put(intent)
-      const admitted = await saveReceipt(intent, await cmsRequest<OfficialReceipt>('submissions', { method: 'POST', body: JSON.stringify(intent.body) }))
+      await store.officialSubmissionIntents.put(intent)
+      const admitted = await saveReceipt(intent, await cmsRequest<OfficialReceipt>('submissions', { method: 'POST', body: JSON.stringify(intent.body) }), store)
       observe('CMS_SUBMISSION_ADMITTED', admitted)
       return admitted
     } catch (error) {
       const rejected = error instanceof CMSError && [400, 409, 413, 415, 422, 429].includes(error.status) && !/identity|principal|scope/.test(error.code ?? '')
       const saved: StoredIntent = { ...intent, state: rejected ? 'rejected' : 'unknown', error: error instanceof Error ? error.message : String(error) }
-      await database.officialSubmissionIntents.put(saved)
+      await store.officialSubmissionIntents.put(saved)
       if (rejected) observe('CMS_SUBMISSION_REJECTED', saved)
       return saved
     }
@@ -141,3 +159,10 @@ export function sendIntent(intentId: string): Promise<StoredIntent> {
 }
 export const listHistory = (taskId: number, offset = 0) => cmsRequest<{ submissions: OfficialHistory[]; total: number; nextOffset: number | null }>(`submissions?taskId=${taskId}&offset=${offset}`)
 export const getFeedback = async (taskId: number, id: string) => (await cmsRequest<{ status: ParticipantStatus }>(`submissions/status/${encodeURIComponent(id)}?taskId=${taskId}`)).status
+
+/** Complete old-scope receipt writes before a task database is closed/rebound. */
+export async function drainSubmissionRequests() {
+  while (pendingRequests.size || reconciliations.size || inFlight.size) {
+    await Promise.allSettled([...pendingRequests, ...reconciliations, ...inFlight.values()])
+  }
+}

@@ -89,7 +89,12 @@ export function EditorPane({ groupId }: EditorPaneProps) {
     const debugModel = instance.onDidChangeModel(redrawDebug)
     const gutter = instance.onMouseDown(event => {
       const current = activeFileRef.current
-      if (current && event.target.type === monaco.editor.MouseTargetType.GUTTER_GLYPH_MARGIN && event.target.position) void debugging.toggleBreakpoint(current, event.target.position.lineNumber)
+      if (current && event.event.leftButton && [monaco.editor.MouseTargetType.GUTTER_GLYPH_MARGIN, monaco.editor.MouseTargetType.GUTTER_LINE_NUMBERS].includes(event.target.type) && event.target.position) debugging.toggleBreakpoint(current, event.target.position.lineNumber)
+    })
+    const breakpointAction = instance.addAction({
+      id: 'olympiad.toggle-breakpoint', label: 'Toggle Breakpoint', keybindings: [monaco.KeyCode.F9],
+      contextMenuGroupId: 'debug', contextMenuOrder: 1,
+      run: editor => { const current = activeFileRef.current, position = editor.getPosition(); if (current && position) debugging.toggleBreakpoint(current, position.lineNumber) },
     })
     const relocate = instance.onDidChangeModelContent(event => {
       const current = activeFileRef.current
@@ -124,7 +129,7 @@ export function EditorPane({ groupId }: EditorPaneProps) {
       instance.setScrollPosition({ scrollTop: initialView.scrollTop, scrollLeft: initialView.scrollLeft })
     }
     instance.onDidDispose(() => {
-      decorations.clear(); debugSubscription(); debugModel.dispose(); gutter.dispose(); relocate.dispose()
+      decorations.clear(); debugSubscription(); debugModel.dispose(); gutter.dispose(); breakpointAction.dispose(); relocate.dispose()
       cursorDisposable.dispose()
       scrollDisposable.dispose()
       focusDisposable.dispose()

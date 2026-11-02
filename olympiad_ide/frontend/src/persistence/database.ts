@@ -78,4 +78,6 @@ export class WorkspaceDatabase extends Dexie {
   }
 }
 
-export const database = new WorkspaceDatabase()
+export let database = new WorkspaceDatabase()
+/** Rebind only after the old task's writers and transports have drained. */
+export function bindDatabase(next: WorkspaceDatabase) { database = next }

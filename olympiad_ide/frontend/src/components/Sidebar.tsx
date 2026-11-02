@@ -1,3 +1,4 @@
+import { cmsEnabled } from '../cms/session'
 import { Explorer } from './explorer/Explorer'
 import { SearchPanel } from './sidebar/SearchPanel'
 import { SettingsPanel } from './sidebar/SettingsPanel'
@@ -13,5 +14,5 @@ export function Sidebar() {
   if (activeView === 'run') {
     return <RunPanel />
   }
-  return <HistoryPanel />
+  return cmsEnabled ? <Explorer /> : <HistoryPanel />
 }

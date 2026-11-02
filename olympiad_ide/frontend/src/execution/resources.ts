@@ -10,6 +10,7 @@ export class ResourceController {
   private tail: Promise<void> = Promise.resolve()
   private timer?: ReturnType<typeof setInterval>
   private syncing = false
+  private stopped = false
   private failedResources = new Set<string>()
   constructor(readonly db: WorkspaceDatabase = database, readonly api = new WorkspaceAPI()) {}
   private table(kind: ResourceValue['kind']) { return kind === 'test' ? this.db.testCases : this.db.runConfigurations }
@@ -31,16 +32,19 @@ export class ResourceController {
       const preferences = await this.db.metadata.get(`execution-ui:${this.id()}`)
       if (preferences) useExecutionResources.setState(JSON.parse(preferences.value) as Partial<ResourceState>)
     } catch (error) { this.error(error) }
-    this.timer = setInterval(() => void this.sync(), 3000)
-    void this.sync()
+    this.resume()
   }
-  stop() { clearInterval(this.timer) }
+  resume() { this.stopped = false; clearInterval(this.timer); this.timer = setInterval(() => void this.sync(), 3000); void this.sync() }
+  stop() { this.stopped = true; clearInterval(this.timer) }
+  async suspend() { this.stop(); await this.tail; while (this.syncing) await new Promise(resolve => setTimeout(resolve, 10)); await this.tail }
   async flush() { await this.tail }
   error(error: unknown) { useExecutionResources.setState({ error: error instanceof Error ? error.message : String(error) }) }
   select(preferences: Partial<Pick<ResourceState, 'activeConfigurationId' | 'selectedTestId' | 'stdin'>>) {
     useExecutionResources.setState(preferences)
     const state = useExecutionResources.getState()
-    void this.db.metadata.put({ key: `execution-ui:${this.id()}`, value: JSON.stringify({ activeConfigurationId: state.activeConfigurationId, selectedTestId: state.selectedTestId, stdin: state.stdin }) }).catch(error => this.error(error))
+    const key = `execution-ui:${this.id()}`, value = JSON.stringify({ activeConfigurationId: state.activeConfigurationId, selectedTestId: state.selectedTestId, stdin: state.stdin })
+    this.tail = this.tail.catch(() => undefined).then(() => this.db.metadata.put({ key, value })).then(() => undefined).catch(error => { this.error(error); throw error })
+    void this.tail.catch(() => undefined)
   }
   save(value: ResourceValue, deleted = false): Promise<void> {
     const existing = useExecutionResources.getState().items.find(r => r.id === value.id)
@@ -69,7 +73,7 @@ export class ResourceController {
     return write
   }
   async sync() {
-    if (this.syncing || !navigator.onLine) return
+    if (this.stopped || this.syncing || !navigator.onLine) return
     this.syncing = true
     try {
       await this.tail
@@ -77,6 +81,7 @@ export class ResourceController {
         await this.api.session()
         let operations = await this.db.executionResourceOperations.where('workspaceId').equals(this.id()).sortBy('sequence')
         for (const listed of operations) {
+          if (this.stopped) break
           const table = this.table(listed.value.kind), local = await table.get(listed.resourceId)
           if (local?.conflict || this.failedResources.has(listed.resourceId)) continue
           // Claim the latest compacted payload atomically before it becomes immutable in flight.
@@ -130,4 +135,5 @@ export class ResourceController {
     void this.sync()
   }
 }
-export const executionResources = new ResourceController()
+export let executionResources = new ResourceController()
+export function bindExecutionResources(next: ResourceController) { executionResources = next }

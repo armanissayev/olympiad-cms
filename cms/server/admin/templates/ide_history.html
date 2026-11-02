@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block core %}
+<div class="core_title"><h1>Participant code history</h1></div>
+<p>Administrator-only review of uploaded editing recordings. Browser-only, missing or expired events are unavailable. Recordings describe editor activity; they do not prove authorship.</p>
+<div id="ide-history" data-api="{{ url('contest', contest.id, 'ide-history', 'api') }}">
+  <div class="ide-history-controls">
+    <label>Participant <select id="history-participant" aria-label="History participant"><option value="">Choose participant</option>{% for user in history_users %}<option value="{{ user.id }}">{{ user.username }} — {{ user.first_name }} {{ user.last_name }}</option>{% endfor %}</select></label>
+    <label>Problem <select id="history-task" aria-label="History problem"><option value="">Choose problem</option>{% for task in history_tasks %}<option value="{{ task.id }}">{{ task.name }} — {{ task.title }}</option>{% endfor %}</select></label>
+    <button type="button" id="history-load">Load recordings</button>
+  </div>
+  <p id="history-status" role="status">Choose a participant and problem.</p>
+  <div class="ide-history-controls"><label>Recording <select id="history-session" aria-label="History recording"><option value="">No recording selected</option></select></label><button type="button" id="history-more" hidden>Load older recordings</button></div>
+  <div id="history-player" hidden>
+    <p id="history-notices" role="alert"></p>
+    <div class="ide-history-controls"><button type="button" id="history-previous">Previous event</button><button type="button" id="history-play">Play</button><button type="button" id="history-next">Next event</button><label>Speed <select id="history-speed" aria-label="History speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option><option value="8">8×</option></select></label></div>
+    <label>Timeline <input type="range" id="history-timeline" aria-label="History timeline" min="0" max="0" value="0" step="1"></label>
+    <p id="history-event"></p>
+    <label>Source file <select id="history-file" aria-label="History source file"></select></label>
+    <textarea id="history-source" aria-label="Historical source" readonly spellcheck="false"></textarea>
+  </div>
+</div>
+<style>
+.ide-history-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:16px 0}.ide-history-controls label{display:grid;gap:5px}#history-timeline{width:100%;display:block;margin:12px 0}#history-source{box-sizing:border-box;width:100%;height:60vh;min-height:340px;padding:16px;font-family:monospace;font-size:14px;white-space:pre;overflow:auto;resize:vertical;background:#f8fafc;color:#17202a}#history-notices{white-space:pre-wrap;color:#8c4b00}#history-status{min-height:24px}.ide-history-controls select{max-width:650px}
+</style>
+<script src="{{ url('static', 'ide_history.js') }}" defer></script>
+{% endblock core %}

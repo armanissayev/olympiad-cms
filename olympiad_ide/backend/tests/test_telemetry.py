@@ -265,3 +265,46 @@ def test_breakpoint_observations_allow_pre_session_ids_but_reject_unbounded_payl
         assert send(api,batch(sid,[rejected])).status_code==422
     with api.app.state.session_factory() as db:
         assert replay_at(db,db.get(TelemetrySession,sid),2)==nodes
+
+
+def test_cms_submission_observations_preserve_numeric_task_ids_and_queued_batch_digest(api):
+    """Previously queued browser envelopes must upload unchanged, then allow later edits."""
+    sid, wid, fid, nodes, _ = setup_session(api)
+    intent, snapshot = str(uuid4()), str(uuid4())
+    observations = []
+    for sequence, kind in enumerate(('CMS_SUBMISSION_INTENT', 'CMS_SUBMISSION_ADMITTED'), 1):
+        observation = event(sid, wid, fid, sequence)
+        observation.update(eventType=kind, fileId=None)
+        observation['payload'] = {'intentId': intent, 'snapshotId': snapshot, 'taskId': 1,
+                                  'language': 'C++17 / g++'}
+        if kind.endswith('ADMITTED'):
+            observation['payload'].update(submissionId='opaque-receipt', receivedAt='2026-10-20T00:00:00.123Z')
+        observations.append(observation)
+    edit = event(sid, wid, fid, 3)
+    queued = batch(sid, observations + [edit])
+    unchanged = deepcopy(queued)
+    response = send(api, queued)
+    assert response.status_code == 200, response.text
+    assert send(api, unchanged).json() == response.json()
+    assert status(api, sid)['lastSequence'] == 3
+    rows = api.get(f'/api/v1/telemetry/sessions/{sid}/events').json()['events']
+    assert [row['payload']['taskId'] for row in rows[:2]] == [1, 1]
+    with api.app.state.session_factory() as db:
+        assert db.get(TelemetryBatch, queued['id']).payload_digest == unchanged['digest']
+        assert replay_at(db, db.get(TelemetrySession, sid), 3) == apply_event(nodes, edit)
+    legacy = event(sid, wid, fid, 4)
+    legacy.update(eventType='CMS_SUBMISSION_REJECTED', fileId=None)
+    legacy['payload'] = {'intentId': intent, 'snapshotId': snapshot, 'taskId': 'legacy-task-id', 'language': 'Python 3 / CPython'}
+    assert send(api, batch(sid, [legacy])).status_code == 200
+    assert api.get(f'/api/v1/telemetry/sessions/{sid}/events?after=3').json()['events'][0]['payload']['taskId'] == 'legacy-task-id'
+
+
+def test_cms_submission_task_ids_reject_invalid_types_and_ranges(api):
+    sid, wid, fid, _, _ = setup_session(api)
+    for invalid in (None, True, False, 0, -1, 1.5, 2**53, '', 'x'*129, [], {}):
+        observation = event(sid, wid, fid)
+        observation.update(eventType='CMS_SUBMISSION_INTENT', fileId=None)
+        observation['payload'] = {'intentId': str(uuid4()), 'snapshotId': str(uuid4()),
+                                  'taskId': invalid, 'language': 'C++17 / g++'}
+        assert send(api, batch(sid, [observation])).status_code == 422
+    assert status(api, sid)['lastSequence'] == 0
