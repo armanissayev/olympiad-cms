@@ -125,3 +125,7 @@ Schedule existing telemetry retention maintenance using the IDE role and documen
 Complete Linux and load gates, rehearse both-database restore, verify role/network restrictions, and confirm CWS fallback before a live contest. Deploy disabled first, build/migrate/health-check, then enable during a controlled maintenance window. Back up identity/configuration and source storage with the databases.
 
 To roll back, disable native config and intentionally stop it through ResourceService, remove /ide ingress routing, and stop independent runtime/custom workers as appropriate. Preserve all new tables, code/source archives and local browser data. Ordinary CWS continues; its fallback submissions have no invented IDE correlation. See DATA_MIGRATION.md for restored-ID caveats.
+
+## Public staging access
+
+The authorized 3 November follow-up added public HTTPS at https://54.206.171.67/ and /ide/, with a trusted IP certificate, isolated Certbot environment, automatic renewal and boot-enabled supervisors. See [PUBLIC_HTTPS](PUBLIC_HTTPS.md) for actual evidence, configuration and preserved failures. Admin/RPC/DB endpoints remain private. This changes the earlier loopback-only staging boundary and does not certify production readiness.

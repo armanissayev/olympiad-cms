@@ -1,8 +1,9 @@
 """Sanitized final versions and supervisor ownership; no environment/config secrets."""
-import hashlib,ipaddress,json,os,platform,subprocess
+import argparse,hashlib,ipaddress,json,os,platform,subprocess
 from datetime import datetime,timezone
 from pathlib import Path
 import psutil
+parser=argparse.ArgumentParser();parser.add_argument('--public-ingress',action='store_true');args=parser.parse_args()
 root=Path('/opt/cms-ide-stage');report={'kind':'linux-staging-final-environment','time':datetime.now(timezone.utc).isoformat()}
 def output(args):return subprocess.check_output(args,text=True).strip()
 report['os']=output(['/usr/bin/lsb_release','-ds']);report['kernel']=platform.release();report['architecture']=platform.machine();report['logicalCpus']=os.cpu_count();report['memoryBytes']=psutil.virtual_memory().total;report['diskRoot']=dict(zip(['total','used','free'],__import__('shutil').disk_usage('/')))
@@ -20,6 +21,8 @@ public_ports=[]
 for row in report['listeners'].splitlines()[1:]:
  host,port=row.split()[3].rsplit(':',1);host=host.strip('[]').split('%',1)[0]
  if not ipaddress.ip_address(host).is_loopback:public_ports.append(int(port))
-assert set(public_ports)<=set([22]),public_ports
-report['publicApplicationListeners']=False;report['publicPorts']=sorted(set(public_ports));report['loadGeneratorTopology']='same-host loopback TLS; max12 concurrent HTTP actors; separately tested remote Chromium via SSH tunnel'
+allowed={22,80,443} if args.public_ingress else {22}
+assert set(public_ports)<=allowed,public_ports
+if args.public_ingress:assert set(public_ports)==allowed,public_ports
+report['publicApplicationListeners']=bool(set(public_ports)-{22});report['publicPorts']=sorted(set(public_ports));report['loadGeneratorTopology']='same-host loopback TLS; max12 concurrent HTTP actors; separately tested remote Chromium via SSH tunnel'
 Path('/var/lib/cms-ide-stage/fixture/environment-results.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))

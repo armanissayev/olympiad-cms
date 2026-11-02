@@ -1,0 +1,16 @@
+enabled
+enabled
+enabled
+enabled
+enabled
+enabled
+enabled
+enabled
+0: bash- (1 panes) [80x24] [layout b25d,80x24,0,0,0] @0
+1: cms-logs* (1 panes) [80x24] [layout b25e,80x24,0,0,1] @1 (active)
+active
+issuer=C=US, O=Let's Encrypt, CN=YE1
+notBefore=Nov  2 19:57:41 2026 GMT
+notAfter=Nov  9 11:57:40 2026 GMT
+X509v3 Subject Alternative Name: critical
+    IP Address:54.206.171.67

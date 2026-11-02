@@ -1,0 +1,146 @@
+{
+  "customResults": [
+    {
+      "id": "ae2ba77c-5bab-4605-9b59-ab330b3e0700",
+      "status": "FINISHED",
+      "result": {
+        "status": "FINISHED",
+        "compilationOutput": "",
+        "compilationSeconds": 0.402,
+        "toolchainVersion": "g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0\nCopyright (C) 2025 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+        "cases": [
+          {
+            "testId": "376c6fff-8e63-47ef-a2e6-5d1b9cae5a3d",
+            "name": "Standard Run",
+            "status": "FINISHED",
+            "stdout": "5\n",
+            "stderr": "",
+            "expectedStdout": null,
+            "verdict": "Not Compared",
+            "exitCode": 0,
+            "cpuTime": 0.001,
+            "wallTime": 0.002,
+            "peakMemoryKiB": 480
+          }
+        ],
+        "error": null
+      }
+    },
+    {
+      "id": "01a53a5e-8750-409e-8ada-44f43f66f3be",
+      "status": "FINISHED",
+      "result": {
+        "status": "FINISHED",
+        "compilationOutput": "",
+        "compilationSeconds": 0.329,
+        "toolchainVersion": "g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0\nCopyright (C) 2025 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+        "cases": [
+          {
+            "testId": "3c0808e5-df94-4927-96c4-1d62c5f21584",
+            "name": "Exact match",
+            "status": "FINISHED",
+            "stdout": "5\n",
+            "stderr": "",
+            "expectedStdout": "5\n",
+            "verdict": "Accepted",
+            "exitCode": 0,
+            "cpuTime": 0.001,
+            "wallTime": 0.002,
+            "peakMemoryKiB": 464
+          },
+          {
+            "testId": "00bfcc8a-6fb5-4832-92dd-2946a488ca74",
+            "name": "Whitespace mismatch",
+            "status": "FINISHED",
+            "stdout": "5\n",
+            "stderr": "",
+            "expectedStdout": "5 \n",
+            "verdict": "Wrong Answer",
+            "exitCode": 0,
+            "cpuTime": 0.001,
+            "wallTime": 0.002,
+            "peakMemoryKiB": 464
+          }
+        ],
+        "error": null
+      }
+    },
+    {
+      "id": "5d5ba37a-1f62-4bfb-a468-38ac596cecbb",
+      "status": "CANCELLED"
+    }
+  ],
+  "cppReceipt": {
+    "schemaVersion": 1,
+    "state": "admitted",
+    "intentId": "bf7493b9-a805-47c4-972e-f24597db2d87",
+    "submissionId": "McV3MWAkf7VBZm8znmPFVL9PuCFBLFcOdoOy8eIAQGo.",
+    "receivedAt": "2026-11-02T21:01:10.818482Z",
+    "official": true,
+    "taskId": 1,
+    "language": "C++17 / g++",
+    "files": [
+      {
+        "filename": "main.%l",
+        "sourceFilename": "main.cpp",
+        "fileId": "edac1b57-613f-4ca8-90e8-d459d7ac92d2",
+        "sha256": "704fa61aae911881a42e2ffb330f44a6e388efb52ed2ba42c07df1f538c8faf5",
+        "size": 83
+      }
+    ],
+    "requestDigest": "05b33b92f4c5b9accc16d7d0fb6337599a359b2cf5da75e3ba24e619f30cee9f",
+    "workspaceId": "eb91de59-36b9-43d1-b218-b05d5e403e83",
+    "snapshotId": "238aa2e7-1ab2-45f4-88a8-1464c37f9fb9",
+    "telemetry": {
+      "sessionId": "b4c371c5-64a4-4706-b36f-93b4724b534f",
+      "sequence": 151
+    }
+  },
+  "pythonReceipt": {
+    "schemaVersion": 1,
+    "state": "admitted",
+    "intentId": "c96d2036-9f89-4a7a-9956-7787ca29c553",
+    "submissionId": "UEgItF1M4lNl5r1vfCIDAdLSi1JACEzDJ0YSw8REk5c.",
+    "receivedAt": "2026-11-02T21:01:25.272774Z",
+    "official": true,
+    "taskId": 2,
+    "language": "Python 3 / CPython",
+    "files": [
+      {
+        "filename": "main.%l",
+        "sourceFilename": "solution.py",
+        "fileId": "1ee27fe8-49f4-40ac-b54a-354da9eb4b34",
+        "sha256": "6cf3335b38ec7a9d9ff039e2c83f36eb1789a4b8f57caaf1e9c0770802717e38",
+        "size": 40
+      }
+    ],
+    "requestDigest": "076a5328b42bad11f5ebda8d8ae3036db13e31ddcbdf14ed409115d8acd55241",
+    "workspaceId": "2c733b7b-dfe0-4398-aab4-0d0396e7aba0",
+    "snapshotId": "4966a773-24fe-4fff-8d02-8388222345c9",
+    "telemetry": {
+      "sessionId": "e08df338-1b41-4da7-be1c-c339f27007ab",
+      "sequence": 52
+    }
+  },
+  "postCount": 1,
+  "serviceWorkerScope": "https://54.206.171.67/ide/",
+  "cacheEntries": 12,
+  "retainedScopedDatabases": 2,
+  "errors": [],
+  "checks": [
+    "CMS login",
+    "native context and Monaco",
+    "real isolate custom Run with measured output",
+    "compile-once Run All exact/mismatch",
+    "running Stop cancellation",
+    "custom reload recovery",
+    "task-bound workspace switch",
+    "real CMS judging and visible public scores",
+    "C++ immutable exact-byte admission",
+    "Python response loss and reload reconciliation",
+    "official history",
+    "/ide/ offline shell and Monaco workers",
+    "authentication recovery",
+    "real CSRF logout and retained local data"
+  ]
+}

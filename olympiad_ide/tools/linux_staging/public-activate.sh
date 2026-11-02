@@ -33,7 +33,7 @@ block=''' server {
  }
 '''
 pos=previous.index(' server {');p.write_text(previous[:pos]+block+previous[pos:])
-try:subprocess.run(['/usr/sbin/nginx','-t','-c',str(p)],check=True)
+try:subprocess.run(['systemd-run','--quiet','--wait','--pipe','--collect','-p','User=cmsingressstage','-p','Group=cmsingressstage','-p','AmbientCapabilities=CAP_NET_BIND_SERVICE','-p','CapabilityBoundingSet=CAP_NET_BIND_SERVICE','-p','NoNewPrivileges=yes','/usr/sbin/nginx','-t','-c',str(p)],check=True)
 except Exception:p.write_text(previous);raise
 p=root/'runtime.env';s=p.read_text();assert 'ALLOWED_ORIGINS=https://localhost:28443' in s;s=s.replace('ALLOWED_ORIGINS=https://localhost:28443','ALLOWED_ORIGINS=https://localhost:28443,https://54.206.171.67');p.write_text(s)
 subprocess.run(['systemctl','restart','cms-ide-stage-runtime'],check=True)
@@ -47,7 +47,7 @@ set -euo pipefail
 openssl x509 -in "$RENEWED_LINEAGE/fullchain.pem" -noout -checkip 54.206.171.67
 install -o cmsingressstage -g cmsingressstage -m 0644 "$RENEWED_LINEAGE/fullchain.pem" /etc/cms-ide-stage/public.crt
 install -o cmsingressstage -g cmsingressstage -m 0600 "$RENEWED_LINEAGE/privkey.pem" /etc/cms-ide-stage/public.key
-/usr/sbin/nginx -t -c /etc/cms-ide-stage/nginx.conf
+systemd-run --quiet --wait --pipe --collect -p User=cmsingressstage -p Group=cmsingressstage -p AmbientCapabilities=CAP_NET_BIND_SERVICE -p CapabilityBoundingSet=CAP_NET_BIND_SERVICE -p NoNewPrivileges=yes /usr/sbin/nginx -t -c /etc/cms-ide-stage/nginx.conf
 systemctl reload cms-ide-stage-ingress
 HOOK
 chmod 0700 /etc/letsencrypt/renewal-hooks/deploy/cms-staging

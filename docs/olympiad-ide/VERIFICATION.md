@@ -51,3 +51,7 @@ All 124 original source hashes still match SOURCE_IMPORT.json. Historical checks
 ## Remaining release gates
 
 The beta remains available through the private SSH tunnel. A live contest requires dependency/security/licence review, dedicated production execution isolation, timing calibration, production TLS/access/retention/backup policy, off-host recovery and representative sustained 300–350-editor/telemetry/compile/deadline stress tests. Short same-host measurements do not certify that capacity. No reboot, production rollout, merge, push or PR was performed.
+
+## Public HTTPS follow-up — 3 November 2026
+
+[PUBLIC_HTTPS](PUBLIC_HTTPS.md) records the completed public-IP deployment. The real-worker native browser repeated all14checks with zero page errors through trusted public HTTPS, without a tunnel or TLS bypass. Public readiness200, CWS login, C++/Python actual judging, Run/Stop/recovery and renewal dry-run passed. All eight existing supervisor units are enabled at boot; tmux provides the persistent operations/log session. The original failed public asset load and its corrected proxy-buffer ownership are retained as evidence. No reboot test or new production capacity claim is made.

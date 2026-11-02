@@ -13,7 +13,7 @@ s=(root/'nginx.conf').read_text();pos=s.index(' server {');s=s[:pos]+''' server 
  }
 '''+s[pos:];(root/'nginx.conf').write_text(s)
 s=unit.read_text();s=s.replace('[Service]','[Service]\nAmbientCapabilities=CAP_NET_BIND_SERVICE\nCapabilityBoundingSet=CAP_NET_BIND_SERVICE');unit.write_text(s)
-subprocess.run(['systemctl','daemon-reload'],check=True);subprocess.run(['/usr/sbin/nginx','-t','-c',str(root/'nginx.conf')],check=True);subprocess.run(['systemctl','restart','cms-ide-stage-ingress'],check=True)
+subprocess.run(['systemctl','daemon-reload'],check=True);subprocess.run(['systemd-run','--quiet','--wait','--pipe','--collect','-p','User=cmsingressstage','-p','Group=cmsingressstage','-p','AmbientCapabilities=CAP_NET_BIND_SERVICE','-p','CapabilityBoundingSet=CAP_NET_BIND_SERVICE','-p','NoNewPrivileges=yes','/usr/sbin/nginx','-t','-c',str(root/'nginx.conf')],check=True);subprocess.run(['systemctl','restart','cms-ide-stage-ingress'],check=True)
 # Boot persistence uses existing supervisors and keeps CMS children under ResourceService.
 for name in ['postgres','log','resource','judge','runtime','worker','ranking','ingress']:
  directory=Path('/etc/systemd/system/multi-user.target.wants');directory.mkdir(exist_ok=True);link=directory/('cms-ide-stage-'+name+'.service')
