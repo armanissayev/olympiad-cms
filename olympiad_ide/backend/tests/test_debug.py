@@ -108,3 +108,28 @@ def test_replayed_token_cannot_attach_while_original_socket_is_authorized(api,mo
                 with pytest.raises(Exception):second.receive_json()
             assert api.get(path).json()['status']=='QUEUED'
     assert api.get(path).json()['status']=='STOPPED'
+
+
+@pytest.mark.parametrize('fault',['api-expiry','output-budget'])
+def test_worker_final_state_survives_authoritative_expiry_and_output_failure(api,monkeypatch,fault):
+    # Control-plane fault injection only: real PostgreSQL, no participant code executed here.
+    from pathlib import Path
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2]))
+    import worker.app.debug_main as controller
+    worker(api);sid=api.post('/api/v1/debug/sessions',json=fixture(api)).json()['id'];token=str(uuid4());factory=api.app.state.session_factory
+    with factory() as db:
+        row=db.get(DebugSession,sid);row.status='RUNNING';row.lease_token=token
+        if fault=='output-budget':row.output_bytes=1048576
+        db.commit()
+    class FaultAdapter:
+        def __init__(self,*args):pass
+        def run(self,receive):
+            if fault=='output-budget':raise RuntimeError('output budget exhausted')
+            with factory() as db:row=db.get(DebugSession,sid);row.status='EXPIRED';row.error='Authoritative timeout';db.commit()
+            return 'STOPPED'
+    monkeypatch.setattr(controller,'IsolatedDebugger',FaultAdapter)
+    controller.run_session(factory,sid,token,600)
+    with factory() as db:
+        row=db.get(DebugSession,sid)
+        assert row.status==('EXPIRED' if fault=='api-expiry' else 'FAILED')
+        assert row.error==('Authoritative timeout' if fault=='api-expiry' else 'output budget exhausted')

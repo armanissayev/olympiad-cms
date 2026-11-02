@@ -41,7 +41,7 @@ export function Toolbar() {
           <Play className="h-3.5 w-3.5 fill-current" />
           Run active file
         </button>
-        <button className="tool-button" aria-label="Debug active file" onClick={() => { useWorkspaceStore.getState().setActiveView('run'); void debugging.start() }} disabled={!debugAvailable || activeFile?.type !== 'file' || activeFile.language === 'plaintext' || ['starting', 'running', 'stopped'].includes(debugStatus)} title="Debug active file (F5)">
+        <button className="tool-button" aria-label="Debug active file" onClick={() => { useWorkspaceStore.getState().setActiveView('run'); void debugging.start() }} disabled={!debugAvailable || activeFile?.type !== 'file' || activeFile.language === 'plaintext' || ['starting', 'running', 'stopped', 'stopping'].includes(debugStatus)} title="Debug active file (F5)">
           <Bug className="h-4 w-4" />
         </button>
         <button className="tool-button muted-action" onClick={() => void executions.cancel()} disabled={!execution.job || terminalStatuses.has(execution.job.status)} title="Stop execution (Shift+F5)">

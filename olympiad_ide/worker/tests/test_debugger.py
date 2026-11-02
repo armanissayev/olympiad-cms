@@ -3,7 +3,7 @@ import json,os,platform,time
 from collections import deque
 from pathlib import Path
 import pytest
-from worker.app.debugger import Framer,IsolatedDebugger,DEBUG_LIMITS
+from worker.app.debugger import Framer,IsolatedDebugger,DEBUG_LIMITS,DAPInput,encode
 from worker.app.sandbox import Sandbox
 
 
@@ -88,3 +88,28 @@ def test_real_debug_neighbor_files_hidden(debug_linux):
         with Sandbox(626).opened() as box:
             box.write('main.py',source.encode());result=box.run(['/usr/bin/python3','/box/main.py'],'',DEBUG_LIMITS,lambda:False,lambda *_:None)
             assert result['status']=='FINISHED' and 'neighbor-hidden' in result['stdout'],result
+
+
+def test_input_backpressure_is_nonblocking_and_resumes_after_drain():
+    read,write=os.pipe();os.set_blocking(read,False)
+    with os.fdopen(write,'wb',buffering=0) as stream:
+        channel=DAPInput(stream)
+        try:
+            while True:os.write(write,b'x'*4096)
+        except BlockingIOError:pass
+        message={'seq':1,'type':'request','command':'pause','arguments':{'threadId':1}}
+        channel.enqueue(message);started=time.monotonic();channel.flush()
+        assert time.monotonic()-started<.1 and channel.pending
+        while True:
+            try:os.read(read,65536)
+            except BlockingIOError:break
+        channel.flush();assert not channel.pending and os.read(read,65536)==encode(message)
+    os.close(read)
+
+def test_pending_input_has_an_aggregate_limit_even_if_adapter_never_reads():
+    read,write=os.pipe()
+    with os.fdopen(write,'wb',buffering=0) as stream:
+        channel=DAPInput(stream);message={'seq':1,'type':'request','command':'launch','arguments':{'padding':'x'*32000}}
+        channel.enqueue(message);channel.enqueue(message)
+        with pytest.raises(RuntimeError,match='input queue budget'):channel.enqueue(message)
+    os.close(read)

@@ -1,0 +1,23 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0 -- /opt/cms-ide-stage/runtime-venv/bin/python
+rootdir: /opt/cms-ide-stage
+plugins: anyio-4.15.1
+collecting ... collected 8 items
+
+../incoming/test_debugger.py::test_debug_frames_are_incremental_and_bounded PASSED [ 12%]
+../incoming/test_debugger.py::test_debug_frames_reject_reverse_requests_and_oversize PASSED [ 25%]
+../incoming/test_debugger.py::test_real_debug_credentials_network_and_syscalls PASSED [ 37%]
+../incoming/test_debugger.py::test_real_debug_cancellation_cleans_box PASSED [ 50%]
+../incoming/test_debugger.py::test_real_debug_output_budget_cleans_box PASSED [ 62%]
+../incoming/test_debugger.py::test_real_debug_quota_with_debug_process_limits PASSED [ 75%]
+../incoming/test_debugger.py::test_real_debug_memory_is_cgroup_bounded PASSED [ 87%]
+../incoming/test_debugger.py::test_real_debug_neighbor_files_hidden PASSED [100%]
+
+============================== 8 passed in 5.13s ===============================
+No new upgrade operations detected.
+GRANT
+GRANT
+GRANT
+GRANT
+GRANT
+F6_ADDITIVE_MIGRATION_AND_RESTRICTED_GRANTS_READY_DEBUG_APPROVAL_ABSENT_SERVICE_NOT_STARTED

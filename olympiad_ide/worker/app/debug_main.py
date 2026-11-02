@@ -45,7 +45,9 @@ def run_session(factory,sid,token,box_id):
     finally:done.set();thread.join(timeout=2)
     with factory() as db:
         row=db.get(DebugSession,sid)
-        if row.lease_token==token:row.status=status;row.error=error;row.heartbeat=utcnow();db.commit()
+        if row.lease_token==token:
+            if row.status not in {'FINISHED','STOPPED','FAILED','EXPIRED'}:row.status=status;row.error=error
+            row.heartbeat=utcnow();db.commit()
 
 def main():
     logging.basicConfig(level=logging.INFO);box_id=int(os.getenv('DEBUG_BOX_ID','600'));Sandbox(box_id)

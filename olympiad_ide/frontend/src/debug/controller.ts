@@ -10,13 +10,13 @@ import { telemetry } from '../telemetry/collector'
 
 export interface DebugSession { id: string; status: string; files: { id: string; path: string }[]; sourceHash: string; error?: string | null }
 export interface Frame { id: number; name: string; line: number; fileId?: string; path?: string }
-export interface Variable { name: string; value: string; type?: string; variablesReference: number }
-type Status = 'idle' | 'starting' | 'running' | 'stopped' | 'finished' | 'failed'
-interface BreakpointVerification { fileId: string; requestedLine: number; line: number; verified: boolean; message: string }
-interface State { verifiedBreakpoints: BreakpointVerification[]; session: DebugSession | null; status: Status; location: { fileId: string; line: number } | null; breakpoints: Record<string, number[]>; frames: Frame[]; variables: Variable[]; error: string | null; output: string; commandBusy: boolean }
-const empty = (): State => ({ verifiedBreakpoints: [], session: null, status: 'idle', location: null, breakpoints: {}, frames: [], variables: [], error: null, output: '', commandBusy: false })
+export interface Variable { name: string; value: string; type?: string; variablesReference: number; scope?: string }
+type Status = 'idle' | 'starting' | 'running' | 'stopped' | 'stopping' | 'finished' | 'failed'
+interface BreakpointVerification { adapterId?: number; fileId: string; requestedLine: number; line: number; verified: boolean; message: string }
+interface State { verifiedBreakpoints: BreakpointVerification[]; session: DebugSession | null; status: Status; location: { fileId: string; line: number } | null; breakpoints: Record<string, number[]>; frames: Frame[]; variables: Variable[]; error: string | null; output: string; commandBusy: boolean; inspectionBusy: boolean }
+const empty = (): State => ({ verifiedBreakpoints: [], session: null, status: 'idle', location: null, breakpoints: {}, frames: [], variables: [], error: null, output: '', commandBusy: false, inspectionBusy: false })
 export const useDebugStore = create<State>(() => empty())
-const active = (status: string) => ['starting', 'running', 'stopped'].includes(status)
+const active = (status: string) => ['starting', 'running', 'stopped', 'stopping'].includes(status)
 const cleanLines = (lines: number[]) => [...new Set(lines.filter(line => Number.isSafeInteger(line) && line > 0 && line <= 1000000))].sort((a, b) => a - b).slice(0, 100)
 type DAP = Record<string, unknown>
 interface Pending { command: string; resolve: (value: DAP) => void; reject: (error: Error) => void; timer: ReturnType<typeof setTimeout> }
@@ -31,6 +31,7 @@ export class DebugController {
   private generation = 0
   private stoppedGeneration = 0
   private inspection = 0
+  private inspections = new Map<string, number>()
   private initialized = false
   private initializedWaiter?: { resolve: () => void; reject: (error: Error) => void; timer: ReturnType<typeof setTimeout> }
   private load?: Promise<void>
@@ -38,6 +39,16 @@ export class DebugController {
   private key() { return `debug-breakpoints:${useWorkspaceStore.getState().workspace.id}` }
   private current(generation: number) { return generation === this.generation && this.scope === this.key() }
   private error(error: unknown) { useDebugStore.setState({ error: error instanceof Error ? error.message : String(error) }) }
+  private inspecting(generation: number, stop: number): () => void {
+    const key = `${generation}:${stop}`
+    this.inspections.set(key, (this.inspections.get(key) ?? 0) + 1)
+    useDebugStore.setState({ inspectionBusy: true })
+    return () => {
+      const count = Math.max(0, (this.inspections.get(key) ?? 1) - 1)
+      if (count) this.inspections.set(key, count); else this.inspections.delete(key)
+      if (this.current(generation) && this.stoppedGeneration === stop && useDebugStore.getState().status === 'stopped') useDebugStore.setState({ inspectionBusy: count > 0 })
+    }
+  }
   private closeTransport() {
     clearInterval(this.refresh)
     const socket = this.socket; this.socket = null
@@ -90,7 +101,7 @@ export class DebugController {
     if (useDebugStore.getState().status === 'failed' && useDebugStore.getState().session) await this.stop()
     const generation = ++this.generation, workspace = useWorkspaceStore.getState().workspace.id
     this.closeTransport(); this.seq = 0; this.threadId = 0; this.initialized = false
-    useDebugStore.setState({ verifiedBreakpoints: [], session: null, status: 'starting', error: null, location: null, frames: [], variables: [], output: '', commandBusy: false })
+    useDebugStore.setState({ verifiedBreakpoints: [], session: null, status: 'starting', error: null, location: null, frames: [], variables: [], output: '', commandBusy: false, inspectionBusy: false })
     let created: DebugSession | null = null
     try {
       const configuration = defaultConfiguration(), capturedBreakpoints = structuredClone(useDebugStore.getState().breakpoints)
@@ -137,15 +148,15 @@ export class DebugController {
         const points = capturedBreakpoints[file.id] ?? []
         const response = await this.send('setBreakpoints', { source: { path: '/box/' + file.path }, breakpoints: points.map(line => ({ line })) })
         if (!this.current(generation)) return
-        const confirmations = (response.breakpoints ?? []) as { line?: number; verified?: boolean; message?: string }[]
-        useDebugStore.setState(state => ({ verifiedBreakpoints: [...state.verifiedBreakpoints, ...points.map((line, index) => ({ fileId: file.id, requestedLine: line, line: confirmations[index]?.line ?? line, verified: confirmations[index]?.verified === true, message: confirmations[index]?.message ?? (confirmations[index]?.verified ? '' : 'Adapter has not verified this breakpoint') }))] }))
+        const confirmations = (response.breakpoints ?? []) as { id?: number; line?: number; verified?: boolean; message?: string }[]
+        useDebugStore.setState(state => ({ verifiedBreakpoints: [...state.verifiedBreakpoints, ...points.map((line, index) => ({ adapterId: confirmations[index]?.id, fileId: file.id, requestedLine: line, line: confirmations[index]?.line ?? line, verified: confirmations[index]?.verified === true, message: confirmations[index]?.message ?? (confirmations[index]?.verified ? '' : 'Adapter has not verified this breakpoint') }))] }))
       }
       await this.send('configurationDone'); await launched
       if (this.current(generation) && useDebugStore.getState().status === 'starting') useDebugStore.setState({ status: 'running' })
       if (this.current(generation) && telemetry.session) telemetry.record('DEBUG_STARTED', null, { debugId: session.id })
     } catch (error) {
       if (!this.current(generation)) return
-      this.error(error); this.closeTransport(); useDebugStore.setState({ status: 'failed', commandBusy: false, location: null })
+      this.error(error); this.closeTransport(); useDebugStore.setState({ status: 'failed', commandBusy: false, inspectionBusy: false, location: null })
       if (created) void this.api.request(`/debug/sessions/${created.id}/stop`, { method: 'POST' }).catch(() => undefined)
     }
   }
@@ -174,7 +185,7 @@ export class DebugController {
       if (session && session.id === useDebugStore.getState().session?.id) {
         useDebugStore.setState({ session })
         if (['FAILED', 'EXPIRED', 'STOPPED', 'FINISHED'].includes(session.status)) {
-          useDebugStore.setState({ status: ['FAILED', 'EXPIRED'].includes(session.status) ? 'failed' : 'finished', commandBusy: false, location: null, ...(session.error ? { error: session.error } : {}) }); this.closeTransport()
+          useDebugStore.setState({ status: ['FAILED', 'EXPIRED'].includes(session.status) ? 'failed' : 'finished', commandBusy: false, inspectionBusy: false, location: null, ...(session.error ? { error: session.error } : {}) }); this.closeTransport()
         }
       }
       return
@@ -182,15 +193,28 @@ export class DebugController {
     if (message.type !== 'event') return
     const body = (message.body ?? {}) as DAP
     if (message.event === 'initialized') { this.initialized = true; if (this.initializedWaiter) { clearTimeout(this.initializedWaiter.timer); this.initializedWaiter.resolve(); this.initializedWaiter = undefined } }
+    if (message.event === 'breakpoint') {
+      const point = body.breakpoint as { id?: number; verified?: boolean; line?: number; message?: string; source?: { path?: string } } | undefined
+      if (point) useDebugStore.setState(state => ({ verifiedBreakpoints: state.verifiedBreakpoints.map(previous => {
+        const sameId = Number.isSafeInteger(point.id) && previous.adapterId === point.id
+        const capturedPath = state.session?.files.find(file => file.id === previous.fileId)?.path
+        const sameSourceLine = !!capturedPath && point.source?.path === '/box/' + capturedPath && (point.line === previous.line || point.line === previous.requestedLine)
+        if (!sameId && !sameSourceLine) return previous
+        const verified = body.reason === 'removed' ? false : typeof point.verified === 'boolean' ? point.verified : previous.verified
+        return { ...previous, adapterId: point.id ?? previous.adapterId, verified, line: Number.isSafeInteger(point.line) && point.line! > 0 ? point.line! : previous.line, message: point.message ?? (verified ? '' : previous.message) }
+      }) }))
+    }
     if (message.event === 'output') useDebugStore.setState(state => ({ output: (state.output + String(body.output ?? '')).slice(-262144) }))
-    if (message.event === 'continued') useDebugStore.setState({ status: 'running', location: null, frames: [], variables: [] })
-    if (message.event === 'terminated' || message.event === 'exited') { useDebugStore.setState({ status: 'finished', commandBusy: false, location: null, frames: [], variables: [] }); return }
+    if (message.event === 'continued') useDebugStore.setState({ status: 'running', inspectionBusy: false, location: null, frames: [], variables: [] })
+    if (message.event === 'terminated' || message.event === 'exited') { useDebugStore.setState({ status: 'finished', commandBusy: false, inspectionBusy: false, location: null, frames: [], variables: [] }); return }
     if (message.event === 'stopped') {
       const stop = ++this.stoppedGeneration; this.threadId = Number(body.threadId)
-      useDebugStore.setState({ status: 'stopped', commandBusy: false, location: null, frames: [], variables: [] })
+      useDebugStore.setState({ status: 'stopped', commandBusy: false, inspectionBusy: true, error: null, location: null, frames: [], variables: [] })
+      const release = this.inspecting(generation, stop)
       try {
         if (!Number.isSafeInteger(this.threadId) || this.threadId <= 0) {
           const threads = await this.send('threads'), list = (threads.threads ?? []) as { id: number }[]
+          if (!this.current(generation) || stop !== this.stoppedGeneration || useDebugStore.getState().status !== 'stopped') return
           this.threadId = list[0]?.id ?? 0
           if (!Number.isSafeInteger(this.threadId) || this.threadId <= 0) throw new Error('The paused adapter did not report an inspectable thread')
         }
@@ -199,48 +223,87 @@ export class DebugController {
         const frames = (response.stackFrames ?? []) as { id: number; name: string; line: number; source?: { path?: string } }[]
         const files = useDebugStore.getState().session?.files ?? []
         useDebugStore.setState({ frames: frames.map(frame => ({ id: frame.id, name: frame.name, line: frame.line, path: frame.source?.path, fileId: files.find(file => '/box/' + file.path === frame.source?.path || file.path === frame.source?.path)?.id })) })
-        if (frames[0]) await this.selectFrame(frames[0].id)
-      } catch (error) { if (this.current(generation)) this.error(error) }
+        if (frames[0]) await this.selectFrame(frames[0].id, true)
+      } catch (error) { if (this.current(generation) && stop === this.stoppedGeneration) this.error(error) }
+      finally { release() }
     }
   }
   async command(command: 'continue' | 'pause' | 'next' | 'stepIn' | 'stepOut') {
     const state = useDebugStore.getState(), generation = this.generation, stop = this.stoppedGeneration
-    if (state.commandBusy || (command === 'pause' ? state.status !== 'running' : state.status !== 'stopped')) return
-    useDebugStore.setState({ commandBusy: true })
+    if (state.commandBusy || state.inspectionBusy || (command === 'pause' ? state.status !== 'running' : state.status !== 'stopped')) return
+    useDebugStore.setState({ commandBusy: true, error: null })
     try {
+      if (command === 'pause' && (!Number.isSafeInteger(this.threadId) || this.threadId <= 0)) {
+        const response = await this.send('threads')
+        if (!this.current(generation) || stop !== this.stoppedGeneration || useDebugStore.getState().status !== 'running') return
+        const threads = (response.threads ?? []) as { id: number }[]
+        const thread = threads.find(value => Number.isSafeInteger(value.id) && value.id > 0)
+        if (!thread) throw new Error('The running adapter did not report a thread that can be paused')
+        this.threadId = thread.id
+      }
       await this.send(command, { threadId: this.threadId })
       if (this.current(generation) && command !== 'pause' && stop === this.stoppedGeneration) useDebugStore.setState({ status: 'running', location: null, frames: [], variables: [] })
       if (this.current(generation) && telemetry.session && state.session) telemetry.record('DEBUG_ACTION', null, { debugId: state.session.id, action: command === 'continue' ? 'continue' : command === 'pause' ? 'pause' : 'step' })
     } catch (error) { if (this.current(generation)) this.error(error) }
     finally { if (this.current(generation)) useDebugStore.setState({ commandBusy: false }) }
   }
-  async selectFrame(id: number) {
+  async selectFrame(id: number, automatic = false) {
     const inspection = ++this.inspection, generation = this.generation, stop = this.stoppedGeneration
-    if (useDebugStore.getState().status !== 'stopped') return
+    if (useDebugStore.getState().status !== 'stopped' || (!automatic && (useDebugStore.getState().inspectionBusy || useDebugStore.getState().commandBusy))) return
+    const release = this.inspecting(generation, stop)
+    useDebugStore.setState({ variables: [] })
     try {
       const frame = useDebugStore.getState().frames.find(value => value.id === id)
       if (frame?.fileId) { useDebugStore.setState({ location: { fileId: frame.fileId, line: frame.line } }); if (useWorkspaceStore.getState().nodes[frame.fileId]?.type === 'file') useWorkspaceStore.getState().openFile(frame.fileId) }
       const response = await this.send('scopes', { frameId: id })
       if (!this.current(generation) || stop !== this.stoppedGeneration || inspection !== this.inspection || useDebugStore.getState().status !== 'stopped') return
-      const scopes = (response.scopes ?? []) as { variablesReference: number }[]
-      useDebugStore.setState({ variables: [] }); if (scopes[0]) await this.expandVariable(scopes[0].variablesReference)
-    } catch (error) { if (this.current(generation)) this.error(error) }
+      const scopes = (response.scopes ?? []) as { name?: string; variablesReference: number; presentationHint?: string }[]
+      const variables: Variable[] = []
+      // GDB separates function Arguments from Locals; reading only the first scope hides real local results.
+      // Register banks are not participant variables and can contain very large platform-specific dumps.
+      for (const scope of scopes.filter(value => !/register/i.test(value.name ?? '') && value.presentationHint !== 'registers')) {
+        if (!Number.isSafeInteger(scope.variablesReference) || scope.variablesReference <= 0) continue
+        const result = await this.send('variables', { variablesReference: scope.variablesReference })
+        if (!this.current(generation) || stop !== this.stoppedGeneration || inspection !== this.inspection || useDebugStore.getState().status !== 'stopped') return
+        variables.push(...((result.variables ?? []) as Variable[]).map(variable => ({ ...variable, scope: scope.name })))
+      }
+      useDebugStore.setState({ variables })
+    } catch (error) { if (this.current(generation) && stop === this.stoppedGeneration) this.error(error) }
+    finally { release() }
   }
-  async expandVariable(reference: number) {
+  async expandVariable(reference: number, automatic = false) {
     const inspection = ++this.inspection, generation = this.generation, stop = this.stoppedGeneration
-    if (useDebugStore.getState().status !== 'stopped') return
+    if (useDebugStore.getState().status !== 'stopped' || (!automatic && (useDebugStore.getState().inspectionBusy || useDebugStore.getState().commandBusy))) return
+    const release = this.inspecting(generation, stop)
+    useDebugStore.setState({ variables: [] })
     try {
       const response = await this.send('variables', { variablesReference: reference })
       if (this.current(generation) && stop === this.stoppedGeneration && inspection === this.inspection && useDebugStore.getState().status === 'stopped') useDebugStore.setState({ variables: (response.variables ?? []) as Variable[] })
-    } catch (error) { if (this.current(generation)) this.error(error) }
+    } catch (error) { if (this.current(generation) && stop === this.stoppedGeneration) this.error(error) }
+    finally { release() }
   }
   async stop() {
-    const session = useDebugStore.getState().session, key = this.scope, generation = ++this.generation
-    this.closeTransport(); useDebugStore.setState({ status: 'finished', commandBusy: false, location: null, frames: [], variables: [] })
-    if (session) try {
-      await this.api.request(`/debug/sessions/${session.id}/stop`, { method: 'POST', keepalive: true })
-      if (this.current(generation) && telemetry.session) telemetry.record('DEBUG_FINISHED', null, { debugId: session.id, reason: 'participant-stop' })
-    } catch (error) { if (this.generation === generation && this.scope === key) this.error(error) }
+    const current = useDebugStore.getState()
+    if (current.status === 'stopping') return
+    const session = current.session, generation = ++this.generation
+    this.closeTransport()
+    useDebugStore.setState({ status: session ? 'stopping' : 'idle', error: null, commandBusy: false, inspectionBusy: false, location: null, frames: [], variables: [] })
+    if (!session) return
+    try {
+      let result = await this.api.request<DebugSession>(`/debug/sessions/${session.id}/stop`, { method: 'POST', keepalive: true })
+      const deadline = Date.now() + 15000
+      while (this.current(generation) && !['FINISHED', 'STOPPED', 'FAILED', 'EXPIRED'].includes(result.status)) {
+        if (Date.now() >= deadline) throw new Error('The worker has not confirmed a terminal session state')
+        await new Promise(resolve => setTimeout(resolve, 200))
+        if (!this.current(generation)) return
+        result = await this.api.request<DebugSession>(`/debug/sessions/${session.id}`)
+      }
+      if (!this.current(generation)) return
+      useDebugStore.setState({ session: result, status: ['FAILED', 'EXPIRED'].includes(result.status) ? 'failed' : 'finished', error: result.error ?? null })
+      if (telemetry.session) telemetry.record('DEBUG_FINISHED', null, { debugId: session.id, reason: result.status.toLowerCase() })
+    } catch (error) {
+      if (this.current(generation)) useDebugStore.setState({ status: 'failed', error: `Stop is unconfirmed: ${error instanceof Error ? error.message : String(error)}. Check CMS authentication and retry Stop; no worker termination is assumed.` })
+    }
   }
 }
 export const debugging = new DebugController()

@@ -1,0 +1,56 @@
+{
+  "language": "python3",
+  "status": "FINISHED",
+  "stops": [
+    {
+      "reason": "breakpoint",
+      "threadId": 1,
+      "preserveFocusHint": false,
+      "allThreadsStopped": true
+    },
+    {
+      "reason": "step",
+      "threadId": 1,
+      "preserveFocusHint": false,
+      "allThreadsStopped": true
+    },
+    {
+      "reason": "step",
+      "threadId": 1,
+      "preserveFocusHint": false,
+      "allThreadsStopped": true
+    },
+    {
+      "reason": "step",
+      "threadId": 1,
+      "preserveFocusHint": false,
+      "allThreadsStopped": true
+    }
+  ],
+  "actualVariableA2": true,
+  "steps": 4,
+  "output": [
+    {
+      "category": "telemetry",
+      "output": "ptvsd",
+      "data": {
+        "packageVersion": "1.8.19"
+      }
+    },
+    {
+      "category": "telemetry",
+      "output": "debugpy",
+      "data": {
+        "packageVersion": "1.8.19"
+      }
+    },
+    {
+      "category": "stdout",
+      "output": "3"
+    },
+    {
+      "category": "stdout",
+      "output": "\n"
+    }
+  ]
+}

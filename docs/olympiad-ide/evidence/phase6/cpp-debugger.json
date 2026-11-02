@@ -1,0 +1,45 @@
+{
+  "language": "cpp20",
+  "status": "FINISHED",
+  "stops": [
+    {
+      "threadId": 1,
+      "allThreadsStopped": true,
+      "hitBreakpointIds": [
+        1
+      ],
+      "reason": "breakpoint"
+    },
+    {
+      "threadId": 1,
+      "allThreadsStopped": true,
+      "reason": "step"
+    },
+    {
+      "threadId": 1,
+      "allThreadsStopped": true,
+      "reason": "step"
+    },
+    {
+      "threadId": 1,
+      "allThreadsStopped": true,
+      "reason": "step"
+    }
+  ],
+  "actualVariableA2": true,
+  "steps": 4,
+  "output": [
+    {
+      "category": "stdout",
+      "output": "No source file named /box/main.cpp.\n"
+    },
+    {
+      "category": "stdout",
+      "output": "Breakpoint 1 (-source /box/main.cpp -line 5) pending.\n"
+    },
+    {
+      "category": "stdout",
+      "output": "3\n"
+    }
+  ]
+}

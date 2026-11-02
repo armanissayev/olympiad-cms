@@ -31,6 +31,20 @@ def encode(message):
     if len(body)>65536:raise RuntimeError('DAP request too large')
     return b'Content-Length: '+str(len(body)).encode()+b'\r\n\r\n'+body
 
+class DAPInput:
+    """Bounded nonblocking pipe writer; a stalled adapter cannot stall Stop."""
+    def __init__(self,stream):
+        self.fd=stream.fileno();self.pending=bytearray();os.set_blocking(self.fd,False)
+    def enqueue(self,message):
+        wire=encode(message)
+        if len(self.pending)+len(wire)>65536:raise RuntimeError('DAP input queue budget exhausted')
+        self.pending.extend(wire)
+    def flush(self):
+        if not self.pending:return
+        try:count=os.write(self.fd,self.pending)
+        except BlockingIOError:return
+        del self.pending[:count]
+
 def profile(snapshot):
     config=snapshot['configuration'];language=config['language'];entry=next(f['path'] for f in snapshot['files'] if f['id']==config['entryPoint'])
     if language.startswith('cpp'):
@@ -60,7 +74,7 @@ class IsolatedDebugger:
             args=[*box.prefix,'--silent','--syscalls=31',f'--meta={box.control/"debug.meta"}','--chdir=/box','--time=30','--wall-time=300','--cg-mem=1048576','--processes=64','--open-files=128','--core=0','--fsize=1024','--env=PATH=/usr/bin:/bin','--env=HOME=/box','--env=LANG=C.UTF-8','--env=TMPDIR=/box','--env=PYTHONPATH=/usr/lib/python3/dist-packages','--run','--',*adapter]
             if Path('/etc/java-17-openjdk').is_dir():args.insert(len(box.prefix),'--dir=etc/java-17-openjdk=/etc/java-17-openjdk')
             self.process=subprocess.Popen(args,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env={'PATH':'/usr/bin:/bin'},start_new_session=True)
-            p=self.process;selector=selectors.DefaultSelector();selector.register(p.stdout,selectors.EVENT_READ,'dap');selector.register(p.stderr,selectors.EVENT_READ,'stderr');framer=Framer();deadline=time.monotonic()+300;total=0;terminated=False
+            p=self.process;input_pipe=DAPInput(p.stdin);selector=selectors.DefaultSelector();selector.register(p.stdout,selectors.EVENT_READ,'dap');selector.register(p.stderr,selectors.EVENT_READ,'stderr');framer=Framer();deadline=time.monotonic()+300;total=0;terminated=False
             try:
                 while p.poll() is None and not self.cancelled() and time.monotonic()<deadline:
                     for message in receive():
@@ -72,7 +86,8 @@ class IsolatedDebugger:
                         elif command=='launch':
                             if self.launch_seen:raise RuntimeError('Duplicate launch')
                             self.launch_seen=True;message['arguments']=launch
-                        p.stdin.write(encode(message));p.stdin.flush()
+                        input_pipe.enqueue(message)
+                    input_pipe.flush()
                     for key,_ in selector.select(.05):
                         data=os.read(key.fileobj.fileno(),8192)
                         if not data:selector.unregister(key.fileobj);continue
