@@ -39,3 +39,5 @@ This completes the requested staging feature milestone. It does not certify a li
 Debug sessions have five-minute wall and 30 CPU-second limits, one active session/principal and 20 starts/hour; debug retention/pruning is operator work. History is scoped local-browser data and cannot invent missing telemetry. Pinned gevent still emits ignored fork/thread/finalization warnings on Python 3.12; no broad dependency/security bypass was introduced.
 
 All 124 authoritative original source hashes match. Original source and key were preserved. Dependencies, credentials, databases, compiled Java classes and generated service configuration are excluded from Git. Corrected deployment and recovery procedures are retained in [linux_staging](../../olympiad_ide/tools/linux_staging/README.md).
+
+Final cleanup: the task-owned local regression PostgreSQL cluster is stopped. AWS remains running with public readiness 200, no failed units and cleaned debug box 600.

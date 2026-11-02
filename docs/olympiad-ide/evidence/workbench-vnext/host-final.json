@@ -1,0 +1,34 @@
+{
+  "deployedApplicationCommit": "e9044e7b03032018b038a03c8fad2abf4d551bfa",
+  "active": {
+    "cms-ide-stage-postgres": "active",
+    "cms-ide-stage-log": "active",
+    "cms-ide-stage-resource": "active",
+    "cms-ide-stage-judge": "active",
+    "cms-ide-stage-runtime": "active",
+    "cms-ide-stage-worker": "active",
+    "cms-ide-stage-debug": "active",
+    "cms-ide-stage-ranking": "active",
+    "cms-ide-stage-ingress": "active"
+  },
+  "bootEnabled": {
+    "cms-ide-stage-postgres": "enabled",
+    "cms-ide-stage-log": "enabled",
+    "cms-ide-stage-resource": "enabled",
+    "cms-ide-stage-judge": "enabled",
+    "cms-ide-stage-runtime": "enabled",
+    "cms-ide-stage-worker": "enabled",
+    "cms-ide-stage-debug": "enabled",
+    "cms-ide-stage-ranking": "enabled",
+    "cms-ide-stage-ingress": "enabled"
+  },
+  "failedUnits": [],
+  "debugBox600Clean": true,
+  "restrictedFileModes": {
+    "/etc/cms-ide-stage/native.key": "0o600",
+    "/etc/cms-ide-stage/debug.env": "0o600"
+  },
+  "debugPrivateNetwork": "yes",
+  "runtimeCommand": "{ path=/opt/cms-ide-stage/runtime-venv/bin/uvicorn ; argv[]=/opt/cms-ide-stage/runtime-venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 18801 --workers 1 --limit-concurrency 64 --ws-max-size 32768 --ws-max-queue 4 ; ignore_errors=no ; start_time=[Mon 2026-11-02 22:13:04 UTC] ; stop_time=[n/a] ; pid=61191 ; code=(null) ; status=0/0 }",
+  "tmux": "cms-staging-ops: 3 windows (created Mon Nov  2 20:48:05 2026)"
+}
