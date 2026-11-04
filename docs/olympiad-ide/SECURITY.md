@@ -58,3 +58,7 @@ On3November2026 the user explicitly requested public CWS/IDE access and saved AW
 ## Participant/Admin history follow-up
 
 CMS participant history GETs are denied while uploads/acknowledgements remain enabled. Only full CMS Admin auth can sign the separate admin-history audience/scope, target and request hashes with a one-use nonce. No browser role claim grants authority. Admin read-only server reconstruction is bounded, filters expired records and discloses gaps. Private Admin is not exposed publicly. See [ADMIN_HISTORY](ADMIN_HISTORY.md) and [actual acceptance](PARTICIPANT_ACCEPTANCE.md). Quiet participant recording disclosure remains; the pictured diagnostic modal/raw errors are removed.
+
+## Public Admin HTTPS — 4 November 2026
+
+The authorized disposable staging Admin panel is reachable at `https://54.206.171.67/admin/`. Existing enabled CMS Admin authentication is required, and code history additionally requires full Admin permission. Guests and actual participants were denied through the public page/API. Admin auth cookies are Secure/HttpOnly/SameSiteStrict; native XSRF, IP binding and server permissions remain intact. Root `_xsrf` stays shared with participant CMS on the same origin to avoid duplicate values. Native listeners remain loopback; only ingress443 exposes the panel. Login is limited per IP; Admin responses are no-store with frame denial. [Actual checks and limits](PUBLIC_ADMIN_HTTPS.md).

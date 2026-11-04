@@ -1,0 +1,24 @@
+{
+  "clientDate": "2026-11-04",
+  "authorizedInstance": "i-0ade1f8ddf0b0dad8",
+  "publicIp": "54.206.171.67",
+  "status": "prepared-not-deployed",
+  "publicCmsGet": 200,
+  "publicAdminLoginGet": 404,
+  "sshHostnameAttempt": "TCP 22 connection timed out",
+  "sshPublicIpAttempt": "TCP 22 connection timed out",
+  "existingLocalSshControlSocket": "absent",
+  "localAwsCliAndCredentials": "unavailable",
+  "installerPythonCompile": "passed",
+  "browserScriptSyntax": "passed",
+  "renderReview": {
+    "knownPublicAndPrivateLayout": "passed",
+    "idempotence": "passed",
+    "privateServersUnchanged": "passed",
+    "debugWebSocketRoutesUnchanged": "passed",
+    "unexpectedLayoutRefused": "passed"
+  },
+  "liveNginxValidation": "not run: SSH access unavailable",
+  "liveAdminAuthenticationAndHistoryBrowser": "not run: deployment pending",
+  "remoteChanges": false
+}

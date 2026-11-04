@@ -1,0 +1,85 @@
+{
+  "status": "passed",
+  "services": {
+    "cms-ide-stage-postgres.service": {
+      "Id": "cms-ide-stage-postgres.service",
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "33044",
+      "ExecMainStartTimestamp": "Mon 2026-11-02 14:59:47 UTC"
+    },
+    "cms-ide-stage-log.service": {
+      "Id": "cms-ide-stage-log.service",
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "65063",
+      "ExecMainStartTimestamp": "Mon 2026-11-02 23:09:13 UTC"
+    },
+    "cms-ide-stage-resource.service": {
+      "Id": "cms-ide-stage-resource.service",
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "65067",
+      "ExecMainStartTimestamp": "Mon 2026-11-02 23:09:13 UTC"
+    },
+    "cms-ide-stage-judge.service": {
+      "Id": "cms-ide-stage-judge.service",
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "65065",
+      "ExecMainStartTimestamp": "Mon 2026-11-02 23:09:13 UTC"
+    },
+    "cms-ide-stage-runtime.service": {
+      "Id": "cms-ide-stage-runtime.service",
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "65061",
+      "ExecMainStartTimestamp": "Mon 2026-11-02 23:09:13 UTC"
+    },
+    "cms-ide-stage-worker.service": {
+      "Id": "cms-ide-stage-worker.service",
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "65062",
+      "ExecMainStartTimestamp": "Mon 2026-11-02 23:09:13 UTC"
+    },
+    "cms-ide-stage-debug.service": {
+      "Id": "cms-ide-stage-debug.service",
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "65066",
+      "ExecMainStartTimestamp": "Mon 2026-11-02 23:09:13 UTC"
+    },
+    "cms-ide-stage-ranking.service": {
+      "Id": "cms-ide-stage-ranking.service",
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "65064",
+      "ExecMainStartTimestamp": "Mon 2026-11-02 23:09:13 UTC"
+    },
+    "cms-ide-stage-ingress.service": {
+      "Id": "cms-ide-stage-ingress.service",
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "94453",
+      "ExecMainStartTimestamp": "Wed 2026-11-04 06:38:04 UTC"
+    }
+  },
+  "allNineProcessesAndStartTimesUnchanged": true,
+  "allNineActiveAndEnabled": true,
+  "publicListeners": [
+    "TCP22 (SSH)",
+    "TCP80 (HTTPS redirect/ACME)",
+    "TCP443 (HTTPS)"
+  ],
+  "nativeAdminListener": "127.0.0.1:18889",
+  "privateAdminTlsListener": "127.0.0.1:28444",
+  "certificateIpVerified": true,
+  "certificateNotAfter": "2026-11-09 11:57:40 UTC",
+  "renewalTimerActive": true,
+  "tmux": "cms-staging-ops: 3 windows",
+  "publicCmsGet": 200,
+  "publicAdminLoginGet": 200,
+  "publicIdeReadyGet": 200,
+  "httpAdminRedirect": 308
+}

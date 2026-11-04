@@ -1,6 +1,6 @@
 # Implementation state
 
-Updated 3 November 2026. Checkout `/Users/isaevarman/Developer/cms`, branch `feature/olympiad-ide-integration`. CMS base `CMSv1.5.1`, `7c9fec8aa1a25ec93d624aebf815804dd93df9db`; initial integration `7c2bd34d16a6ae9bc263feb660bb60505c31bfab`. Current deployed application: **`5106855e3c0cb003bd1558d163f7bcda46d35018`**. No push, PR or merge was performed.
+Updated 4 November 2026. Checkout `/Users/isaevarman/Developer/cms`, branch `feature/olympiad-ide-integration`. CMS base `CMSv1.5.1`, `7c9fec8aa1a25ec93d624aebf815804dd93df9db`; initial integration `7c2bd34d16a6ae9bc263feb660bb60505c31bfab`. Current deployed application: **`5106855e3c0cb003bd1558d163f7bcda46d35018`**. No push, PR or merge was performed.
 
 ## Current participant experience
 
@@ -14,7 +14,7 @@ The green top-right **Submit** opens a simple problem/file form with language in
 
 ## Running AWS beta
 
-Participant CMS: **https://54.206.171.67/**. Direct IDE: **https://54.206.171.67/ide/**. Use the normal CMS participant login. Admin/RPC/DB remain private; admin is available through the task-owned SSH forward on localhost 28444. Protected access details are in `/private/tmp/cms-linux-staging/STAGING_ACCESS.txt`, 0600, outside Git.
+Participant CMS: **https://54.206.171.67/**. Direct IDE: **https://54.206.171.67/ide/**. Use the normal CMS participant login. Admin is available at **https://54.206.171.67/admin/** with native CMS Admin login; code history is **https://54.206.171.67/admin/contest/1/ide-history** and requires full permission. Native service/RPC/database listeners remain private; the optional localhost 28444 tunnel remains available. Protected access details are in `/private/tmp/cms-linux-staging/STAGING_ACCESS.txt`, 0600, outside Git.
 
 Only the explicitly authorized disposable EC2 instance `i-0ade1f8ddf0b0dad8` was accessed. Trusted public-IP TLS, automatic certificate renewal and normal browser TLS validation remain enabled. All nine task-owned PostgreSQL/log/resource/judge/runtime/custom-worker/debug-worker/ranking/ingress units are active and enabled at boot. `cms-staging-ops` tmux retains operations/log windows; systemd and native ResourceService own service processes independently of SSH. No reboot was performed.
 
@@ -44,4 +44,8 @@ All 124 authoritative original source hashes match. Original source and key were
 
 Final cleanup: the task-owned local regression PostgreSQL cluster is stopped. AWS remains running with public readiness 200, no failed units and cleaned debug box 600.
 
-Current participant/Admin follow-up: 759 Linux CMS passes, 97 Linux/runtime passes, 130 frontend passes; real live-breakpoint entry methods, six in-place problem changes, three actual scored C++/Python submissions, exhausted-token CWS 200, recording-upload 200/participant-read 403, and separate Admin actual writing-event replay all passed. [Private Admin history](https://localhost:28444/contest/1/ide-history) uses the existing SSH tunnel and full CMS Admin login. [Current evidence](evidence/participant-polish/).
+Current participant/Admin follow-up: 759 Linux CMS passes, 97 Linux/runtime passes, 130 frontend passes; real live-breakpoint entry methods, six in-place problem changes, three actual scored C++/Python submissions, exhausted-token CWS 200, recording-upload 200/participant-read 403, and separate Admin actual writing-event replay all passed. [Admin history](https://54.206.171.67/admin/contest/1/ide-history) uses public HTTPS and full CMS Admin login; the prior private-tunnel acceptance remains dated separately. [Current evidence](evidence/participant-polish/).
+
+## Public Admin HTTPS — 4 November 2026
+
+**Deployed and verified:** https://54.206.171.67/admin/ and https://54.206.171.67/admin/contest/1/ide-history now work through trusted public HTTPS without a tunnel. Existing enabled CMS Admin authentication and full-permission history checks remain required. Real-browser guest/participant cookie/credential denial, actual Admin uploaded source/hash replay, timeline, CSRF rejection, cookie protection, prefix paths and logout all passed (ten grouped checks; zero page/server errors or history mutations). Only ingress reloaded; all nine service PIDs/start times stayed unchanged and all are active/enabled. Native ports remain private, existing tmux/renewal remain active, and CMS/IDE readiness are 200. Repeat installer run reported unchanged; bounded loopback rate test returned ten 200 and four 429 responses. Initial SSH timeouts were resolved by the operator before deployment. [Exact commands, environment, evidence and rollback](PUBLIC_ADMIN_HTTPS.md).

@@ -1,0 +1,47 @@
+Id=cms-ide-stage-postgres.service
+ActiveState=active
+MainPID=33044
+ExecMainStartTimestamp=Mon 2026-11-02 14:59:47 UTC
+
+Id=cms-ide-stage-log.service
+ActiveState=active
+MainPID=65063
+ExecMainStartTimestamp=Mon 2026-11-02 23:09:13 UTC
+
+Id=cms-ide-stage-resource.service
+ActiveState=active
+MainPID=65067
+ExecMainStartTimestamp=Mon 2026-11-02 23:09:13 UTC
+
+Id=cms-ide-stage-judge.service
+ActiveState=active
+MainPID=65065
+ExecMainStartTimestamp=Mon 2026-11-02 23:09:13 UTC
+
+Id=cms-ide-stage-runtime.service
+ActiveState=active
+MainPID=65061
+ExecMainStartTimestamp=Mon 2026-11-02 23:09:13 UTC
+
+Id=cms-ide-stage-worker.service
+ActiveState=active
+MainPID=65062
+ExecMainStartTimestamp=Mon 2026-11-02 23:09:13 UTC
+
+Id=cms-ide-stage-debug.service
+ActiveState=active
+MainPID=65066
+ExecMainStartTimestamp=Mon 2026-11-02 23:09:13 UTC
+
+Id=cms-ide-stage-ranking.service
+ActiveState=active
+MainPID=65064
+ExecMainStartTimestamp=Mon 2026-11-02 23:09:13 UTC
+
+Id=cms-ide-stage-ingress.service
+ActiveState=active
+MainPID=94453
+ExecMainStartTimestamp=Wed 2026-11-04 06:38:04 UTC
+nginx: the configuration file /etc/cms-ide-stage/.nginx-public-admin-9wx6tf4q syntax is ok
+nginx: configuration file /etc/cms-ide-stage/.nginx-public-admin-9wx6tf4q test is successful
+{"status": "configured", "adminUrl": "https://54.206.171.67/admin/", "historyUrl": "https://54.206.171.67/admin/contest/1/ide-history", "nativeAdmin": "127.0.0.1:18889", "servicesReloaded": ["cms-ide-stage-ingress"], "changed": true, "backup": "/etc/cms-ide-stage/before-public-admin-20261104T103513.485084Z"}

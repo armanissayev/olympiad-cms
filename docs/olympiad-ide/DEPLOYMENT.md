@@ -161,3 +161,7 @@ The authorized 3 November follow-up added public HTTPS at https://54.206.171.67/
 ## Participant/Admin workflow follow-up
 
 Current application 5106855e is deployed using the existing tmux updater and unchanged supervisors. [PARTICIPANT_ACCEPTANCE](PARTICIPANT_ACCEPTANCE.md) records actual 130/97/759 frontend/runtime/Linux-CMS results and both browser flows. Admin code history is served by the existing private AdminWebServer with lazy optional PyJWT import; feature-disabled ordinary Admin startup is tested. No schema migration/new grants or additional public port is required. Run the retained reverify_linux.py preflight before the isolated suites; cms-unit.conf must exist rather than silently falling back.
+
+## Public Admin HTTPS — 4 November 2026
+
+The explicitly requested staging Admin panel is now exposed under authenticated `/admin/` on the existing public443 proxy, without exposing native ports. Existing CMS Admin permissions, XSRF, protected cookies, no-store and login limits are verified. [Deployment, evidence and rollback](PUBLIC_ADMIN_HTTPS.md).

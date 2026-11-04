@@ -1,0 +1,4 @@
+nginx: the configuration file /etc/cms-ide-stage/nginx.conf syntax is ok
+nginx: configuration file /etc/cms-ide-stage/nginx.conf test is successful
+{"status": "configured", "adminUrl": "https://54.206.171.67/admin/", "historyUrl": "https://54.206.171.67/admin/contest/1/ide-history", "nativeAdmin": "127.0.0.1:18889", "servicesReloaded": ["cms-ide-stage-ingress"], "changed": false, "backup": null}
+{"check": "bounded loopback-only login rate limiter", "requests": 14, "statuses": {"200": 10, "429": 4}, "passed": true}

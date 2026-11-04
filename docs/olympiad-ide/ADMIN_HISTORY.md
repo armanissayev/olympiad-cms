@@ -1,6 +1,6 @@
 # Administrator-only code history
 
-The private CMS Admin contest sidebar now has **Code history**. On the authorized staging installation this is `https://localhost:28444/contest/1/ide-history`, through the existing private Admin SSH tunnel. Public participant CMS/IDE access does not expose Admin. Log in with an enabled full-permission CMS administrator account, choose a participant and problem, then Load recordings and choose a recording.
+The CMS Admin contest sidebar has **Code history**. On the authorized staging installation open **https://54.206.171.67/admin/contest/1/ide-history**, without an SSH tunnel. Admin home is **https://54.206.171.67/admin/**. Log in with an enabled full-permission CMS administrator account, choose a participant and problem, then Load recordings and choose a recording. Public HTTPS authentication/denial/source-replay checks passed on 4 November 2026; see [deployment and evidence](PUBLIC_ADMIN_HTTPS.md). The private localhost 28444 route remains available as an optional operator tunnel.
 
 The viewer reads uploaded server recordings, so the administrator does not need the participant's browser profile. It provides a timeline, previous/next event, Play/Pause, 0.5/1/2/4/8× speed, source-file selection and read-only source. Empty lists mean no retained uploaded recording exists for that identity/problem. Browser-only or expired recordings cannot be recovered here. The existing retention maintenance remains responsible for deleting expired storage; review filters expired records without deleting them.
 

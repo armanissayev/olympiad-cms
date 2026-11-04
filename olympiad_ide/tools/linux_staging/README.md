@@ -163,3 +163,7 @@ After building assets, create Git source and generated-asset archives named `vne
 The participant follow-up removes History/recording diagnostics, adds line-number/F9/explicit-line breakpoints, preserves problem workspaces in place and presents a green minimal Submit form. Private CMS Admin has Code history with uploaded-recording replay. See [PARTICIPANT_ACCEPTANCE](../../../docs/olympiad-ide/PARTICIPANT_ACCEPTANCE.md) for exact deployed commit, browser/role/source proof and final 130/97/759 test outcomes.
 
 For repeat Linux checks use `reverify_linux.py`: it refuses the missing-config fallback and validates the retained `/etc/cms-ide-stage/cms-unit.conf`, exact test database, account, Unix socket, fixture paths and service coordinates before running fixtures. Runtime tests use isolated `test_*` schemas in the non-active retained IDE database. `create_ui_acceptance.py` retains the executed fresh-actor procedure and refuses existing output/account replacement. All credentials remain in protected 0600 files outside Git. No new migration, public Admin port, dependency upgrade or worker-security relaxation is involved.
+
+## Public Admin HTTPS follow-up
+
+The bounded existing-host `install_public_admin.py` procedure is documented in [PUBLIC_ADMIN_HTTPS](../../../docs/olympiad-ide/PUBLIC_ADMIN_HTTPS.md). It changes only the explicitly authorized staging ingress, keeps native Admin authentication/permissions, and reloads only nginx. Its current deployment and verification status is recorded there; do not treat preparation as a successful deployment.
