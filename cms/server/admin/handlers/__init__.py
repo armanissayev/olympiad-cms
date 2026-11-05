@@ -127,6 +127,8 @@ HANDLERS = [
     # Contest's users
 
     (r"/contest/([0-9]+)/ide-history", IDEHistoryHandler),
+    (r"/contest/([0-9]+)/ide-history/api/(files)", IDEHistoryDataHandler),
+    (r"/contest/([0-9]+)/ide-history/api/(files/[0-9]+/(?:timeline|replay))", IDEHistoryDataHandler),
     (r"/contest/([0-9]+)/ide-history/api/(sessions)", IDEHistoryDataHandler),
     (r"/contest/([0-9]+)/ide-history/api/(sessions/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/replay)", IDEHistoryDataHandler),
     (r"/contest/([0-9]+)/users", ContestUsersHandler),

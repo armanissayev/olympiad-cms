@@ -1,26 +1,56 @@
 {% extends "base.html" %}
 {% block core %}
 <div class="core_title"><h1>Participant code history</h1></div>
-<p>Administrator-only review of uploaded editing recordings. Browser-only, missing or expired events are unavailable. Recordings describe editor activity; they do not prove authorship.</p>
-<div id="ide-history" data-api="{{ url('contest', contest.id, 'ide-history', 'api') }}">
-  <div class="ide-history-controls">
+<p class="history-intro">Choose a participant and problem, then review a submitted file. The timeline groups code edits into short periods and leaves out cursor, focus and key-release events.</p>
+<div id="ide-history" data-api="{{ url('contest', contest.id, 'ide-history', 'api') }}" data-submission="{{ url('submission') }}">
+  <div class="history-toolbar history-selectors">
     <label>Participant <select id="history-participant" aria-label="History participant"><option value="">Choose participant</option>{% for user in history_users %}<option value="{{ user.id }}">{{ user.username }} — {{ user.first_name }} {{ user.last_name }}</option>{% endfor %}</select></label>
     <label>Problem <select id="history-task" aria-label="History problem"><option value="">Choose problem</option>{% for task in history_tasks %}<option value="{{ task.id }}">{{ task.name }} — {{ task.title }}</option>{% endfor %}</select></label>
-    <button type="button" id="history-load">Load recordings</button>
+    <button type="button" id="history-load">Refresh files</button>
   </div>
   <p id="history-status" role="status">Choose a participant and problem.</p>
-  <div class="ide-history-controls"><label>Recording <select id="history-session" aria-label="History recording"><option value="">No recording selected</option></select></label><button type="button" id="history-more" hidden>Load older recordings</button></div>
-  <div id="history-player" hidden>
-    <p id="history-notices" role="alert"></p>
-    <div class="ide-history-controls"><button type="button" id="history-previous">Previous event</button><button type="button" id="history-play">Play</button><button type="button" id="history-next">Next event</button><label>Speed <select id="history-speed" aria-label="History speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option><option value="8">8×</option></select></label></div>
-    <label>Timeline <input type="range" id="history-timeline" aria-label="History timeline" min="0" max="0" value="0" step="1"></label>
-    <p id="history-event"></p>
-    <label>Source file <select id="history-file" aria-label="History source file"></select></label>
-    <textarea id="history-source" aria-label="Historical source" readonly spellcheck="false"></textarea>
+  <div class="history-layout">
+    <aside class="history-submissions" aria-label="Submitted files">
+      <h2>Submitted files</h2>
+      <p id="history-file-count" class="history-muted">Files appear here after you choose a participant and problem.</p>
+      <div id="history-files"></div>
+      <button type="button" id="history-more" hidden>Load older submissions</button>
+    </aside>
+    <section id="history-review" class="history-review" aria-label="Submitted file history">
+      <div id="history-empty" class="history-empty">Select a submitted file to review its writing history.</div>
+      <div id="history-player" hidden>
+        <div class="history-file-heading"><div><h2 id="history-filename"></h2><p id="history-submission" class="history-muted"></p></div><span id="history-correlation" class="history-badge"></span></div>
+        <p id="history-summary" class="history-summary"></p>
+        <p id="history-notices" class="history-notice" role="status" hidden></p>
+        <div class="history-toolbar history-playback">
+          <button type="button" id="history-previous">Previous period</button><button type="button" id="history-play" class="history-play-button">Play</button><button type="button" id="history-next">Next period</button>
+          <label>Group edits <select id="history-interval" aria-label="Editing period"><option value="1">Every 1 second</option><option value="5" selected>Every 5 seconds</option><option value="10">Every 10 seconds</option><option value="30">Every 30 seconds</option></select></label>
+          <label>Speed <select id="history-speed" aria-label="History speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option><option value="8">8×</option></select></label>
+          <label class="history-check"><input type="checkbox" id="history-skip-idle" checked> Skip waiting time</label>
+        </div>
+        <div class="history-timeline-card">
+          <div class="history-timeline-heading"><strong>Writing timeline</strong><label class="history-check"><input type="checkbox" id="history-marked-only"> Marked periods only</label></div>
+          <div id="history-activity" class="history-activity" aria-label="Editing activity overview"></div>
+          <label class="history-slider-label">Editing period <input type="range" id="history-timeline" aria-label="History timeline" min="0" max="0" value="0" step="1"></label>
+          <p id="history-event" aria-live="polite"></p>
+        </div>
+        <div class="history-source-heading"><h3 id="history-source-title">Source at this period</h3><label class="history-check"><input type="checkbox" id="history-compare"> Compare previous period</label></div>
+        <div id="history-source-grid" class="history-source-grid">
+          <div id="history-before-panel" hidden><p class="history-source-label">Before this period</p><textarea id="history-before" aria-label="Previous historical source" readonly spellcheck="false"></textarea><p id="history-before-status" class="history-muted"></p></div>
+          <div><p id="history-after-label" class="history-source-label">At this period</p><textarea id="history-source" aria-label="Historical source" readonly spellcheck="false"></textarea></div>
+        </div>
+        <section class="history-marker-panel" aria-label="Review markers">
+          <div class="history-timeline-heading"><h3>Review markers <span id="history-marker-count"></span></h3></div>
+          <p class="history-muted">Markers describe recorded activity and help you choose what to inspect. They are not plagiarism findings. Paste sources are not recorded, so their trustworthiness cannot be determined.</p>
+          <div id="history-markers"></div><button type="button" id="history-more-markers" hidden>Show more markers</button>
+          <details id="history-rules"><summary>How markers are chosen</summary><p>Paste markers come from recorded editor paste actions. Copy markers identify a keyboard shortcut, not a confirmed clipboard transfer. Large or rapid insertions and slow editing or long pauses are review cues; completion, undo, formatting, accessibility tools and ordinary thinking can explain unusual activity. Missing recording data is shown separately.</p><p id="history-thresholds"></p></details>
+        </section>
+      </div>
+    </section>
   </div>
 </div>
 <style>
-.ide-history-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:16px 0}.ide-history-controls label{display:grid;gap:5px}#history-timeline{width:100%;display:block;margin:12px 0}#history-source{box-sizing:border-box;width:100%;height:60vh;min-height:340px;padding:16px;font-family:monospace;font-size:14px;white-space:pre;overflow:auto;resize:vertical;background:#f8fafc;color:#17202a}#history-notices{white-space:pre-wrap;color:#8c4b00}#history-status{min-height:24px}.ide-history-controls select{max-width:650px}
+.history-intro{max-width:1000px;line-height:1.5;color:#475569}.history-toolbar{display:flex;flex-wrap:wrap;align-items:end;gap:12px;margin:16px 0}.history-toolbar label{display:grid;gap:5px}.history-selectors select{max-width:400px;min-width:210px}.history-toolbar button,.history-submissions button,.history-marker-panel button{cursor:pointer;min-height:34px}.history-check{display:flex!important;align-items:center;gap:6px!important;font-weight:normal;min-height:34px}.history-check input{margin:0}.history-layout{display:grid;grid-template-columns:minmax(210px,265px) minmax(0,1fr);gap:22px;align-items:start}.history-submissions{background:#f8fafc;border:1px solid #dbe3ed;border-radius:9px;padding:16px;box-sizing:border-box}.history-submissions h2,.history-file-heading h2{font-size:18px;margin:0 0 6px}.history-muted{color:#64748b;line-height:1.5;font-size:13px}.history-file-card{background:#fff;border:1px solid #dbe3ed;border-radius:7px;margin:10px 0;padding:10px;overflow-wrap:anywhere}.history-file-card.is-selected{border-color:#2563eb;box-shadow:0 0 0 1px #2563eb}.history-file-select{border:0;background:transparent;color:#1d4ed8;text-align:left;font-size:14px;font-weight:bold;padding:2px 0;width:100%;overflow-wrap:anywhere}.history-file-card p{font-size:12px;margin:5px 0;line-height:1.5}.history-file-card a{font-size:12px}.history-file-unavailable{color:#64748b}.history-empty{min-height:260px;display:flex;align-items:center;justify-content:center;border:1px dashed #cbd5e1;border-radius:9px;color:#64748b;padding:24px;text-align:center}.history-file-heading{display:flex;align-items:start;justify-content:space-between;gap:14px;overflow-wrap:anywhere}.history-file-heading p{margin:4px 0}.history-badge{display:inline-block;border-radius:5px;padding:5px 8px;background:#e2e8f0;color:#334155;font-size:12px;line-height:1.4}.history-badge.is-matched{background:#dcfce7;color:#166534}.history-badge.is-mismatch{background:#fff0db;color:#92400e}.history-summary{font-size:14px;line-height:1.6;color:#475569}.history-notice{white-space:pre-wrap;background:#fff7e8;border:1px solid #f4d59b;border-radius:6px;color:#81550c;line-height:1.5;padding:10px}.history-play-button{background:#1d4ed8!important;color:#fff!important;border:1px solid #1d4ed8!important;border-radius:4px;min-width:65px}.history-timeline-card{border:1px solid #dbe3ed;background:#f8fafc;border-radius:8px;padding:13px;margin:12px 0}.history-timeline-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.history-timeline-heading h3{margin:0}.history-activity{height:72px;display:flex;gap:2px;align-items:end;margin:12px 0 7px}.history-activity button{display:block;flex:1;min-width:2px;max-width:40px;border:0;border-radius:3px 3px 0 0;background:#93b4e5;padding:0;cursor:pointer}.history-activity button.has-marker{background:#f3b555}.history-activity button.is-current{background:#1d4ed8;outline:2px solid #1d4ed8;outline-offset:2px}.history-activity button.is-boundary{background:#a4b5c8}.history-activity button:focus-visible{outline:2px solid #111827;outline-offset:2px}.history-slider-label{display:block;font-size:12px;color:#64748b}#history-timeline{width:100%;display:block;box-sizing:border-box;margin:6px 0 12px}#history-event{min-height:20px;margin:0;line-height:1.5;font-size:13px;color:#334155}.history-source-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.history-source-heading h3{font-size:14px}.history-source-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}.history-source-grid.is-comparing{grid-template-columns:repeat(2,minmax(0,1fr))}.history-source-grid>div{min-width:0}.history-source-label{font-size:12px;color:#64748b;margin:6px 0}#history-source,#history-before{box-sizing:border-box;width:100%;height:58vh;min-height:340px;padding:16px;border:1px solid #cbd5e1;border-radius:6px;font-family:monospace;font-size:14px;line-height:1.5;white-space:pre;overflow:auto;resize:vertical;background:#fcfdff;color:#17202a;tab-size:4}.history-marker-panel{margin:22px 0;border-top:1px solid #dbe3ed;padding-top:16px}.history-marker-panel h3{font-size:16px}.history-marker-row{display:grid;grid-template-columns:minmax(130px,190px) minmax(0,1fr);gap:12px;border-top:1px solid #e2e8f0;padding:10px 0;align-items:start}.history-marker-row button{border:1px solid #e6c18a;color:#81550c;border-radius:5px;background:#fff8ec;padding:7px;text-align:left;font-size:12px}.history-marker-row p{line-height:1.5;font-size:13px;margin:5px 0;color:#475569}.history-marker-row small{display:block;color:#64748b;font-size:11px;margin-top:4px}.history-marker-panel details{margin:16px 0;color:#64748b;line-height:1.5;font-size:12px}.history-marker-panel summary{cursor:pointer}#history-status{min-height:22px;line-height:1.5}.history-review{min-width:0}[hidden]{display:none!important}@media(max-width:1100px){.history-layout{grid-template-columns:1fr}.history-submissions{max-height:310px;overflow:auto}#history-files{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.history-file-card{margin:4px 0}.history-source-grid.is-comparing{grid-template-columns:1fr}.history-selectors select{max-width:100%;min-width:160px}}@media(max-width:600px){.history-file-heading{display:block}.history-badge{margin:8px 0}.history-marker-row{grid-template-columns:1fr}.history-toolbar{gap:8px}.history-source-heading{align-items:start;flex-direction:column}}
 </style>
 <script src="{{ url('static', 'ide_history.js') }}" defer></script>
 {% endblock core %}
