@@ -27,13 +27,18 @@
       return await response.json();
     } finally { set.delete(controller); }
   }
-  function notice(values) { const text = [...new Set(values.filter(value => typeof value === 'string' && value))].join('\n'); element('notices').textContent = text; element('notices').hidden = !text; }
+  function notice(values, unavailable = false) {
+    const text = [...new Set(values.filter(value => typeof value === 'string' && value))].join('\n');
+    element('notices').textContent = text; element('notes').hidden = !text;
+    element('notes-summary').textContent = timeline?.partial ? 'Some earlier activity is unavailable — details' : unavailable ? 'This source position is unavailable — details' : 'Recording notes';
+    if (!text) element('notes').open = false;
+  }
   function clearSource() { element('source').value = ''; element('before').value = ''; element('before-status').textContent = ''; }
   function clearPlayback() {
     timeline = null; visiblePoints = []; index = -1; markerLimit = 100; clearSource();
     for (const id of ['activity','markers']) element(id).replaceChildren();
     for (const id of ['filename','submission','correlation','summary','event','marker-count','thresholds']) element(id).textContent = '';
-    notice([]); element('player').hidden = true; element('empty').hidden = false;
+    element('notes').open = false; notice([]); element('player').hidden = true; element('empty').hidden = false;
     element('empty').textContent = 'Select a submitted file to review its writing history.';
     element('more-markers').hidden = true; element('timeline').value = '0'; element('timeline').max = '0';
   }
@@ -177,7 +182,7 @@
       element('after-label').textContent = point.kind === 'initial' ? 'Starting snapshot' : point.kind === 'submission' ? 'Submitted version' : 'After this editing period';
       element('before').value = before?.available && typeof before.content === 'string' ? before.content : '';
       element('before-status').textContent = !element('compare').checked ? '' : !previous ? 'This is the first retained snapshot.' : before?.available && typeof before.content === 'string' ? '' : 'The file is unavailable at the previous recorded position.';
-      notice([...(timeline?.notices || []), ...(value.notices || []), ...(before?.notices || [])]);
+      notice([...(timeline?.notices || []), ...(value.notices || []), ...(before?.notices || [])], !available && point.kind !== 'initial');
       const emptyStart = point.kind === 'initial' && value.content === null;
       if (!available && !emptyStart) pause();
       return available || emptyStart;
