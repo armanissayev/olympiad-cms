@@ -1,0 +1,6 @@
+2026-11-05 17:44:38,560 - INFO [<unknown>] Using configuration file /etc/cms-ide-stage/cms.conf.
+/opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/cms/plugin.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+INSTALLED_NATIVE_HISTORY_ROUTES_OK /opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/cms/server/admin/handlers/idehistory.py
+ADMIN_RPC acknowledged
+{"status": "installed-native-package", "wheel": "/opt/cms-ide-stage/verification/file-history-notes-505c1a4b401d/native-wheel/cms-1.5.1-py3-none-any.whl", "wheelSha256": "14808366e201a34f8ce0b3e61bce52c8df7412bc2623f781d2ee98d1fedfe87a", "oldInstalledBackup": "/opt/cms-ide-stage/backups/native-wheel-before-file-history-505c1a4b401d", "adminPids": {"old": [120357], "fresh": [120695]}, "guestFilesStatus": 302, "dependenciesChanged": false}

@@ -1,0 +1,12 @@
+2026-11-05 17:33:57,259 - INFO [<unknown>] Using configuration file /etc/cms-ide-stage/cms.conf.
+/opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/cms/plugin.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+CMS_MODULE /opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/cms/__init__.py
+HISTORY_MODULE /opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/cms/server/admin/handlers/idehistory.py
+['/contest/([0-9]+)/ide-history', '/contest/([0-9]+)/ide-history/api/(sessions)', '/contest/([0-9]+)/ide-history/api/(sessions/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/replay)']
+WorkingDirectory=/opt/cms-ide-stage/source
+Environment=CMS_CONFIG=/etc/cms-ide-stage/cms.conf
+Environment=PATH=/opt/cms-ide-stage/cms-venv/bin:/usr/local/bin:/usr/bin:/bin
+Name: cms
+Version: 1.5.1
+Location: /opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages

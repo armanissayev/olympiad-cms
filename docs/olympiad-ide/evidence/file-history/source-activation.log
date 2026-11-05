@@ -1,0 +1,2 @@
+ADMIN_RESTART_RPC {"attempt": 0, "error": null}
+{"status": "deployed", "commit": "84f42f02aa872b01a77c6280695f077437fa2a07", "backup": "/opt/cms-ide-stage/backups/file-history-84f42f02aa87-retry2", "runtimeRestarted": true, "adminRestartedBy": "native ResourceService.kill_service(AdminWebServer,0)", "otherNativeProcessesUnchanged": true, "databaseMigration": false}

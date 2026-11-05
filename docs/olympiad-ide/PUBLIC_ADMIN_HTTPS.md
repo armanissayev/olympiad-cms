@@ -1,5 +1,7 @@
 # Public HTTPS Admin access for the authorized staging instance
 
+The viewer was updated on 5 November 2026 to select actual submitted files and grouped editing periods. Use [FILE_HISTORY_ACCEPTANCE](FILE_HISTORY_ACCEPTANCE.md) for the current browser command/evidence; the earlier recording-selector browser command below is historical. HTTPS routing/authentication remain in effect.
+
 Deployed and verified **4 November 2026** on the explicitly authorized disposable instance `i-0ade1f8ddf0b0dad8`. Open **https://54.206.171.67/admin/**, or code history directly at **https://54.206.171.67/admin/contest/1/ide-history**. No SSH tunnel is needed. Sign in with an enabled CMS administrator account; code history requires full CMS Admin permissions. Choose a participant and problem, Load recordings, then choose a recording. Participant credentials and participant cookies do not authorize the panel or history API.
 
 Public browser acceptance passed using normal trusted TLS, the existing disposable Admin/participant fixture, and the previously uploaded real source. The actual source SHA-256 matched `704fa61aae911881a42e2ffb330f44a6e388efb52ed2ba42c07df1f538c8faf5`. Guest and participant denial, native logout and browser-back denial, XSRF rejection, cookie flags, prefixed navigation/static/history requests and timeline controls all passed. There were zero page/server errors and zero history mutations. [Browser results](evidence/public-admin-https/browser-results.json), [screenshot](evidence/public-admin-https/public-admin-code-history.png).

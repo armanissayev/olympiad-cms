@@ -1,0 +1,67 @@
+...................................................... [100%]
+=============================== warnings summary ===============================
+cms/plugin.py:24
+  /Users/isaevarman/Developer/cms/cms/plugin.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+    import pkg_resources
+
+../../../../private/tmp/cms-file-history/cms-venv/lib/python3.12/site-packages/sqlalchemy/sql/sqltypes.py:1902
+  /private/tmp/cms-file-history/cms-venv/lib/python3.12/site-packages/sqlalchemy/sql/sqltypes.py:1902: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+    epoch = dt.datetime.utcfromtimestamp(0)
+
+../../../../private/tmp/cms-file-history/cms-venv/lib/python3.12/site-packages/werkzeug/contrib/securecookie.py:103
+  /private/tmp/cms-file-history/cms-venv/lib/python3.12/site-packages/werkzeug/contrib/securecookie.py:103: DeprecationWarning: 'werkzeug.contrib.sessions' is deprecated as of version 0.15 and will be removed in version 1.0. It has moved to https://github.com/pallets/secure-cookie.
+    from ..contrib.sessions import ModificationTrackingDict
+
+cms/server/admin/authentication.py:22
+  /Users/isaevarman/Developer/cms/cms/server/admin/authentication.py:22: DeprecationWarning: 'werkzeug.contrib.securecookie' is deprecated as of version 0.15 and will be removed in version 1.0. It has moved to https://github.com/pallets/secure-cookie.
+    from werkzeug.contrib.securecookie import SecureCookie
+
+cmscontrib/DumpExporter.py:31
+  /Users/isaevarman/Developer/cms/cmscontrib/DumpExporter.py:31: MonkeyPatchWarning: Monkey-patching ssl after ssl has already been imported may lead to errors, including RecursionError on Python 3.6. It may also silently lead to incorrect behaviour on Python 3.7. Please monkey-patch earlier. See https://github.com/gevent/gevent/issues/1016. Modules that had direct imports (NOT patched): ['anyio.streams.tls (/private/tmp/cms-file-history/cms-venv/lib/python3.12/site-packages/anyio/streams/tls.py)', 'jwt.jwks_client (/private/tmp/cms-file-history/cms-venv/lib/python3.12/site-packages/jwt/jwks_client.py)', 'urllib3.util.ssl_ (/private/tmp/cms-file-history/cms-venv/lib/python3.12/site-packages/urllib3/util/ssl_.py)', 'urllib3.util (/private/tmp/cms-file-history/cms-venv/lib/python3.12/site-packages/urllib3/util/__init__.py)']. 
+    gevent.monkey.patch_all()  # noqa
+
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py: 73 warnings
+  /Users/isaevarman/Developer/cms/cmscommon/datetime.py:46: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return datetime.utcnow()
+
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_anonymous_and_read_only_admin_cannot_read_history
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_file_listing_uses_actual_scoped_submissions_and_includes_cws_without_guessing
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_file_replay_keeps_receipt_capture_scope_and_checks_selected_position
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_full_admin_gets_selectors_readonly_source_and_sidebar_entry
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_invalid_interval_and_cursor_are_rejected_before_transport
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_other_contest_user_or_problem_is_rejected_before_transport
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_submitted_file_listing_requires_admin_and_does_not_call_runtime
+  /private/tmp/cms-file-history/cms-venv/lib/python3.12/site-packages/tornado/web.py:553: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    expires = datetime.datetime.utcnow() + datetime.timedelta(
+
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py: 20 warnings
+  /Users/isaevarman/Developer/cms/cms/server/admin/templates/error.html:24: DeprecationWarning: 'soft_unicode' has been renamed to 'soft_str'. The old name will be removed in MarkupSafe 2.1.
+
+cmstestsuite/unit_tests/server/olympiadide/admin_history_test.py::TestAdminCodeHistory::test_disabled_ordinary_admin_import_does_not_require_optional_pyjwt
+cmstestsuite/unit_tests/server/olympiadide/admission_test.py::TestIDEAdmission::test_concurrent_ide_shards_cannot_bypass_quota
+cmstestsuite/unit_tests/server/olympiadide/admission_test.py::TestIDEAdmission::test_concurrent_ide_shards_cannot_bypass_quota
+cmstestsuite/unit_tests/server/olympiadide/admission_test.py::TestIDEAdmission::test_concurrent_same_intent_returns_one_submission
+cmstestsuite/unit_tests/server/olympiadide/admission_test.py::TestIDEAdmission::test_concurrent_same_intent_returns_one_submission
+cmstestsuite/unit_tests/server/olympiadide/admission_test.py::TestIDEAdmission::test_simultaneous_cws_and_ide_share_quota_lock
+cmstestsuite/unit_tests/server/olympiadide/admission_test.py::TestIDEAdmission::test_simultaneous_cws_and_ide_share_quota_lock
+  /private/tmp/cms-file-history/cms-venv/lib/python3.12/site-packages/gevent/os.py:431: DeprecationWarning: This process (pid=29318) is multi-threaded, use of fork() may lead to deadlocks in the child.
+    pid = fork()
+
+cmstestsuite/unit_tests/server/olympiadide/receipt_dump_test.py::TestIDEReceiptDump::test_receipt_source_and_relations_survive_cms_dump_import
+cmstestsuite/unit_tests/server/olympiadide/receipt_dump_test.py::TestIDEReceiptDump::test_receipt_source_and_relations_survive_cms_dump_import
+cmstestsuite/unit_tests/server/olympiadide/receipt_dump_test.py::TestIDEReceiptDump::test_receipt_source_and_relations_survive_cms_dump_import
+cmstestsuite/unit_tests/server/olympiadide/receipt_dump_test.py::TestIDEReceiptDump::test_receipt_source_and_relations_survive_cms_dump_import
+cmstestsuite/unit_tests/server/olympiadide/receipt_dump_test.py::TestIDEReceiptDump::test_receipt_source_and_relations_survive_cms_dump_import
+cmstestsuite/unit_tests/server/olympiadide/receipt_dump_test.py::TestIDEReceiptDump::test_receipt_source_and_relations_survive_cms_dump_import
+  /Users/isaevarman/Developer/cms/cmscommon/datetime.py:48: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+    return datetime.utcfromtimestamp(timestamp)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+54 passed, 118 warnings, 18 subtests passed in 6.57s
+Exception ignored in: <function _removeHandlerRef at 0x1085e1d00>
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.6/Frameworks/Python.framework/Versions/3.12/lib/python3.12/logging/__init__.py", line 884, in _removeHandlerRef
+  File "/opt/homebrew/Cellar/python@3.12/3.12.6/Frameworks/Python.framework/Versions/3.12/lib/python3.12/logging/__init__.py", line 241, in _acquireLock
+  File "/opt/homebrew/Cellar/python@3.12/3.12.6/Frameworks/Python.framework/Versions/3.12/lib/python3.12/threading.py", line 198, in acquire
+  File "/private/tmp/cms-file-history/cms-venv/lib/python3.12/site-packages/gevent/thread.py", line 81, in get_ident
+RuntimeError: greenlet is being finalized

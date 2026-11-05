@@ -1,0 +1,3 @@
+Initial verification-copy helper: TypeError: 'TarFile' object is not an iterator.
+Stopped before manifest parsing, snapshot creation, live file changes or test execution.
+Corrected to iterate using iter(archive); Linux tests rerun separately.

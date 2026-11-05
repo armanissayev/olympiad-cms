@@ -1,8 +1,12 @@
 # Verification and acceptance status
 
-Updated 3 November 2026. The current feature follow-up is recorded below; the 2 November rehearsal remains separately labeled. **The disposable beta end-to-end workflow passed.** The same CMS participant used Monaco, real isolate Run/Stop, official C++/Python Submit and actual CMS judging/public scores, with receipt, outage and restored-database recovery. Live contest readiness remains conditional.
+Updated 5 November 2026. The current feature follow-up is recorded below; the 2 November rehearsal remains separately labeled. **The disposable beta end-to-end workflow passed.** The same CMS participant used Monaco, real isolate Run/Stop, official C++/Python Submit and actual CMS judging/public scores, with receipt, outage and restored-database recovery. Live contest readiness remains conditional.
 
 Read [LINUX_ACCEPTANCE](LINUX_ACCEPTANCE.md) for exact commands, versions, failures, the 12-requirement matrix, load figures, restore proof and release gates. Sanitized outputs are under [evidence/linux-staging](evidence/linux-staging/); reproducible commands/configuration/test sources are in the [staging guide](../../olympiad_ide/tools/linux_staging/README.md).
+
+## Submitted-file Admin history — 5 November 2026
+
+**Deployed and verified** at https://54.206.171.67/admin/contest/1/ide-history. Current application `505c1a4b401da9662775efa3020621dfca344349`; full Linux core snapshot `84f42f02aa872b01a77c6280695f077437fa2a07`. **766 CMS passes (9 skipped, 28 subtests), 116 runtime passes** on Linux. Final installed-package **13 passes**, **six local synthetic UI groups**, and **four real public-browser groups** passed after the UI-only note collapse. Actual CMS file/submission43 reconstructed its exact recorded source/hash, including an observed paste marker. Participant/guest denial, grouping/playback/comparison/selection clearing passed with zero page/server errors or history mutations. Detailed notes remain expandable; paste source remains unknown and markers are human-review cues. Source-only deployment initially left old installed routes and failed404 acceptance; installing the verified native wheel corrected it. All commands, environment versions, failures, rollback and release limits are in [FILE_HISTORY_ACCEPTANCE](FILE_HISTORY_ACCEPTANCE.md). Existing historical results below remain dated separately.
 
 ## Initial 2 November Linux results
 
@@ -76,13 +80,13 @@ Public links: https://54.206.171.67/ and https://54.206.171.67/ide/. [Sanitized 
 
 Final source/native distribution audit passed for exact commit 7dee52dc plus 13 manifest-verified assets, including both browser scripts and 9 sanitized screenshots, with no dependencies/credentials/databases/compiled classes. [Packaging evidence](evidence/workbench-vnext/package-check.json). Final read-only host check found 9 healthy boot-enabled units, no failed units, debug box 600 clean and public HTTPS readiness 200. Local regression PostgreSQL was stopped; AWS staging remains running.
 
-## Current participant workflow/Admin history follow-up
+## Earlier participant workflow/Admin history follow-up — 3 November
 
 Deployed `5106855e3c0cb003bd1558d163f7bcda46d35018`. [PARTICIPANT_ACCEPTANCE](PARTICIPANT_ACCEPTANCE.md) records all requested behaviors, actual commands, source hashes, role denials and failures. **759 Linux CMS tests passed (9 skipped, 28 subtests); 97 runtime tests passed locally/Linux; 130 frontend tests passed with lint/typecheck/build.** All totals include focused tests; do not add them again.
 
 Real public participant acceptance passed six problem changes with the same document and restored source/STDIN, all three breakpoint entry methods and real live adapter stop locations 5/6/5, three CMS-judged C++/Python submissions scoring public 25/25, two allowed token uses and exhausted-token CWS HTTP 200. Numeric observation uploads passed 200; participant history reads were 403. Separate private Admin browser verified target ownership, real before/after TEXT_INSERT source reconstruction, timeline/Play/Pause and read-only behavior. No page/server errors or popups in final browser runs.
 
-The initial full Linux invocation used a missing config path and failed safety checks; the retained correct cms-unit.conf and strict preflight produced the final 759/97 pass run. [Initial failure and final evidence](evidence/participant-polish/). No application configuration or database guard was weakened. Admin remains private and participant history/diagnostic UI is removed. Only uploaded retained data can be replayed. Existing release/capacity gates remain unchanged.
+The initial full Linux invocation used a missing config path and failed safety checks; the retained correct cms-unit.conf and strict preflight produced the final 759/97 pass run. [Initial failure and final evidence](evidence/participant-polish/). No application configuration or database guard was weakened. Admin was private at that rehearsal; later public HTTPS is recorded below. Participant history/diagnostic UI is removed. Only uploaded retained data can be replayed. Existing release/capacity gates remain unchanged.
 
 ## Public Admin HTTPS — 4 November 2026
 

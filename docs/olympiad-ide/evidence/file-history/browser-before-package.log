@@ -1,0 +1,9 @@
+Error: expect(received).toContain(expected) // indexOf
+
+Expected value: 404
+Received array: [302, 303, 401, 403]
+    at captureRawStack (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright-core/lib/coreBundle.js:9282:17)
+    at callMatcherAsStep (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright/lib/matchers/expect.js:13316:57)
+    at Object.toContain (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright/lib/matchers/expect.js:13308:23)
+    at deny (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/tools/verify-file-history.cjs:30:29)
+    at async /Users/isaevarman/Developer/cms/olympiad_ide/frontend/tools/verify-file-history.cjs:36:47

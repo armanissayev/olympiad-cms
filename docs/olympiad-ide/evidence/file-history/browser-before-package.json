@@ -1,0 +1,12 @@
+{
+  "status": "failed",
+  "kind": "real-public-admin-read-only",
+  "normalPublicTls": true,
+  "route": "https://54.206.171.67/admin/contest/1/ide-history",
+  "participantUserId": "352",
+  "taskId": "1",
+  "checks": [],
+  "error": "Error: expect(received).toContain(expected) // indexOf\n\nExpected value: 404\nReceived array: [302, 303, 401, 403]\n    at captureRawStack (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright-core/lib/coreBundle.js:9282:17)\n    at callMatcherAsStep (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright/lib/matchers/expect.js:13316:57)\n    at Object.toContain (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/node_modules/playwright/lib/matchers/expect.js:13308:23)\n    at deny (/Users/isaevarman/Developer/cms/olympiad_ide/frontend/tools/verify-file-history.cjs:30:29)\n    at async /Users/isaevarman/Developer/cms/olympiad_ide/frontend/tools/verify-file-history.cjs:36:47",
+  "pageErrors": [],
+  "serverErrors": []
+}

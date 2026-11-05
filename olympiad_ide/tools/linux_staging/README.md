@@ -167,3 +167,7 @@ For repeat Linux checks use `reverify_linux.py`: it refuses the missing-config f
 ## Public Admin HTTPS follow-up
 
 The bounded existing-host `install_public_admin.py` procedure is documented in [PUBLIC_ADMIN_HTTPS](../../../docs/olympiad-ide/PUBLIC_ADMIN_HTTPS.md). It changes only the explicitly authorized staging ingress, keeps native Admin authentication/permissions, and reloads only nginx. Its current deployment and verification status is recorded there; do not treat preparation as a successful deployment.
+
+## Submitted-file history follow-up — 5 November 2026
+
+[history_review](history_review/README.md) retains the executed existing-host source snapshot, isolated tests, native package installation and final audit procedures. These bounded historical procedures are distinct from the fresh-host bootstrap sequence. [Current acceptance](../../../docs/olympiad-ide/FILE_HISTORY_ACCEPTANCE.md) records actual results and resolved deployment/test-procedure failures.

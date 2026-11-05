@@ -1,0 +1,165 @@
+{
+  "status": "passed",
+  "kind": "local-synthetic-browser-UI-only",
+  "checks": [
+    "Auto submitted-file list, inert fixed-file source and compressed timeline.",
+    "Playback progresses from an empty pre-file snapshot and skips waiting by default.",
+    "Marker jump, previous-period comparison and marked-only initial/submission boundaries.",
+    "Changing speed and Pause/Play during a delayed replay produces exactly one advance per period.",
+    "Delayed old-file response cannot replace newly selected source.",
+    "Unavailable history and problem change clear prior source."
+  ],
+  "pageErrors": [],
+  "requests": [
+    {
+      "path": "/",
+      "query": "",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/static/ide_history.js",
+      "query": "",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files",
+      "query": "?userId=352&taskId=1",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/timeline",
+      "query": "?userId=352&taskId=1&intervalSeconds=5",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=30",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=0",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=3",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=20",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=20",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=3",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=20",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=3",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=20",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=3",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=20",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=0",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=3",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=20",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=28",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=30",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=20",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=20",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=3",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=20",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=3",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/91/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=0",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/92/timeline",
+      "query": "?userId=352&taskId=1&intervalSeconds=5",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/92/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=30",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files/92/replay",
+      "query": "?userId=352&taskId=1&sessionId=00000000-0000-4000-8000-000000000001&through=28",
+      "method": "GET"
+    },
+    {
+      "path": "/admin/contest/1/ide-history/api/files",
+      "query": "?userId=352&taskId=2",
+      "method": "GET"
+    }
+  ]
+}

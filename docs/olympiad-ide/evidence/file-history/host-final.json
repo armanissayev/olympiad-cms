@@ -1,0 +1,208 @@
+{
+  "status": "passed",
+  "applicationCommit": "505c1a4b401da9662775efa3020621dfca344349",
+  "coreLinuxVerifiedCommit": "84f42f02aa872b01a77c6280695f077437fa2a07",
+  "nativePackageLocation": "/opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/cms",
+  "installedNativeFileHashes": {
+    "cms/server/admin/handlers/__init__.py": "8e9177b083a17cf447a3d5ed80d61d3c38d79b5df0e68e3b47ec086bfa9ed1e0",
+    "cms/server/admin/handlers/idehistory.py": "a13f681a1249c735759067a6ebcf135743925d58ad28bdea232c467e5d3663dc",
+    "cms/server/admin/static/ide_history.js": "adb4f70e7bd27669092b86169dd45b3c955c65c8fdea2a9f3aa0fc6638e92ca7",
+    "cms/server/admin/templates/ide_history.html": "774eb92bcc396600fd32c19ad2eca2742e8c32efd7aae06142c9159e4abc526c"
+  },
+  "allSourceDeltaHashesMatched": true,
+  "otherNativeProcessesUnchanged": true,
+  "units": {
+    "cms-ide-stage-postgres.service": {
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "33044"
+    },
+    "cms-ide-stage-log.service": {
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "65063"
+    },
+    "cms-ide-stage-resource.service": {
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "65067"
+    },
+    "cms-ide-stage-judge.service": {
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "65065"
+    },
+    "cms-ide-stage-runtime.service": {
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "120082"
+    },
+    "cms-ide-stage-worker.service": {
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "65062"
+    },
+    "cms-ide-stage-debug.service": {
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "65066"
+    },
+    "cms-ide-stage-ranking.service": {
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "65064"
+    },
+    "cms-ide-stage-ingress.service": {
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "MainPID": "94453"
+    }
+  },
+  "executionWorkersPrivateNetwork": true,
+  "separateEnvironmentPipChecks": "passed",
+  "certificate": "notBefore=Nov  2 19:57:41 2026 GMT\nnotAfter=Nov  9 11:57:40 2026 GMT\nIP 54.206.171.67 does match certificate\n",
+  "renewalTimer": "active",
+  "tmux": "cms-staging-ops: 3 windows (created Mon Nov  2 20:48:05 2026)",
+  "publicHttpsStatuses": {
+    "/": 200,
+    "/ide/health/ready": 200,
+    "/admin/login": 200
+  },
+  "nativeWheel": {
+    "status": "installed-native-package",
+    "wheel": "/opt/cms-ide-stage/verification/file-history-notes-505c1a4b401d/native-wheel/cms-1.5.1-py3-none-any.whl",
+    "wheelSha256": "14808366e201a34f8ce0b3e61bce52c8df7412bc2623f781d2ee98d1fedfe87a",
+    "oldInstalledBackup": "/opt/cms-ide-stage/backups/native-wheel-before-file-history-505c1a4b401d",
+    "adminPids": {
+      "old": [
+        120357
+      ],
+      "fresh": [
+        120695
+      ]
+    },
+    "guestFilesStatus": 302,
+    "dependenciesChanged": false
+  },
+  "coreDeployment": {
+    "status": "deployed",
+    "commit": "84f42f02aa872b01a77c6280695f077437fa2a07",
+    "backup": "/opt/cms-ide-stage/backups/file-history-84f42f02aa87-retry2",
+    "runtimeRestarted": true,
+    "adminRestartedBy": "native ResourceService.kill_service(AdminWebServer,0)",
+    "otherNativeProcessesUnchanged": true,
+    "before": {
+      "cmsResourceService:65065": {
+        "pid": 65065,
+        "user": "cmsjudgestage",
+        "started": 1793660952.86,
+        "name": "cmsResourceService"
+      },
+      "cmsResourceService:65067": {
+        "pid": 65067,
+        "user": "cmsstage",
+        "started": 1793660952.88,
+        "name": "cmsResourceService"
+      },
+      "cmsWorker:65143": {
+        "pid": 65143,
+        "user": "cmsjudgestage",
+        "started": 1793660956.18,
+        "name": "cmsWorker"
+      },
+      "cmsContestWebServer:65146": {
+        "pid": 65146,
+        "user": "cmsstage",
+        "started": 1793660956.28,
+        "name": "cmsContestWebServer"
+      },
+      "cmsEvaluationService:65147": {
+        "pid": 65147,
+        "user": "cmsstage",
+        "started": 1793660956.32,
+        "name": "cmsEvaluationService"
+      },
+      "cmsOlympiadIDEService:65149": {
+        "pid": 65149,
+        "user": "cmsstage",
+        "started": 1793660956.38,
+        "name": "cmsOlympiadIDEService"
+      },
+      "cmsProxyService:65151": {
+        "pid": 65151,
+        "user": "cmsstage",
+        "started": 1793660956.48,
+        "name": "cmsProxyService"
+      },
+      "cmsScoringService:65153": {
+        "pid": 65153,
+        "user": "cmsstage",
+        "started": 1793660956.56,
+        "name": "cmsScoringService"
+      },
+      "cmsAdminWebServer:119883": {
+        "pid": 119883,
+        "user": "cmsstage",
+        "started": 1793899627.84,
+        "name": "cmsAdminWebServer"
+      }
+    },
+    "after": {
+      "cmsResourceService:65065": {
+        "pid": 65065,
+        "user": "cmsjudgestage",
+        "started": 1793660952.86,
+        "name": "cmsResourceService"
+      },
+      "cmsResourceService:65067": {
+        "pid": 65067,
+        "user": "cmsstage",
+        "started": 1793660952.88,
+        "name": "cmsResourceService"
+      },
+      "cmsWorker:65143": {
+        "pid": 65143,
+        "user": "cmsjudgestage",
+        "started": 1793660956.18,
+        "name": "cmsWorker"
+      },
+      "cmsContestWebServer:65146": {
+        "pid": 65146,
+        "user": "cmsstage",
+        "started": 1793660956.28,
+        "name": "cmsContestWebServer"
+      },
+      "cmsEvaluationService:65147": {
+        "pid": 65147,
+        "user": "cmsstage",
+        "started": 1793660956.32,
+        "name": "cmsEvaluationService"
+      },
+      "cmsOlympiadIDEService:65149": {
+        "pid": 65149,
+        "user": "cmsstage",
+        "started": 1793660956.38,
+        "name": "cmsOlympiadIDEService"
+      },
+      "cmsProxyService:65151": {
+        "pid": 65151,
+        "user": "cmsstage",
+        "started": 1793660956.48,
+        "name": "cmsProxyService"
+      },
+      "cmsScoringService:65153": {
+        "pid": 65153,
+        "user": "cmsstage",
+        "started": 1793660956.56,
+        "name": "cmsScoringService"
+      },
+      "cmsAdminWebServer:120100": {
+        "pid": 120100,
+        "user": "cmsstage",
+        "started": 1793899898.13,
+        "name": "cmsAdminWebServer"
+      }
+    },
+    "databaseMigration": false
+  }
+}

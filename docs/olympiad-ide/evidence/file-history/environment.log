@@ -1,0 +1,47 @@
+STOPPED|8
+FINISHED|11
+CANCELLED|3
+COMPILATION_ERROR|1
+FINISHED|48
+RUNTIME_ERROR|1
+TIME_LIMIT_EXCEEDED|1
+Python 3.12.16
+Python 3.12.16
+Name: SQLAlchemy
+Version: 2.1.5
+Name: fastapi
+Version: 0.150.0
+Name: pydantic
+Version: 2.14.1
+Name: pytest
+Version: 9.1.1
+Id=cms-ide-stage-resource.service
+ActiveState=active
+MainPID=65067
+ExecMainStartTimestamp=Mon 2026-11-02 23:09:13 UTC
+
+Id=cms-ide-stage-judge.service
+ActiveState=active
+MainPID=65065
+ExecMainStartTimestamp=Mon 2026-11-02 23:09:13 UTC
+
+Id=cms-ide-stage-runtime.service
+ActiveState=active
+MainPID=65061
+ExecMainStartTimestamp=Mon 2026-11-02 23:09:13 UTC
+
+Id=cms-ide-stage-worker.service
+ActiveState=active
+MainPID=65062
+ExecMainStartTimestamp=Mon 2026-11-02 23:09:13 UTC
+
+Id=cms-ide-stage-debug.service
+ActiveState=active
+MainPID=65066
+ExecMainStartTimestamp=Mon 2026-11-02 23:09:13 UTC
+
+Id=cms-ide-stage-ingress.service
+ActiveState=active
+MainPID=94453
+ExecMainStartTimestamp=Wed 2026-11-04 06:38:04 UTC
+cmsstage 600 /etc/cms-ide-stage/cms-unit.conf

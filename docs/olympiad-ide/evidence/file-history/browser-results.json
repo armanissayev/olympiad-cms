@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "kind": "real-public-admin-read-only",
+  "normalPublicTls": true,
+  "route": "https://54.206.171.67/admin/contest/1/ide-history",
+  "participantUserId": "352",
+  "taskId": "1",
+  "checks": [
+    "Guest and actual authenticated participant cannot read submitted files or open Admin history.",
+    "Actual CMS submissions supply the file selector; selected retained file reconstructs the exact submitted source/hash at the capture boundary.",
+    "Editing-period navigation, playback, interval grouping, boundary-preserving marker filter and previous-period comparison work on retained real data.",
+    "Changing the reviewed identity clears the prior submitted file and source immediately."
+  ],
+  "file": {
+    "fileId": "43",
+    "submissionId": "43",
+    "sourceFilename": "participant1793660997973.cpp",
+    "sourceSha256": "704fa61aae911881a42e2ffb330f44a6e388efb52ed2ba42c07df1f538c8faf5",
+    "points": 6,
+    "editingPoints": 1,
+    "correlation": "matched"
+  },
+  "observedMarkerKinds": [
+    "context",
+    "paste"
+  ],
+  "historyMutations": [],
+  "pageErrors": [],
+  "serverErrors": []
+}

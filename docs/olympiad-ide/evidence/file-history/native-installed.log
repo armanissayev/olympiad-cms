@@ -1,0 +1,25 @@
+2026-11-05 17:47:43,838 - INFO [<unknown>] Using configuration file /etc/cms-ide-stage/cms-unit.conf.
+/opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/cms/plugin.py:24: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+INSTALLED_CMS_TEST_TARGET /opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/cms/server/admin/handlers/idehistory.py
+.............                                                            [100%]
+=============================== warnings summary ===============================
+: 73 warnings
+  /opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/cmscommon/datetime.py:46: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return datetime.utcnow()
+
+::TestAdminCodeHistory::test_anonymous_and_read_only_admin_cannot_read_history
+::TestAdminCodeHistory::test_file_listing_uses_actual_scoped_submissions_and_includes_cws_without_guessing
+::TestAdminCodeHistory::test_file_replay_keeps_receipt_capture_scope_and_checks_selected_position
+::TestAdminCodeHistory::test_full_admin_gets_selectors_readonly_source_and_sidebar_entry
+::TestAdminCodeHistory::test_invalid_interval_and_cursor_are_rejected_before_transport
+::TestAdminCodeHistory::test_other_contest_user_or_problem_is_rejected_before_transport
+::TestAdminCodeHistory::test_submitted_file_listing_requires_admin_and_does_not_call_runtime
+  /opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/tornado/web.py:553: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    expires = datetime.datetime.utcnow() + datetime.timedelta(
+
+: 20 warnings
+  /opt/cms-ide-stage/cms-venv/lib/python3.12/site-packages/cms/server/admin/templates/error.html:24: DeprecationWarning: 'soft_unicode' has been renamed to 'soft_str'. The old name will be removed in MarkupSafe 2.1.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+13 passed, 100 warnings in 1.84s

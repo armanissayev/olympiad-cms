@@ -165,3 +165,7 @@ Current application 5106855e is deployed using the existing tmux updater and unc
 ## Public Admin HTTPS — 4 November 2026
 
 The explicitly requested staging Admin panel is now exposed under authenticated `/admin/` on the existing public443 proxy, without exposing native ports. Existing CMS Admin permissions, XSRF, protected cookies, no-store and login limits are verified. [Deployment, evidence and rollback](PUBLIC_ADMIN_HTTPS.md).
+
+## Installed native package and file-history review — 5 November 2026
+
+The native console services import CMS from their virtualenv's **site-packages**, even when WorkingDirectory is the source checkout. A source-copy update alone does not deploy handlers/templates/static files. Build and install the matching wheel with the existing CMS environment and `--no-deps`, verify installed module and byte hashes outside the checkout, then restart only the affected native child through ResourceService. Keep protected matching source and installed-file/wheel backups. The IDE runtime remains separate. [Executed procedures, public-browser evidence and resolved source-only404](FILE_HISTORY_ACCEPTANCE.md).

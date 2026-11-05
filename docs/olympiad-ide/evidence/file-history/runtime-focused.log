@@ -1,0 +1,36 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.6, pytest-9.2.0, pluggy-1.7.0 -- /private/tmp/cms-file-history/runtime-venv/bin/python
+rootdir: /Users/isaevarman/Developer/cms/olympiad_ide/backend
+configfile: pyproject.toml
+plugins: anyio-4.16.0
+collecting ... collected 27 items
+
+tests/test_history_analysis.py::test_occupied_intervals_hide_raw_key_cursor_focus_execution_and_count_linked_source_changes PASSED [  3%]
+tests/test_history_analysis.py::test_unicode_and_multicursor_metrics_follow_monaco_utf16_offsets PASSED [  7%]
+tests/test_history_analysis.py::test_paste_is_observed_separately_from_large_insert_and_source_is_never_claimed PASSED [ 11%]
+tests/test_history_analysis.py::test_copy_shortcut_reports_only_shortcut_and_not_clipboard_transfer PASSED [ 14%]
+tests/test_history_analysis.py::test_large_insert_threshold_and_repeat_pastes_in_interval_do_not_duplicate_cues PASSED [ 18%]
+tests/test_history_analysis.py::test_rapid_growth_uses_ten_second_window_across_intervals_and_has_explicit_threshold PASSED [ 22%]
+tests/test_history_analysis.py::test_undo_redo_and_programmatic_changes_keep_context_without_growth_or_slow_cues PASSED [ 25%]
+tests/test_history_analysis.py::test_long_pause_threshold_is_elapsed_time_and_not_an_authorship_accusation PASSED [ 29%]
+tests/test_history_analysis.py::test_slow_writing_needs_sustained_keyboard_linked_changes_not_sparse_passive_events PASSED [ 33%]
+tests/test_history_analysis.py::test_invalid_activity_timing_is_omitted_without_nonfinite_output PASSED [ 37%]
+tests/test_history_analysis.py::test_explicit_paste_transactions_are_not_counted_as_slow_keyboard_writing PASSED [ 40%]
+tests/test_admin_history.py::test_admin_history_requires_separate_cms_scope_and_rejects_spoofing PASSED [ 44%]
+tests/test_admin_history.py::test_admin_history_reads_only_signed_installation_participant_contest_task PASSED [ 48%]
+tests/test_admin_history.py::test_server_history_uses_uploaded_initial_and_nearest_verified_checkpoint PASSED [ 51%]
+tests/test_admin_history.py::test_server_history_never_fabricates_missing_or_corrupt_events PASSED [ 55%]
+tests/test_admin_history.py::test_development_identity_cannot_access_admin_history PASSED [ 59%]
+tests/test_admin_history.py::test_reported_gaps_clear_active_identity_until_recorded_navigation PASSED [ 62%]
+tests/test_admin_history.py::test_corrupt_later_source_event_never_mislabels_partial_nodes_as_checkpoint PASSED [ 66%]
+tests/test_admin_history.py::test_expired_recordings_are_not_exposed_or_deleted_by_review PASSED [ 70%]
+tests/test_admin_history.py::test_submitted_file_timeline_replay_authentication_query_binding_and_scope PASSED [ 74%]
+tests/test_admin_history.py::test_submitted_file_timeline_contains_only_relevant_intervals_and_immutable_capture PASSED [ 77%]
+tests/test_admin_history.py::test_submitted_file_future_upload_or_reported_gap_never_claims_hash_match PASSED [ 81%]
+tests/test_admin_history.py::test_submitted_file_separates_periods_and_cuts_older_prefix_at_first_late_upload PASSED [ 85%]
+tests/test_admin_history.py::test_submitted_file_input_bounds_and_analysis_limits_are_explicit PASSED [ 88%]
+tests/test_admin_history.py::test_file_review_budget_prioritizes_actual_capture_before_older_sessions PASSED [ 92%]
+tests/test_admin_history.py::test_file_replay_never_returns_other_workspace_source_and_detects_missing_prefix PASSED [ 96%]
+tests/test_admin_history.py::test_malformed_stored_checkpoint_objects_are_disclosed_without_500 PASSED [100%]
+
+============================== 27 passed in 5.98s ==============================
