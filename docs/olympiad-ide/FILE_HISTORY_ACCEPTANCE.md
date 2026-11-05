@@ -19,7 +19,7 @@ Thresholds and detailed bounds are documented in [ADMIN_HISTORY](ADMIN_HISTORY.m
 
 ## Actual verification
 
-Focused checks overlap complete suites; do not add their counts together.
+Focused checks overlap complete suites; do not add their counts together. Retained text outputs are sanitized for credentials and trailing whitespace; original raw test outputs remain in the protected task scratch/host verification directories.
 
 | Check | Outcome and evidence |
 | --- | --- |

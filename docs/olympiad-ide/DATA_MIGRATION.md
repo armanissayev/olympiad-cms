@@ -85,3 +85,7 @@ Disable olympiad_ide_enabled, intentionally stop native service using ResourceSe
 ## Participant/Admin workflow follow-up
 
 This update keeps f6a001 unchanged and needs no schema migration or new grants. Numeric CMS observation task IDs and legacy strings are accepted without rewriting envelopes or digests, allowing retained queued batches to retry. Per-problem browser database names/workspace IDs and existing records remain retained during in-place switching. Server Admin review checks existing identity bindings; it never adopts records by username. No participant files, old local recordings or existing passwords were deleted/reset. [Actual acceptance](PARTICIPANT_ACCEPTANCE.md).
+
+## Submitted-file history review — 5 November 2026
+
+The new Admin viewer reads existing native submission receipts and retained IDE telemetry. It adds no schema migration, table, grant or identity mapping, and does not rewrite raw recordings or official source files. Review markers and grouped intervals are computed on read; existing retention remains unchanged. Source and installed native package rollback are sufficient for this viewer. [Actual acceptance and deployment](FILE_HISTORY_ACCEPTANCE.md).
