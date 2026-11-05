@@ -188,6 +188,7 @@ def test_submitted_file_timeline_contains_only_relevant_intervals_and_immutable_
     assert result['fileId']==fid and result['summary']['editCount']==1
     assert [point['kind'] for point in result['points']]==['initial','editing','submission']
     assert result['points'][-1]['sequence']==2
+    assert result['periods'][-1]['lastOffsetMs']==2*10.7  # Later edits do not extend a submitted version's duration.
     replay=admin_get(cms_api,FILE_REPLAY,query+'&sessionId='+sid+'&through=2').json()
     assert replay['available'] and replay['content']==after[fid]['content']
     assert 'nodes' not in replay and replay['name']=='renamed.cpp'
