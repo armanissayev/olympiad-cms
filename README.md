@@ -1,5 +1,9 @@
-Contest Management System
+Custom CMS + Olympiad IDE
 =========================
+
+This is the custom native Olympiad IDE integration. Start with
+[Install this version](INSTALL_CUSTOM_CMS.md) to clone, build a portable source/assets
+bundle, and deploy to another Linux server. Upstream CMS documentation follows.
 
 Homepage: <http://cms-dev.github.io/>
 
